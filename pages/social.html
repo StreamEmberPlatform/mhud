@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ekip & kanallar — MHud</title>
+<link rel="stylesheet" href="../kit/css/mhud.css">
+<link rel="stylesheet" href="../demo/demo.css">
+</head>
+<body class="mh">
+<main class="demo-main">
+  <header class="demo-head">
+    <span class="demo-head__kicker">Arayüz</span>
+    <h1>Ekip & kanallar</h1>
+    <p>Veri güdümlü sosyal menü: ekip (üyeler, yardım, para gönderme, rütbe, atma), davetler (gelen/gönderilen, süre sayacı), ekip kasası, cephanelik, rütbe izinleri, <b>kanallar</b>, arkadaşlar, gelen kutusu ve takas. Her eylem bir modal açar ve sonunda oyuna <code>MH.post('social', { action, data })</code> gider; bu sayfada sahte bir sunucu cevap veriyor. <b>Kanal</b>: aynı sunucuda ayrı bir dünya — FiveM/RedM'de <i>routing bucket</i>. Aynı kanaldakiler birbirini görür, diğerleri görünmez.</p>
+  </header>
+
+  <div class="demo-stage-wrap">
+    <div class="demo-stage" id="stage">
+      <div class="mh-screen" id="screen">
+        <div class="mh-layer mh-catch"><div class="mh-scrim mh-scrim--soft"></div><div id="social-host"></div></div>
+        <div class="mh-anchor mh-tr" style="z-index:120"><div class="mh-toasts" data-mh="toasts" style="--w:340px"></div></div>
+      </div>
+    </div>
+    <div class="demo-actions">
+      <span class="demo-actions__label">Dene:</span>
+      <button class="demo-btn" data-act="invite"><i data-i="email"></i>Davet gelsin</button>
+      <button class="demo-btn" data-act="trade"><i data-i="swap"></i>Takas penceresi</button>
+      <button class="demo-btn" data-act="down"><i data-i="revive"></i>Üye yere düşsün</button>
+      <button class="demo-btn" data-act="nocrew"><i data-i="users"></i>Ekipsiz / ekipli</button>
+      <button class="demo-btn" data-act="rank"><i data-i="crown"></i>Rütbem: lider / acemi</button>
+      <span class="demo-sep"></span>
+      <button class="demo-btn" onclick="Demo.fullscreen('#stage')"><i data-i="focus"></i>Tam ekran</button>
+    </div>
+    <div class="demo-note">Q / E ile bölümler arasında gez. Menü içi tüm düğmeler çalışır; sahte sunucu durumu günceller ve sağ üstte bildirim gösterir.</div>
+  </div>
+
+  <div class="demo-h2"><h2>Modal sistemi</h2><p>Yığınlanır (üstteki ESC/Enter alır), form değerlerini toplar, doğrular · <code>MH.modal</code>, <code>MH.choose</code>, <code>MH.amount</code>, <code>MH.confirm</code>, <code>MH.input</code></p></div>
+  <div class="demo-specs mh-catch">
+    <div class="demo-spec">
+      <div class="demo-spec__view mh-col" style="--h:200px;gap:10px"><button class="mh-btn mh-btn--primary" data-m="form"><i data-i="layers"></i>Form modalı</button><span class="mh-sub" data-out="form">&nbsp;</span></div>
+      <div class="demo-spec__meta"><b>MH.modal — form</b><span><code>body</code> içindeki <code>[name]</code> alanları <code>submit: true</code> eylemiyle nesne olarak döner; <code>validate(v)</code> hata metni döndürürse modal sallanır.</span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view mh-col" style="--h:200px;gap:10px"><button class="mh-btn mh-btn--primary" data-m="choose"><i data-i="user-plus"></i>Oyuncu seç</button><span class="mh-sub" data-out="choose">&nbsp;</span></div>
+      <div class="demo-spec__meta"><b>MH.choose</b><span>Aranabilir liste, tekli ya da çoklu (<code>multi</code>, <code>max</code>). ↑↓ gez, Boşluk seç, Enter onayla.</span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view mh-col" style="--h:200px;gap:10px"><button class="mh-btn mh-btn--primary" data-m="amount"><i data-i="cash"></i>Tutar seç</button><span class="mh-sub" data-out="amount">&nbsp;</span></div>
+      <div class="demo-spec__meta"><b>MH.amount</b><span>Büyük sayı alanı, ± düğmeleri, kaydırıcı ve hızlı tutarlar (<code>quick: [100, 'half', 'max']</code>).</span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view mh-col" style="--h:200px;gap:10px"><button class="mh-btn mh-btn--outline" data-m="stack"><i data-i="layers"></i>İç içe modal</button><span class="mh-sub" data-out="stack">&nbsp;</span></div>
+      <div class="demo-spec__meta"><b>Yığın</b><span>Bir modal içinden ikincisi açılır; ESC yalnız üstekini kapatır. <code>MH.closeModals()</code> hepsini kapatır.</span></div>
+    </div>
+  </div>
+
+  <div class="demo-h2"><h2>Protokol</h2><p><code>kit/js/mhud-social.js</code> · menü veriyi çizer, eylemleri geri yollar</p></div>
+  <div class="demo-cols">
+    <div class="demo-box">
+      <h3>Oyundan menüye</h3>
+      <table class="demo-table">
+        <tr><th>Mesaj</th><th>Veri</th></tr>
+        <tr><td><code>social:open</code></td><td><code>{ section?, state? }</code> — menüyü açar (<code>crew</code>, <code>invites</code>, <code>vault</code>, <code>armory</code>, <code>ranks</code>, <code>channels</code>, <code>friends</code>, <code>inbox</code>)</td></tr>
+        <tr><td><code>social:state</code></td><td>tam durum: <code>me, crew, invites, channels, friends, inbox, players, inventory, prefs</code></td></tr>
+        <tr><td><code>social:patch</code></td><td>yalnız değişen üst anahtarlar, ör. <code>{ invites: … }</code></td></tr>
+        <tr><td><code>social:close</code></td><td>menüyü ve açık modalları kapatır</td></tr>
+        <tr><td><code>social:trade</code></td><td>takas penceresini açar / günceller: <code>{ partner, mine, theirs, inventory, cash }</code>; <code>{ close: true }</code></td></tr>
+      </table>
+      <h3 style="margin-top:18px">Durum örneği</h3>
+<pre class="demo-code" style="white-space:pre-wrap">crew: { name, tag, tone, level, xp, max, bank, withdrawLimit, withdrawnToday,
+  announcement, members: [{ id, name, rank, status, hp, armor, zone, dist,
+  channel, contrib, kills, self }], ranks: [{ id, label, icon, tone,
+  perms: { invite, kick, withdraw, armory, promote, channel, announce } }],
+  armory: [{ id, name, art: 'w:carbine', count, minRank, tier }], log: [..] }
+channels: { current: 'main', list: [{ id, name, mode, players, max,
+  locked, owner, crew, system, friends: [..], members: [..], rules: [..] }] }</pre>
+    </div>
+    <div class="demo-box">
+      <h3>Menüden oyuna · <code>MH.post('social', { action, data })</code></h3>
+      <table class="demo-table">
+        <tr><th>Eylem</th><th>Veri</th></tr>
+        <tr><td><code>crew:create</code></td><td><code>{ name, tag, motto, tone, join }</code></td></tr>
+        <tr><td><code>crew:invite</code> · <code>crew:leave</code></td><td><code>{ ids }</code> · —</td></tr>
+        <tr><td><code>crew:kick</code> · <code>crew:promote</code></td><td><code>{ id, reason, ban }</code> · <code>{ id, rank }</code></td></tr>
+        <tr><td><code>crew:help</code></td><td><code>{ id, kind: revive | heal | armor | ammo | waypoint | teleport | spectate }</code></td></tr>
+        <tr><td><code>crew:perm</code> · <code>crew:rankAdd</code> · <code>crew:announce</code></td><td><code>{ rank, perm, value }</code> · <code>{ label }</code> · <code>{ text, pin, toast }</code></td></tr>
+        <tr><td><code>player:give</code> · <code>player:message</code></td><td><code>{ id, amount }</code> · <code>{ id, text }</code></td></tr>
+        <tr><td><code>invite:accept</code> · <code>decline</code> · <code>cancel</code> · <code>declineAll</code></td><td><code>{ id, password? }</code></td></tr>
+        <tr><td><code>vault:deposit</code> · <code>withdraw</code> · <code>split</code></td><td><code>{ amount, ids? }</code></td></tr>
+        <tr><td><code>armory:take</code> · <code>armory:put</code></td><td><code>{ id, count }</code></td></tr>
+        <tr><td><code>channel:join</code> · <code>leave</code> · <code>create</code></td><td><code>{ id, password, crew }</code> · — · <code>{ name, mode, max, password, crew, hidden }</code></td></tr>
+        <tr><td><code>channel:invite</code> · <code>update</code> · <code>close</code></td><td><code>{ id, ids }</code> · ayarlar · <code>{ id }</code></td></tr>
+        <tr><td><code>friend:add</code> · <code>remove</code> · <code>block</code></td><td><code>{ query }</code> · <code>{ id }</code></td></tr>
+        <tr><td><code>trade:request</code> · <code>add</code> · <code>remove</code> · <code>money</code> · <code>ready</code> · <code>cancel</code></td><td><code>{ id }</code> · <code>{ id, count }</code> · <code>{ amount }</code> · <code>{ ready }</code></td></tr>
+        <tr><td><code>inbox:read</code> · <code>readAll</code> · <code>action</code> · <code>prefs:set</code></td><td><code>{ id }</code> · — · <code>{ id, action }</code> · <code>{ key, value }</code></td></tr>
+      </table>
+    </div>
+  </div>
+</main>
+
+<script src="../kit/js/mhud-icons.js"></script>
+<script src="../kit/js/mhud.js"></script>
+<script src="../kit/js/mhud-social.js"></script>
+<script src="../demo/demo.js"></script>
+<script>
+  /* ================= Sahte sunucu durumu ================= */
+  var RANKS = [
+    { id: 'leader', label: 'Lider', icon: 'crown', tone: 'gold', perms: { all: 1 } },
+    { id: 'officer', label: 'Subay', icon: 'star', tone: 'accent', perms: { invite: 1, kick: 1, withdraw: 1, armory: 1, channel: 1, announce: 1 } },
+    { id: 'member', label: 'Üye', tone: '', perms: { invite: 1, armory: 1, channel: 1 } },
+    { id: 'recruit', label: 'Acemi', tone: 'info', perms: {} }
+  ];
+  function freshCrew() {
+    return {
+      id: 7, name: 'Gece Kuşları', tag: 'GK', tone: 'accent', level: 7, xp: .62, nextReward: 'Svy 8: kasa faizi %2', motto: 'Gece bizimdir', max: 8, rank: 3, kills: 18420,
+      bank: 86300, bankDelta: 12400, withdrawLimit: 25000, withdrawnToday: 5000,
+      announcement: 'Bu akşam 21:30 konvoy baskını — herkes Paleto\'da buluşsun. Zırh kasadan.',
+      ranks: RANKS.map(function (r) { return Object.assign({}, r, { perms: Object.assign({}, r.perms) }); }),
+      members: [
+        { id: 1, name: 'Amiral Router', rank: 'leader', status: 'online', hp: 82, armor: 45, zone: 'Vinewood', channel: 'main', contrib: 42000, kills: 6210, joined: '8 ay önce', self: true },
+        { id: 2, name: 'NabeMedia', rank: 'officer', status: 'online', hp: 64, armor: 20, zone: 'Paleto Körfezi', dist: 2400, channel: 'main', contrib: 28300, kills: 4980, joined: '7 ay önce' },
+        { id: 3, name: 'MSK', rank: 'member', status: 'afk', hp: 100, armor: 0, zone: 'Sandy Shores', dist: 1650, channel: 'main', contrib: 12000, kills: 2310, joined: '3 ay önce' },
+        { id: 4, name: 'RAPAFI', rank: 'member', status: 'busy', hp: 38, armor: 60, zone: 'Gece baskını', dist: null, channel: 'c12', contrib: 9600, kills: 1840, joined: '2 ay önce' },
+        { id: 5, name: 'Serkan_TV', rank: 'recruit', status: 'offline', hp: 0, zone: '', channel: null, contrib: 1200, kills: 120, joined: '4 gün önce', seen: '2 saat önce görüldü' }
+      ],
+      armory: [
+        { id: 'a1', name: 'Karabina tüfeği', sub: 'Otomatik · 5,56 mm', art: 'w:carbine', count: 4, tier: 'rare' },
+        { id: 'a2', name: 'Keskin nişancı', sub: 'Tek atış · 900 m', art: 'w:sniper', count: 1, tier: 'legendary', minRank: 'officer' },
+        { id: 'a3', name: 'Pompalı tüfek', sub: 'Yakın mesafe', art: 'w:shotgun', count: 3, tier: 'rare' },
+        { id: 'a4', name: 'Tabanca', sub: 'Yarı otomatik', art: 'w:pistol', count: 9, tier: 'common' },
+        { id: 'a5', name: 'Ağır yelek', sub: 'Zırh +100', art: 'i:armor', count: 6, tier: 'epic', minRank: 'member', stack: true },
+        { id: 'a6', name: 'El bombası', sub: '6 m alan hasarı', art: 'i:grenade', count: 12, tier: 'epic', minRank: 'member', stack: true },
+        { id: 'a7', name: 'İlk yardım çantası', sub: 'Canı doldurur', art: 'i:first-aid', count: 20, tier: 'common', stack: true },
+        { id: 'a8', name: 'Pala', sub: 'Yakın dövüş', art: 'i:machete', count: 2, tier: 'common' }
+      ],
+      log: [
+        { time: '21:14', who: 'NabeMedia', type: 'deposit', amount: 15000, note: 'Konvoy payı' },
+        { time: '20:52', who: 'MSK', type: 'take', item: 'Karabina tüfeği ×1' },
+        { time: '20:40', who: 'Amiral Router', type: 'withdraw', amount: 5000, note: 'Araç tamiri' },
+        { time: '19:05', who: 'Sistem', type: 'reward', amount: 2400, note: 'Haftalık ekip ödülü' },
+        { time: '18:31', who: 'Serkan_TV', type: 'join' },
+        { time: '17:12', who: 'RAPAFI', type: 'put', item: 'El bombası ×4' }
+      ]
+    };
+  }
+  var S = {
+    server: 'Event Fabric #1 · 48 / 64',
+    me: { id: 1, name: 'Amiral Router', cash: 12480 },
+    crew: freshCrew(),
+    prefs: { friendsOnly: false, toastInvites: true },
+    invites: {
+      incoming: [
+        { id: 'i1', kind: 'channel', from: 'mira.live', target: 'Zombi gecesi', text: 'seni Zombi gecesi kanalına çağırıyor', note: 'Hayatta kal · 6 / 8 oyuncu', expires: 95, total: 120 },
+        { id: 'i2', kind: 'trade', from: 'MSK', text: 'seninle takas yapmak istiyor', expires: 40, total: 60 },
+        { id: 'i3', kind: 'friend', from: 'ali_kaptan', text: 'arkadaşlık isteği gönderdi' }
+      ],
+      outgoing: [
+        { id: 'o1', kind: 'crew', to: 'deniz_33', target: 'Gece Kuşları', time: '3 dk önce', status: 'seen' },
+        { id: 'o2', kind: 'channel', to: 'MSK', target: 'Gece baskını', time: '12 dk önce' }
+      ]
+    },
+    channels: {
+      current: 'main',
+      list: [
+        { id: 'main', name: 'Ana dünya', mode: 'free', players: 48, max: 64, system: true, desc: 'Herkese açık sunucu dünyası', rules: [{ icon: 'world', text: 'Tüm oyuncular burada' }, { icon: 'shield', text: 'Güvenli bölgelerde PvP kapalı' }] },
+        { id: 'c12', name: 'Gece baskını', mode: 'heist', players: 4, max: 8, locked: true, owner: 'NabeMedia', crew: true, friends: ['RAPAFI'],
+          members: [{ name: 'NabeMedia', host: true, crew: true }, { name: 'RAPAFI', crew: true }, { name: 'deniz_33' }, { name: 'tolga.exe' }], rules: [{ icon: 'safe', text: 'Soygun modu · polis yapay zekâsı açık' }, { icon: 'users', text: 'En fazla 8 kişi' }] },
+        { id: 'c15', name: 'Zombi gecesi', mode: 'survival', players: 6, max: 8, owner: 'mira.live', friends: ['mira.live', 'bora'], members: [{ name: 'mira.live', host: true }, 'bora', 'kaan', 'zeynep', 'okan', 'efe'] },
+        { id: 'c18', name: 'Drift buluşması', mode: 'race', players: 11, max: 16, owner: 'speedking', members: ['speedking'] },
+        { id: 'c21', name: 'Western düello', mode: 'western', players: 2, max: 2, owner: 'ricky' },
+        { id: 'c22', name: 'Ölüm maçı · Vinewood', mode: 'deathmatch', players: 9, max: 12, locked: true, owner: 'kill_er' }
+      ]
+    },
+    friends: [
+      { id: 2, name: 'NabeMedia', online: true, channel: 'main', crew: 'Gece Kuşları', activity: 'Konvoy hazırlığı' },
+      { id: 20, name: 'mira.live', online: true, status: 'busy', channel: 'c15', activity: 'Hayatta kal · Dalga 6' },
+      { id: 21, name: 'bora', online: true, channel: 'c15' },
+      { id: 4, name: 'RAPAFI', online: true, channel: 'c12', crew: 'Gece Kuşları' },
+      { id: 22, name: 'deniz_33', online: true, status: 'afk', channel: 'c12' },
+      { id: 23, name: 'tolga.exe', online: false, seen: 'Dün çevrimiçiydi' },
+      { id: 24, name: 'zeynep', online: false, seen: '3 gün önce' }
+    ],
+    inbox: [
+      { id: 'm1', kind: 'crew', title: 'Konvoy baskını 21:30', from: 'NabeMedia · Gece Kuşları', text: 'Herkes Paleto\'da buluşsun, zırh kasadan alınabilir. Geç kalan bekleme odasında kalır.', time: '21:02', unread: true },
+      { id: 'm2', kind: 'event', title: 'Zombi gecesi yarın 22:00', from: 'Sunucu', text: 'Hayatta kal modunda hediye etkileri 2× olacak. Ekibinle kayıt ol.', time: 'Bugün', unread: true, actions: [{ id: 'join', label: 'Kayıt ol', primary: true }, { id: 'remind', label: 'Hatırlat', icon: 'bell' }] },
+      { id: 'm3', kind: 'money', title: 'Haftalık ekip ödülü', from: 'Sistem', text: 'Ekibin bu hafta 3. oldu: kasaya $2.400 yatırıldı.', time: 'Dün' },
+      { id: 'm4', kind: 'system', title: 'Kanal sistemi açıldı', from: 'Sunucu', text: 'Artık kendi kanalını kurup ekibinle ayrı bir dünyada oynayabilirsin. Menü › Kanallar.', time: '2 gün önce' }
+    ],
+    players: [
+      { id: 30, name: 'deniz_33', dist: 45, friend: true, channel: 'c12' }, { id: 31, name: 'ali_kaptan', dist: 120 }, { id: 32, name: 'tolga.exe', dist: 380, friend: true },
+      { id: 33, name: 'kaan', dist: 610, crew: 'Kızıl Kurtlar', channel: 'c15' }, { id: 34, name: 'speedking', dist: 900, channel: 'c18' }, { id: 35, name: 'ricky', dist: 1300, crew: 'Çöl Akrepleri' },
+      { id: 36, name: 'okan', dist: 2100 }, { id: 37, name: 'efe_tr', dist: 2500 }
+    ],
+    inventory: [
+      { id: 'v1', name: 'Karabina tüfeği', sub: '180 mermi', icon: 'carbine', art: 'w:carbine', count: 1 }, { id: 'v2', name: 'Pompalı tüfek', icon: 'shotgun', art: 'w:shotgun', count: 1 },
+      { id: 'v3', name: 'El bombası', icon: 'grenade', art: 'i:grenade', count: 4 }, { id: 'v4', name: 'İlk yardım çantası', icon: 'first-aid', art: 'i:first-aid', count: 3 },
+      { id: 'v5', name: 'Elmas', icon: 'diamond', art: 'i:diamond', count: 2 }
+    ]
+  };
+
+  /* ================= Sahte sunucu: eylemleri uygular ================= */
+  function toast(t, x, ic, tone) { MH.toast({ title: t, text: x, icon: ic || 'check', tone: tone || 'success', duration: 2600 }); }
+  function by(arr, id) { return (arr || []).filter(function (x) { return String(x.id) === String(id); })[0]; }
+  function pname(id) { var p = by(S.players, id) || by(S.friends, id) || (S.crew && by(S.crew.members, id)); return p ? p.name : 'Oyuncu'; }
+  function logIt(e) { if (S.crew) { S.crew.log.unshift(Object.assign({ time: new Date().toTimeString().slice(0, 5), who: S.me.name }, e)); } }
+  function moveTo(id) {
+    var from = by(S.channels.list, S.channels.current), to = by(S.channels.list, id); if (!to) return;
+    if (from) { from.players--; if (from.members) from.members = from.members.filter(function (m) { return (m.name || m) !== S.me.name; }); }
+    to.players++; (to.members = to.members || []).push({ name: S.me.name, crew: !!to.crew });
+    S.channels.current = id; var me = S.crew && by(S.crew.members, S.me.id); if (me) me.channel = id;
+  }
+  var NEXT = 100;
+  var SERVER = {
+    'crew:create': function (d) { S.crew = freshCrew(); S.crew.name = d.name; S.crew.tag = d.tag; S.crew.motto = d.motto; S.crew.tone = d.tone; S.crew.members = [S.crew.members[0]]; S.crew.bank = 0; S.crew.log = []; S.crew.announcement = ''; toast('Ekip kuruldu', d.name + ' [' + d.tag + ']', 'users'); },
+    'crew:invite': function (d) { d.ids.forEach(function (id) { S.invites.outgoing.unshift({ id: 'o' + (NEXT++), kind: 'crew', to: pname(id), target: S.crew.name, time: 'şimdi' }); }); toast(d.ids.length + ' davet gönderildi', 'Kabul edince ekibe katılırlar', 'send'); },
+    'crew:leave': function () { S.crew = null; toast('Ekipten ayrıldın', null, 'logout', 'info'); },
+    'crew:kick': function (d) { var n = pname(d.id); S.crew.members = S.crew.members.filter(function (m) { return String(m.id) !== String(d.id); }); logIt({ type: 'leave', who: n, note: 'atıldı' }); toast(n + ' ekipten atıldı', d.reason || null, 'user-minus', 'danger'); },
+    'crew:promote': function (d) { var m = by(S.crew.members, d.id); m.rank = d.rank; if (d.rank === 'leader') by(S.crew.members, S.me.id).rank = 'officer'; toast(m.name + ' artık ' + RANKS.filter(function (r) { return r.id === d.rank; })[0].label, null, 'crown', 'gold'); },
+    'crew:help': function (d) {
+      var m = by(S.crew.members, d.id), L = { revive: 'ayağa kaldırılıyor', heal: 'iyileştirildi', armor: 'zırh verildi', ammo: 'cephane verildi', waypoint: 'konumu işaretlendi', teleport: 'yanına ışınlandın', spectate: 'izleniyor' };
+      if (d.kind === 'revive') { m.status = 'online'; m.hp = 30; } if (d.kind === 'heal') m.hp = 100; if (d.kind === 'armor') m.armor = 100;
+      toast(m.name + ' · ' + L[d.kind], null, 'heart-plus');
+    },
+    'crew:perm': function (d) { var r = by(S.crew.ranks, d.rank); r.perms[d.perm] = d.value ? 1 : 0; toast('İzin güncellendi', r.label + ' · ' + d.perm, 'check', 'info'); },
+    'crew:rankAdd': function (d) { S.crew.ranks.splice(S.crew.ranks.length - 1, 0, { id: 'r' + (NEXT++), label: d.label, perms: {} }); toast('Rütbe eklendi', d.label, 'crown', 'info'); },
+    'crew:announce': function (d) { if (d.pin) S.crew.announcement = d.text; S.inbox.unshift({ id: 'm' + (NEXT++), kind: 'crew', title: 'Ekip duyurusu', from: S.me.name, text: d.text, time: 'şimdi' }); toast('Duyuru yayınlandı', null, 'bell'); },
+    'player:give': function (d) { S.me.cash -= d.amount; toast('$' + MH.fmt(d.amount) + ' gönderildi', pname(d.id), 'cash'); },
+    'player:message': function (d) { toast('Mesaj gönderildi', pname(d.id), 'chat', 'info'); },
+    'invite:accept': function (d) {
+      var x = by(S.invites.incoming, d.id); S.invites.incoming = S.invites.incoming.filter(function (i) { return i !== x; });
+      if (!x) return;
+      if (x.kind === 'channel') { var c = S.channels.list.filter(function (c) { return c.name === x.target; })[0]; if (c) moveTo(c.id); toast(x.target + ' kanalına geçtin', 'Diğer kanallardaki oyuncular artık görünmüyor', 'layers', 'info'); }
+      else if (x.kind === 'friend') { S.friends.push({ id: NEXT++, name: x.from, online: true, channel: 'main' }); toast(x.from + ' artık arkadaşın', null, 'friend'); }
+      else if (x.kind === 'trade') { openTrade(x.from); }
+      else if (x.kind === 'crew') { S.crew = freshCrew(); S.crew.name = x.target; toast(x.target + ' ekibine katıldın', null, 'users'); }
+      else toast('Kabul edildi', null, 'check');
+    },
+    'invite:decline': function (d) { S.invites.incoming = S.invites.incoming.filter(function (i) { return String(i.id) !== String(d.id); }); toast('Davet reddedildi', null, 'x', 'info'); },
+    'invite:declineAll': function () { S.invites.incoming = []; toast('Tüm davetler reddedildi', null, 'x', 'info'); },
+    'invite:cancel': function (d) { S.invites.outgoing = S.invites.outgoing.filter(function (i) { return String(i.id) !== String(d.id); }); toast('Davet geri alındı', null, 'x', 'info'); },
+    'vault:deposit': function (d) { S.me.cash -= d.amount; S.crew.bank += d.amount; S.crew.bankDelta += d.amount; logIt({ type: 'deposit', amount: d.amount }); toast('$' + MH.fmt(d.amount) + ' kasaya yatırıldı', null, 'arrow-down'); },
+    'vault:withdraw': function (d) { S.me.cash += d.amount; S.crew.bank -= d.amount; S.crew.bankDelta -= d.amount; S.crew.withdrawnToday += d.amount; logIt({ type: 'withdraw', amount: d.amount }); toast('$' + MH.fmt(d.amount) + ' çekildi', null, 'arrow-up'); },
+    'vault:split': function (d) { S.crew.bank -= d.amount; S.crew.bankDelta -= d.amount; S.me.cash += Math.floor(d.amount / d.ids.length); logIt({ type: 'split', amount: d.amount, note: d.ids.length + ' üyeye' }); toast('$' + MH.fmt(d.amount) + ' dağıtıldı', d.ids.length + ' üye · kişi başı $' + MH.fmt(Math.floor(d.amount / d.ids.length)), 'users'); },
+    'armory:take': function (d) { var it = by(S.crew.armory, d.id); it.count -= d.count; logIt({ type: 'take', item: it.name + ' ×' + d.count }); toast(it.name + ' alındı', '×' + d.count, 'arrow-up'); },
+    'armory:put': function (d) { var it = by(S.inventory, d.id); it.count -= d.count; if (it.count <= 0) S.inventory = S.inventory.filter(function (x) { return x !== it; });
+      var ex = S.crew.armory.filter(function (a) { return a.name === it.name; })[0]; if (ex) ex.count += d.count; else S.crew.armory.push({ id: 'a' + (NEXT++), name: it.name, art: it.art, count: d.count, tier: 'common' });
+      logIt({ type: 'put', item: it.name + ' ×' + d.count }); toast(it.name + ' cephaneliğe bırakıldı', null, 'arrow-down'); },
+    'channel:join': function (d) { var c = by(S.channels.list, d.id); if (c.locked && d.password !== '1234' && !d.crew) { toast('Şifre yanlış', 'Demo şifresi: 1234', 'lock', 'danger'); return; } moveTo(d.id); toast(c.name + ' kanalına geçtin', d.crew ? 'Çevrimiçi ekip üyelerine davet gitti' : 'Diğer kanallardaki oyuncular artık görünmüyor', 'layers', 'info'); },
+    'channel:leave': function () { moveTo('main'); toast('Ana dünyaya döndün', null, 'world', 'info'); },
+    'channel:create': function (d) { var id = 'c' + (NEXT++); S.channels.list.splice(1, 0, { id: id, name: d.name, mode: d.mode || 'private', players: 0, max: +d.max || 8, locked: !!d.password, owner: S.me.name, crew: !!d.crew, members: [] }); moveTo(id); by(S.channels.list, id).members[0].host = true; toast('Kanal kuruldu', d.name + (d.crew ? ' · ekibine davet gitti' : ''), 'layers'); },
+    'channel:invite': function (d) { toast(d.ids.length + ' oyuncu kanala davet edildi', null, 'send', 'info'); },
+    'channel:update': function (d) { var c = by(S.channels.list, d.id); c.name = d.name; c.mode = d.mode; c.max = +d.max; c.locked = !!d.password; toast('Kanal güncellendi', null, 'settings', 'info'); },
+    'channel:close': function (d) { moveTo('main'); S.channels.list = S.channels.list.filter(function (c) { return c.id !== d.id; }); toast('Kanal kapatıldı', null, 'x', 'info'); },
+    'friend:add': function (d) { S.invites.outgoing.unshift({ id: 'o' + (NEXT++), kind: 'friend', to: d.query, time: 'şimdi' }); toast('Arkadaşlık isteği gönderildi', d.query, 'user-plus'); },
+    'friend:remove': function (d) { S.friends = S.friends.filter(function (f) { return String(f.id) !== String(d.id); }); toast('Arkadaşlıktan çıkarıldı', null, 'user-minus', 'info'); },
+    'friend:block': function (d) { S.friends = S.friends.filter(function (f) { return String(f.id) !== String(d.id); }); toast('Engellendi', null, 'ban', 'danger'); },
+    'trade:request': function (d) { toast('Takas isteği gönderildi', pname(d.id), 'swap', 'info'); setTimeout(function () { openTrade(pname(d.id)); }, 900); },
+    'inbox:read': function (d) { by(S.inbox, d.id).unread = false; },
+    'inbox:readAll': function () { S.inbox.forEach(function (m) { m.unread = false; }); },
+    'inbox:action': function (d) { toast(d.action === 'join' ? 'Etkinliğe kayıt olundu' : 'Hatırlatıcı kuruldu', null, d.action === 'join' ? 'flag' : 'bell'); by(S.inbox, d.id).unread = false; },
+    'prefs:set': function (d) { S.prefs[d.key] = d.value; }
+  };
+  var menu = MH.Social('#social-host', {
+    section: 'crew', w: 1320, h: 820,
+    onAction: function (action, data, m) {
+      if (SERVER[action]) { SERVER[action](data); setTimeout(function () { m.set(S); }, 60); }
+      return false;   // demo: oyuna gönderme
+    }
+  });
+  menu.set(S);
+
+  /* Davet süre sayaçları */
+  setInterval(function () {
+    var ch = false;
+    S.invites.incoming.forEach(function (x) { if (x.expires != null) { x.expires--; ch = true; } });
+    S.invites.incoming = S.invites.incoming.filter(function (x) { return x.expires == null || x.expires > 0; });
+    if (ch && menu.ui.section === 'invites' && !document.querySelector('.mh-modal')) menu.set(S);
+  }, 1000);
+
+  /* Takas: karşı taraf sahte */
+  var trade = null;
+  function openTrade(partner) {
+    var st = { partner: { name: partner }, cash: S.me.cash, inventory: S.inventory, mine: { items: [], money: 0, ready: false }, theirs: { items: [], money: 0, ready: false } };
+    trade = MH.trade(Object.assign(st, { onAction: function (a, d) {
+      if (a === 'trade:add') { var it = by(S.inventory, d.id); st.mine.items.push({ id: it.id, name: it.name, art: it.art, count: d.count }); st.mine.ready = st.theirs.ready = false; }
+      if (a === 'trade:remove') { st.mine.items = st.mine.items.filter(function (x) { return String(x.id) !== String(d.id); }); st.mine.ready = st.theirs.ready = false; }
+      if (a === 'trade:money') { st.mine.money = d.amount; st.mine.ready = st.theirs.ready = false; }
+      if (a === 'trade:ready') { st.mine.ready = d.ready; if (d.ready) setTimeout(function () { st.theirs.ready = true; trade.update(st); if (st.mine.ready) setTimeout(function () { trade.close(); toast('Takas tamamlandı', partner + ' ile', 'handshake'); }, 1600); }, 1200); }
+      if (a === 'trade:cancel') { toast('Takas iptal edildi', null, 'x', 'info'); trade = null; return false; }
+      trade.update(st); return false;
+    } }));
+    setTimeout(function () { if (!trade) return; st.theirs.items.push({ id: 't1', name: 'Altın külçe', art: 'i:gold', count: 2 }); st.theirs.money = 1500; trade.update(st); }, 1400);
+    setTimeout(function () { if (!trade) return; st.theirs.items.push({ id: 't2', name: 'Keskin nişancı', art: 'w:sniper', count: 1 }); trade.update(st); }, 2600);
+  }
+
+  /* Deneme düğmeleri */
+  var A = {
+    invite: function () {
+      var x = Demo.pick([{ kind: 'crew', from: 'kaan', target: 'Kızıl Kurtlar', text: 'seni Kızıl Kurtlar ekibine davet etti' }, { kind: 'channel', from: 'NabeMedia', target: 'Gece baskını', text: 'seni Gece baskını kanalına çağırıyor', note: 'Soygun · 4 / 8' },
+        { kind: 'duel', from: 'ricky', text: 'seni düelloya çağırıyor', note: 'Western düello · tek tabanca' }, { kind: 'trade', from: 'bora', text: 'seninle takas yapmak istiyor' }]);
+      x = Object.assign({ id: 'i' + (NEXT++), expires: 60, total: 60 }, x); S.invites.incoming.unshift(x);
+      MH.toast({ tone: 'accent', icon: 'email', title: x.from + ' · davet', text: x.text, duration: 3000 }); menu.set(S);
+    },
+    trade: function () { openTrade('MSK'); },
+    down: function () { var m = by(S.crew && S.crew.members, 2); if (!m) return; m.status = 'down'; m.hp = 0; menu.ui.member = 2; menu.open('crew'); menu.set(S); MH.toast({ tone: 'danger', icon: 'revive', title: 'NabeMedia yerde!', text: 'Yardım et › Ayağa kaldır' }); },
+    nocrew: function () { S.crew = S.crew ? null : freshCrew(); menu.set(S); },
+    rank: function () { if (!S.crew) return; var me = by(S.crew.members, 1); me.rank = me.rank === 'leader' ? 'recruit' : 'leader'; menu.set(S); toast('Rütben: ' + (me.rank === 'leader' ? 'Lider' : 'Acemi'), 'Düğmeler yetkiye göre değişir', 'crown', 'info'); }
+  };
+  Demo.on('[data-act]', function (e) { A[e.currentTarget.getAttribute('data-act')](); });
+
+  /* Modal örnekleri: sayfanın kendi katmanında açılsın (sahnenin dışında) */
+  var mh = document.createElement('div'); mh.className = 'mh-screen'; mh.id = 'modal-host'; mh.style.cssText = 'position:fixed;inset:0;z-index:1000';
+  mh.style.fontFamily = 'var(--mh-font-ui)'; mh.style.color = 'var(--mh-text)'; mh.style.fontSize = '14px'; document.body.appendChild(mh);
+  var T = '#modal-host';
+  /* Modal örnekleri */
+  function out(k, v) { document.querySelector('[data-out="' + k + '"]').textContent = v; }
+  var M = {
+    form: function () {
+      MH.modal({ target: T, kicker: 'Örnek', title: 'Etkinlik oluştur', icon: 'flag', size: 'lg',
+        body: '<div class="mh-form" style="--cols:2"><label class="mh-field is-wide"><span class="mh-kicker">Ad</span><input class="mh-input" name="name" placeholder="Konvoy baskını"></label>' +
+          '<label class="mh-field"><span class="mh-kicker">Saat</span><input class="mh-input" name="time" type="time" value="21:30"></label>' +
+          '<label class="mh-field"><span class="mh-kicker">Ödül ($)</span><input class="mh-input" name="prize" type="number" value="50000"></label>' +
+          '<div class="mh-field is-wide"><span class="mh-kicker">Tür</span><div class="mh-optcards"><label class="mh-optcard"><input type="radio" name="kind" value="pvp" checked><i data-i="crosshair"></i><b>PvP</b><span>Oyuncuya karşı</span></label><label class="mh-optcard"><input type="radio" name="kind" value="pve"><i data-i="zombie"></i><b>PvE</b><span>Yapay zekâya karşı</span></label><label class="mh-optcard"><input type="radio" name="kind" value="race"><i data-i="flag-3"></i><b>Yarış</b><span>Kontrol noktaları</span></label></div></div>' +
+          '<label class="mh-field is-wide"><span class="mh-kicker">Açıklama</span><textarea class="mh-input mh-textarea" name="desc" placeholder="Kısa açıklama…"></textarea></label>' +
+          '<label class="mh-check is-wide"><input type="checkbox" name="announce" checked><span class="mh-check__box"></span>Tüm sunucuya duyur</label></div>',
+        validate: function (v) { return v.name ? null : 'Etkinliğe bir ad ver'; },
+        actions: [{ label: 'Vazgeç', value: null }, { label: 'Oluştur', primary: true, submit: true, icon: 'check' }] })
+        .then(function (v) { out('form', v ? JSON.stringify(v) : 'vazgeçildi'); });
+    },
+    choose: function () {
+      MH.choose({ target: T, title: 'Oyuncu seç', text: 'Çoklu seçim · en fazla 3', icon: 'user-plus', multi: true, max: 3, items: S.players.map(function (p) { return { id: p.id, label: p.name, sub: p.dist + ' m', badge: p.friend ? 'Arkadaş' : null, badgeTone: 'success' }; }) })
+        .then(function (v) { out('choose', v ? v.map(pname).join(', ') : 'vazgeçildi'); });
+    },
+    amount: function () { MH.amount({ target: T, title: 'Kasaya yatır', icon: 'bank', max: S.me.cash, maxLabel: 'Cebindeki', quick: [1000, 5000, 'half', 'max'] }).then(function (v) { out('amount', v == null ? 'vazgeçildi' : '$' + MH.fmt(v)); }); },
+    stack: function () {
+      MH.modal({ target: T, title: 'Birinci modal', icon: 'layers', body: '<span class="mh-sub">Buradan ikinci bir onay aç; ESC önce onu kapatır.</span>',
+        actions: [{ label: 'Kapat', value: 'kapandı' }, { label: 'İkinciyi aç', primary: true, onClick: function () { MH.confirm({ target: T, title: 'İkinci modal', text: 'Üstte duruyorum.', ok: 'Tamam' }).then(function (ok) { out('stack', 'ikinci: ' + ok); }); return false; } }] })
+        .then(function (v) { out('stack', 'birinci: ' + v); });
+    }
+  };
+  document.querySelectorAll('[data-m]').forEach(function (b) { b.addEventListener('click', function () { M[b.getAttribute('data-m')](); }); });
+</script>
+</body>
+</html>

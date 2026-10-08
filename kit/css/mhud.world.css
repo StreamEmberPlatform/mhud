@@ -1,0 +1,106 @@
+/* ==========================================================================
+   MHud — dünya katmanı
+   Ekrana yansıtılan öğeler: kafa üstü etiketleri, işaretçiler, dünya istemi,
+   uçan hasar sayıları. Konumlar JS tarafından yalnızca transform ile yazılır.
+   ========================================================================== */
+
+.mh-world { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: var(--mh-z-world); }
+.mh-world > * { position: absolute; left: 0; top: 0; will-change: transform, opacity; }
+
+/* ==========================================================================
+   İSİM ETİKETİ
+   ========================================================================== */
+.mh-tag {
+  --tone-rgb: var(--mh-text-rgb);
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  transform-origin: 50% 100%;
+  text-shadow: 0 1px 2px #000, 0 0 6px rgb(0 0 0 / .7);
+}
+.mh-tag__line { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.mh-tag__name { font-size: 15px; font-weight: 700; color: rgb(var(--tone-rgb)); letter-spacing: .01em; }
+.mh-tag__id { font-family: var(--mh-font-num); font-size: 12px; font-weight: 600; color: var(--mh-text-3); }
+.mh-tag .mh-i { width: 14px; height: 14px; filter: drop-shadow(0 1px 1px #000); }
+.mh-tag .mh-badge { height: 16px; padding: 0 5px; font-size: 9px; text-shadow: none; }
+.mh-tag__bars { display: flex; flex-direction: column; gap: 2px; width: 84px; }
+.mh-tag__bars .mh-bar { --h: 4px; box-shadow: 0 0 0 1px rgb(0 0 0 / .55); }
+.mh-tag__bars .mh-bar + .mh-bar { --h: 2px; }
+.mh-tag__sub { font-family: var(--mh-font-num); font-size: 11px; font-weight: 600; color: var(--mh-text-2); letter-spacing: .04em; }
+.mh-tag.is-talking .mh-tag__name { color: var(--mh-success); }
+.mh-tag.is-talking .mh-tag__voice { display: inline-flex; }
+.mh-tag__voice { display: none; color: var(--mh-success); }
+.mh-tag.is-dead { opacity: .55; }
+.mh-tag.is-dead .mh-tag__name { color: var(--mh-text-3); text-decoration: line-through; }
+.mh-tag.is-friend { --tone-rgb: var(--mh-friend-rgb); }
+.mh-tag.is-enemy  { --tone-rgb: var(--mh-enemy-rgb); }
+.mh-tag.is-typing .mh-tag__name::after { content: " …"; color: var(--mh-text-2); }
+/* Kompakt: yalnız isim + tek ince bar */
+.mh-tag--compact .mh-tag__sub, .mh-tag--compact .mh-badge { display: none; }
+.mh-tag--compact .mh-tag__name { font-size: 13px; }
+.mh-tag--compact .mh-tag__bars { width: 56px; }
+
+/* Yayıncı / izleyici ikonu üzerindeki konuşma balonu */
+.mh-tag__bubble {
+  max-width: 220px; padding: 5px 9px; margin-bottom: 2px;
+  font-size: 12px; font-weight: 500; color: var(--mh-text); white-space: normal; text-align: center; text-shadow: none;
+  background: var(--mh-surface-solid); border: 1px solid var(--mh-line); border-radius: var(--mh-r-3);
+  position: relative;
+}
+.mh-tag__bubble::after { content: ""; position: absolute; left: 50%; bottom: -5px; width: 8px; height: 8px; margin-left: -4px; background: inherit; border: inherit; border-top: 0; border-left: 0; transform: rotate(45deg); }
+
+/* ==========================================================================
+   İŞARETÇİ (waypoint / hedef)
+   ========================================================================== */
+.mh-marker { --tone-rgb: var(--mh-accent-rgb); display: flex; flex-direction: column; align-items: center; gap: 4px; text-shadow: var(--mh-hud-shadow); }
+.mh-marker__pin {
+  position: relative; width: 34px; height: 34px; display: grid; place-items: center; color: #0b0d10;
+}
+.mh-marker__pin::before {
+  content: ""; position: absolute; inset: 5px; transform: rotate(45deg); border-radius: 4px;
+  background: rgb(var(--tone-rgb)); box-shadow: 0 0 0 3px rgb(var(--tone-rgb) / .25), 0 0 calc(16px * var(--mh-glow-a)) rgb(var(--tone-rgb));
+}
+.mh-marker__pin .mh-i { position: relative; width: 16px; height: 16px; stroke-width: 2.25; }
+.mh-marker__label { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.mh-marker__dist { font-family: var(--mh-font-num); font-size: 13px; font-weight: 600; color: rgb(var(--tone-rgb)); }
+.mh-marker.is-pulse .mh-marker__pin::after { content: ""; position: absolute; inset: 0; border: 2px solid rgb(var(--tone-rgb)); border-radius: 50%; animation: mh-ping 1.6s var(--mh-ease-out) infinite; }
+@keyframes mh-ping { from { transform: scale(.6); opacity: 1; } to { transform: scale(2); opacity: 0; } }
+/* Ekran dışındaki hedef: kenarda ok */
+.mh-marker--edge .mh-marker__pin::before { border-radius: 2px 50% 50% 50%; }
+.mh-marker__arrow { position: absolute; width: 0; height: 0; border: 7px solid transparent; border-bottom: 10px solid rgb(var(--tone-rgb)); top: -16px; left: 50%; margin-left: -7px; transform-origin: 50% 33px; transform: rotate(var(--a, 0deg)); }
+
+/* Hedef çerçevesi (kilitlenme) */
+.mh-lockon { --tone-rgb: var(--mh-danger-rgb); width: 64px; height: 64px; position: relative; }
+.mh-lockon i { position: absolute; width: 14px; height: 14px; border: 2px solid rgb(var(--tone-rgb)); }
+.mh-lockon i:nth-child(1) { left: 0; top: 0; border-right: 0; border-bottom: 0; }
+.mh-lockon i:nth-child(2) { right: 0; top: 0; border-left: 0; border-bottom: 0; }
+.mh-lockon i:nth-child(3) { left: 0; bottom: 0; border-right: 0; border-top: 0; }
+.mh-lockon i:nth-child(4) { right: 0; bottom: 0; border-left: 0; border-top: 0; }
+.mh-lockon.is-locking { animation: mh-lock .5s var(--mh-ease-out) both; }
+@keyframes mh-lock { from { transform: scale(1.6); opacity: 0; } }
+
+/* ==========================================================================
+   DÜNYA İSTEMİ (nesne üstü tuş)
+   ========================================================================== */
+.mh-wprompt { display: flex; align-items: center; gap: 8px; }
+.mh-wprompt__dot { width: 10px; height: 10px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgb(0 0 0 / .35), 0 0 10px rgb(255 255 255 / .6); }
+.mh-wprompt__card {
+  display: flex; align-items: center; gap: 8px; padding: 4px 10px 4px 4px;
+  background: var(--mh-surface); border: 1px solid var(--mh-line); border-radius: var(--mh-r-2);
+  font-size: 13px; font-weight: 600; white-space: nowrap;
+  -webkit-backdrop-filter: blur(var(--mh-blur)); backdrop-filter: blur(var(--mh-blur));
+}
+.mh-wprompt.is-far .mh-wprompt__card { display: none; }
+
+/* ==========================================================================
+   UÇAN HASAR SAYISI — dış sarmalayıcı (.mh-float) konumlanır, içteki sayı canlanır
+   ========================================================================== */
+.mh-float { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
+.mh-dmgnum {
+  display: block;
+  font-family: var(--mh-font-num); font-size: 22px; font-weight: 700; color: #fff; white-space: nowrap; font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 2px #000, 0 0 6px rgb(0 0 0 / .8);
+  animation: mh-dmgnum 1s var(--mh-ease-out) both;
+}
+.mh-dmgnum.is-crit { font-size: 30px; color: var(--mh-warn); }
+.mh-dmgnum.is-heal { color: var(--mh-success); }
+.mh-dmgnum.is-armor { color: var(--mh-info); }
+@keyframes mh-dmgnum { 0% { opacity: 0; transform: translate(-50%, 6px) scale(1.4); } 15% { opacity: 1; transform: translate(-50%, 0) scale(1); } 70% { opacity: 1; } 100% { opacity: 0; transform: translate(calc(-50% + var(--dx, 12px)), -46px); } }

@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.tgz
+.DS_Store
+Thumbs.db
+# FiveM/RedM resource kopyaları: `npm run sync` üretir (kaynak kit/ ve games/)
+integration/mhud/html/kit/
+integration/mhud/html/games/

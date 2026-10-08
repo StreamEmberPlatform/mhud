@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="tr" class="mh-nui">
+<head>
+<meta charset="utf-8">
+<title>MHud · Red Dead yayın düzeni</title>
+<link rel="stylesheet" href="../../kit/css/mhud.css">
+<link rel="stylesheet" href="../shared/mhgame.css">
+</head>
+<!--
+  Red Dead Redemption 2 (RedM) — etkileşimli yayın düzeni, varsayılan tema: oldwest (frontier da uyumlu)
+  Sol alt köşe oyunun kendi radarına bırakılmıştır; çekirdekler radarın üstünde durur (RDR2 gibi).
+  Veri: game:set { level, kills, deaths, wins, losses, hp, hpMax, onScreen, queued, maxEnemies, streak,
+                   cash, gold, bounty, health:{value,core}, stamina:{value,core}, deadeye:{value,core}, horse:{value,core}, clock, weather }
+  Olay: game:kill, game:gift, game:poster, game:telegram, game:headline, game:sign, game:weapon, game:objective…
+  Parametre: ?theme=oldwest|frontier ?crop=vertical|square ?platform=tiktok ?ws=ws://… ?demo=1
+-->
+<body class="mh">
+<div class="mh-screen" id="screen">
+  <div class="mh-vignette" id="vignette"></div>
+
+  <!-- Üst orta: yayıncı istatistikleri -->
+  <div class="mh-anchor mh-tc">
+    <div class="mh-statbar">
+      <div class="mh-chip-stat mh-t-accent"><i data-i="sheriff"></i><b data-g="level">1</b><span>Rütbe</span></div>
+      <div class="mh-chip-stat mh-t-danger"><i data-i="revolver"></i><b data-g="kills">0</b><span>Leş</span></div>
+      <div class="mh-chip-stat"><i data-i="grave"></i><b data-g="deaths">0</b><span>Ölüm</span></div>
+      <div class="mh-chip-stat mh-t-success"><i data-i="trophy"></i><b><span data-g="wins">0</span><small>–<span data-g="losses">0</span></small></b><span>G / M</span></div>
+    </div>
+  </div>
+
+  <!-- Üst sol: görev -->
+  <div class="mh-anchor mh-tl mh-hide-crop" data-g-objective></div>
+
+  <!-- Üst sağ: saat, para, ödül, bildirimler -->
+  <div class="mh-anchor mh-tr mh-v-offset" style="gap:10px;--mh-v-offset:84px">
+    <div class="mh-clock mh-hide-crop"><i data-i="sunset"></i><span class="mh-clock__time" data-g="clock">18:42</span><span class="mh-clock__meta"><span data-g="weather">Açık · 21°C</span><span data-g="region">Heartlands</span></span></div>
+    <div class="mh-cash"><div class="mh-cash__value"><small>$</small><b data-g="cash" data-decimals="2">0</b></div><div class="mh-cash__bank mh-hide-crop"><i data-i="gold"></i><span><span data-g="gold">0</span> külçe</span></div></div>
+    <div class="mh-bounty mh-hidden" data-g-show="bounty"><span class="mh-bounty__seal"><i data-i="sheriff"></i></span><div><span class="mh-kicker">Başında ödül</span><div class="mh-bounty__amount">$<span data-g="bounty" data-decimals="2">0</span></div></div></div>
+    <div class="mh-toasts" data-mh="toasts" style="--w:320px;margin-top:6px"></div>
+  </div>
+
+  <!-- Sol orta: hediyeler + sosyal -->
+  <div class="mh-anchor mh-ml" style="margin-top:-40px;gap:14px">
+    <div class="mh-gifts" data-mh="gifts" style="--w:330px"></div>
+    <div class="mh-social" data-mh="social"></div>
+  </div>
+
+  <!-- Sağ orta: ölüm akışı -->
+  <div class="mh-anchor mh-mr mh-v-offset" style="margin-top:-40px;--mh-v-offset:-170px">
+    <div class="mh-feed" data-mh="feed"></div>
+    <div class="mh-panel mh-queue mh-hide-crop mh-hidden" data-g-queue="3" style="--w:300px;margin-top:16px">
+      <div class="mh-panel__head" style="padding:10px 14px"><i data-i="hourglass"></i><span class="mh-kicker">Sıradaki olaylar</span></div>
+      <div data-g-queue-list></div>
+    </div>
+  </div>
+
+  <!-- Alt orta: düşman sayacı + can -->
+  <div class="mh-anchor mh-bc" style="gap:10px">
+    <div class="mh-panel mh-enemy" data-g-enemies>
+      <div class="mh-enemy__part is-on"><i data-i="outlaw"></i><div><b data-k="on">0</b><span>Ekranda</span></div></div>
+      <div class="mh-enemy__part is-queue"><i data-i="horse"></i><div><b data-k="queued">0</b><span>Yolda</span></div></div>
+      <div class="mh-bar mh-t-danger"><i class="mh-bar__fill"></i></div>
+    </div>
+    <div class="mh-hpbig mh-only-crop" style="--w:320px">
+      <div class="mh-hpbig__head"><i data-i="heart"></i><b data-g="hp">100</b><span>/ <span data-g="hpMax">100</span></span></div>
+      <div class="mh-bar mh-t-health" data-g-bar="hp" data-critical="25"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div>
+    </div>
+  </div>
+
+  <!-- Sol alt: çekirdekler (oyunun radarının üstünde) -->
+  <div class="mh-anchor mh-bl mh-hide-crop" style="gap:14px">
+    <div class="mh-cores" style="gap:14px;margin-left:12px">
+      <div class="mh-core mh-t-health" data-mh-ring data-g-core="health"><span class="mh-core__fill"></span><i data-i="heart"></i></div>
+      <div class="mh-core mh-t-stamina" data-mh-ring data-g-core="stamina"><span class="mh-core__fill"></span><i data-i="run"></i></div>
+      <div class="mh-core mh-t-special" data-mh-ring data-g-core="deadeye"><span class="mh-core__fill"></span><i data-i="deadeye"></i></div>
+      <div class="mh-core mh-core--sm mh-t-health" data-mh-ring data-g-core="horse" style="margin-left:10px"><span class="mh-core__fill"></span><i data-i="horse"></i></div>
+    </div>
+    <div class="g-radar g-radar--round" style="width:220px;height:220px"><img class="g-demo-only" data-demo-src="../../demo/scenes/minimap-frontier.svg" alt=""></div>
+  </div>
+
+  <!-- Sağ alt: seri + silah -->
+  <div class="mh-anchor mh-br" style="gap:12px">
+    <div class="mh-panel mh-streak mh-hidden mh-hide-vertical" data-g-streak data-decay="8000"><i data-i="streak"></i><span class="mh-streak__count">0</span><span class="mh-streak__label"><b>Seri</b><span class="mh-sub">Leş serisi</span></span><i class="mh-streak__decay"></i></div>
+    <div class="mh-weapon mh-hidden mh-hide-vertical" data-g-weapon>
+      <div class="mh-weapon__name"><span class="mh-weapon__reload" data-g-show="reloading">Dolduruluyor</span><span class="mh-kicker" data-g-weapon-label></span></div>
+      <div class="mh-weapon__main"><span data-g-weapon-art></span><div class="mh-weapon__ammo"><span class="mh-weapon__clip" data-g="clip" data-instant>0</span><span class="mh-weapon__reserve">/ <span data-g="reserve" data-instant>0</span></span></div></div>
+      <div class="mh-pips" data-g-pips="clip" style="width:auto"></div>
+    </div>
+  </div>
+
+  <!-- Baskı nesneleri en üstte: tabela, telgraf, gazete, afiş -->
+  <div class="mh-anchor mh-tc" data-mh="sign" style="top:13%"></div>
+  <div class="mh-anchor mh-tc" data-mh="telegram" style="top:24%"></div>
+  <div class="mh-anchor mh-mc" data-mh="headline"></div>
+  <div class="mh-anchor mh-mc" data-mh="poster"></div>
+</div>
+
+<script src="../../kit/js/mhud-icons.js"></script>
+<script src="../../kit/js/mhud.js"></script>
+<script src="../../kit/js/mhud-social.js"></script>
+<script src="../shared/mhgame.js"></script>
+<script>
+  /* Batı ayarı: yön harfleri, can → çekirdek eşlemesi */
+  MHGame.on('set', function (d) {
+    if ('hp' in d) {
+      MH.vignette('#vignette', d.hp / (MHGame.state.hpMax || 100) * 100);
+      if (!('health' in d)) MHGame.set({ health: { value: d.hp / (MHGame.state.hpMax || 100) * 100, core: (MHGame.state.health && MHGame.state.health.core) || 100 } });
+    }
+  });
+  /* Oyun kendi kenar boşluğunu radar için ayırır: çekirdekler radarın üstünde dursun */
+  if (!MHGame.demo) document.querySelector('.g-radar').style.visibility = 'hidden';
+
+  MHGame.boot({
+    game: 'rdr2', theme: 'oldwest', scene: 'town',
+    defaults: { level: 1, kills: 0, deaths: 0, wins: 0, losses: 0, hp: 100, hpMax: 100, cash: 0, gold: 0, bounty: 0, onScreen: 0, queued: 0, maxEnemies: 16, streak: 0,
+      health: { value: 100, core: 100 }, stamina: { value: 100, core: 100 }, deadeye: { value: 100, core: 100 }, horse: { value: 100, core: 100 } },
+    demo: function (G) {
+      var S = { level: 12, kills: 47, deaths: 2, wins: 3, losses: 1, hp: 86, cash: 212.4, gold: 3, bounty: 45, onScreen: 9, queued: 22, streak: 0,
+        stamina: { value: 70, core: 90 }, deadeye: { value: 100, core: 45 }, horse: { value: 90, core: 80 } };
+      var W = [{ name: 'revolver', label: 'Cattleman revolver', clipMax: 6 }, { name: 'repeater', label: 'Carcano tüfeği', clipMax: 14 }, { name: 'knife', label: 'Av bıçağı', icon: 'knife' }];
+      var w = Object.assign({}, W[0], { clip: 6, reserve: 48 }), Q = [];
+      var NAMES = ['NabeMedia', 'RAPAFI', 'MSK', 'anonim_42', 'serkan_tv', 'mira.live'];
+      var TOWNS = ['Valentine', 'Rhodes', 'Strawberry', 'Blackwater', 'Saint Denis', 'Annesburg'];
+      var GIFTS = [{ name: 'Gül', art: '🌹', tier: 'common', coins: 1, effect: '+1 haydut', effectIcon: 'outlaw', add: 1 },
+        { name: 'Viski', art: '🥃', tier: 'rare', coins: 30, effect: '+25 can', effectIcon: 'heart-plus', heal: 25 },
+        { name: 'Dinamit', art: '🧨', tier: 'epic', coins: 1000, effect: 'Çete baskını', effectIcon: 'dynamite', add: 6 },
+        { name: 'Aslan', art: '🦁', tier: 'legendary', coins: 29999, effect: 'Ödül avcısı geliyor', effectIcon: 'sheriff', add: 1, boss: true }];
+      G.set(S);
+      G.send('game:weapon', w);
+      G.send('game:objective', { kicker: 'Bölüm II · Kanun kaçağı', title: 'Valentine Bankası', timer: '06:40', steps: [{ text: 'Şerifi oyala', done: true }, { text: 'Kasayı dinamitle', active: true, count: '2/3' }, { text: 'Atına bin ve kasabadan kaç' }] });
+      setTimeout(function () { G.send('game:sign', { kicker: 'Hoş geldiniz', title: 'Valentine', sub: 'Nüfus 312' }); }, 500);
+      function kill() {
+        if (S.onScreen <= 0) return;
+        S.onScreen--; S.kills++; S.streak++; S.cash += 2.5; S.bounty += 5;
+        if (S.queued > 0) { S.queued--; S.onScreen++; }
+        G.send('game:kill', { actor: 'Amiral Router', victim: G.pick(['O\'Driscoll', 'Lemoyne Raider', 'Murfree', 'Pinkerton']), weapon: w.clip != null ? w.name : 'knife', headshot: Math.random() < .3, self: true });
+        if (S.onScreen === 0 && S.queued === 0) {
+          S.wins++; S.level++; S.onScreen = 8; S.queued = 16;
+          G.send('game:headline', { date: G.pick(TOWNS) + ' · 12 Ekim 1899', title: 'Çete Dağıtıldı!', deck: 'Amiral Router ve adamları kasabayı haydutlardan temizledi', icon: 'sheriff', body: ['Görgü tanıkları silah seslerinin saatlerce sürdüğünü anlattı.', 'Şerif, ödülün yarın dağıtılacağını duyurdu.'], duration: 5200 });
+        }
+      }
+      function shoot() {
+        if (w.clip == null) return;
+        if (w.clip <= 0) { w.reloading = true; G.send('game:weapon', w); setTimeout(function () { w.clip = w.clipMax; w.reserve -= w.clipMax; w.reloading = false; G.send('game:weapon', w); }, 1600); return; }
+        w.clip--; G.send('game:weapon', w); if (Math.random() < .25) MH.hit('#screen');
+      }
+      function gift() {
+        var g = G.pick(GIFTS), from = G.pick(NAMES);
+        G.send('game:gift', Object.assign({ from: from }, g));
+        if (g.boss) G.send('game:poster', { name: from, crime: 'Ödül avcısı · seni arıyor', reward: '$' + G.int(200, 900), icon: 'sheriff', duration: 4200 });
+        Q.unshift({ icon: g.boss ? 'sheriff' : g.heal ? 'heart-plus' : 'outlaw', text: g.effect + ' · ' + from, tone: g.boss ? 'danger' : g.heal ? 'success' : 'warn', running: true, time: '0:0' + G.int(3, 9) });
+        Q.forEach(function (x, i) { if (i) x.running = false; }); Q = Q.slice(0, 3);
+        if (g.add) S.queued += g.add; if (g.heal) S.hp = Math.min(100, S.hp + g.heal);
+      }
+      function hurt() {
+        S.hp -= G.int(6, 16); G.send('game:damage', { angle: G.int(0, 359) });
+        if (S.hp <= 0) { S.deaths++; S.losses++; S.hp = 100; S.streak = 0; G.send('game:announce', { kicker: 'Toprağa düştün', title: 'Öldün', tone: 'danger' }); }
+      }
+      setInterval(function () {
+        var r = Math.random();
+        if (r < .5) { shoot(); shoot(); kill(); } else if (r < .72) gift(); else if (r < .92) hurt();
+        else G.send('game:telegram', { from: 'Dutch', to: 'Amiral Router', text: G.pick(['Rhodes\'ta iş var STOP Gece yarısı istasyonda buluş', 'Pinkertonlar peşinde STOP Kampı taşıyoruz', 'Tren perşembe geçiyor STOP Hazır ol']), stamp: 'Acil', duration: 4000 });
+        if (Math.random() < .1) G.send('game:social', { kind: G.pick(['join', 'follow', 'share', 'sub']), name: G.pick(NAMES) });
+        if (Math.random() < .06) G.send('game:sign', { kicker: 'Hoş geldiniz', title: G.pick(TOWNS), sub: 'Nüfus ' + G.int(80, 900) });
+        S.stamina = { value: G.int(30, 100), core: S.stamina.core }; S.deadeye = { value: Math.max(0, S.deadeye.value - G.int(0, 6)) || 100, core: S.deadeye.core };
+        G.set(S); G.send('game:queue', Q);
+      }, 1400);
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="tr" class="mh-nui">
+<head>
+<meta charset="utf-8">
+<title>MHud · Genel arena düzeni</title>
+<link rel="stylesheet" href="../../kit/css/mhud.css">
+<link rel="stylesheet" href="../shared/mhgame.css">
+<style>
+  .g-score { display: flex; flex-direction: column; align-items: center; text-shadow: var(--mh-hud-shadow), 0 2px 14px rgb(0 0 0 / .45); }
+  .g-score b { font-family: var(--mh-font-num); font-size: 64px; font-weight: 700; line-height: 1; letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+  .g-score span { font-size: 12px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--mh-text-2); }
+  .g-combo { font-family: var(--mh-font-display); font-weight: var(--mh-display-weight); font-size: 28px; color: var(--mh-accent); text-shadow: 0 0 18px rgb(var(--mh-accent-rgb) / .6); }
+  .g-lives { display: flex; gap: 4px; }
+  .g-lives .mh-i { width: 26px; height: 26px; color: rgb(var(--mh-text-rgb) / .25); filter: drop-shadow(0 1px 2px rgb(0 0 0 / .6)); transition: color var(--mh-dur-2), transform var(--mh-dur-2) var(--mh-spring); }
+  .g-lives .mh-i.on { color: var(--mh-danger); }
+  .mh-screen[data-mh-crop="vertical"] .g-score b { font-size: 48px; }
+</style>
+</head>
+<!--
+  Genel / HTML5 arena düzeni — herhangi bir tarayıcı oyunu ya da OBS tarayıcı kaynağı için.
+  Skor, kombo, can (kalp), dalga, boss, sıralama, meydan okuma, hediye→etki haritası.
+  Veri: game:set { score, combo, lives, livesMax, level, xp, xpMax, wave, deaths, wins, losses, hp, hpMax,
+                   onScreen, queued, maxEnemies, streak, boss (bool), bossName, bossHp, bossHpMax, challenge, challengeMax }
+  Olay: game:leaderboard [{ name, value, self }], game:gift, game:kill, game:social, game:loot, game:levelUp…
+-->
+<body class="mh">
+<div class="mh-screen" id="screen">
+  <div class="mh-vignette" id="vignette"></div>
+
+  <!-- Üst orta: skor + kombo + boss -->
+  <div class="mh-anchor mh-tc" style="gap:6px">
+    <div class="g-score"><b data-g="score">0</b><span>Skor · <em class="g-combo" data-g="comboLabel"></em></span></div>
+    <div class="mh-statbar" style="margin-top:6px">
+      <div class="mh-chip-stat mh-t-accent"><i data-i="xp"></i><b data-g="level">1</b><span>Seviye</span></div>
+      <div class="mh-chip-stat mh-t-info"><i data-i="wave"></i><b data-g="wave">1</b><span>Dalga</span></div>
+      <div class="mh-chip-stat"><i data-i="skull"></i><b data-g="deaths">0</b><span>Ölüm</span></div>
+      <div class="mh-chip-stat mh-t-success"><i data-i="trophy"></i><b><span data-g="wins">0</span><small>–<span data-g="losses">0</span></small></b><span>G / M</span></div>
+    </div>
+    <div class="mh-boss mh-hidden" data-g-show="boss" style="--w:620px;margin-top:10px">
+      <div class="mh-boss__head"><div class="mh-col" style="gap:4px"><span class="mh-kicker mh-kicker--accent">Boss</span><span class="mh-boss__name" data-g="bossName">Boss</span></div><span class="mh-boss__phase"><span class="mh-num"><span data-g="bossHp">0</span> HP</span></span></div>
+      <div class="mh-bar" data-g-bar="bossHp" style="position:relative"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div>
+    </div>
+  </div>
+
+  <!-- Üst sol: oyuncu kartı -->
+  <div class="mh-anchor mh-tl mh-hide-crop">
+    <div class="mh-panel mh-statcard">
+      <div class="mh-statcard__head"><div class="mh-levelring" data-mh-ring data-g-ring="xp"><b data-g="level">1</b><small>SVY</small></div><div class="mh-statcard__name"><b data-g="player">Oyuncu</b><div class="g-lives" data-g-level="lives"><i data-i="heart"></i><i data-i="heart"></i><i data-i="heart"></i><i data-i="heart"></i><i data-i="heart"></i></div></div></div>
+      <div class="mh-statcard__grid">
+        <div class="mh-statcard__cell mh-t-danger"><i data-i="kill"></i><div><b data-g="kills">0</b><span>Leş</span></div></div>
+        <div class="mh-statcard__cell mh-t-gold"><i data-i="coins"></i><div><b data-g="coins" data-compact>0</b><span>Jeton</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Üst sağ: sıralama + bildirimler -->
+  <div class="mh-anchor mh-tr mh-v-offset" style="gap:10px;--mh-v-offset:170px">
+    <div class="mh-panel mh-leader mh-hide-crop" data-g-leaderboard="5" style="--w:300px">
+      <div class="mh-panel__head" style="padding:10px 14px"><i data-i="crown"></i><span class="mh-kicker">En iyi destekçiler</span></div>
+      <div data-g-leaderboard-list></div>
+    </div>
+    <div class="mh-toasts" data-mh="toasts" style="--w:320px"></div>
+  </div>
+
+  <!-- Sol orta: hediyeler + sosyal -->
+  <div class="mh-anchor mh-ml mh-v-offset" style="margin-top:20px;gap:14px;--mh-v-offset:40px">
+    <div class="mh-gifts" data-mh="gifts" style="--w:330px"></div>
+    <div class="mh-social" data-mh="social"></div>
+  </div>
+
+  <!-- Sağ orta: ölüm akışı -->
+  <div class="mh-anchor mh-mr mh-v-offset" style="margin-top:60px;--mh-v-offset:-90px"><div class="mh-feed" data-mh="feed"></div></div>
+
+  <!-- Alt orta: düşman + can -->
+  <div class="mh-anchor mh-bc" style="gap:10px">
+    <div class="mh-panel mh-enemy" data-g-enemies>
+      <div class="mh-enemy__part is-on"><i data-i="enemy"></i><div><b data-k="on">0</b><span>Ekranda</span></div></div>
+      <div class="mh-enemy__part is-queue"><i data-i="queue"></i><div><b data-k="queued">0</b><span>Kuyrukta</span></div></div>
+      <div class="mh-bar mh-t-danger"><i class="mh-bar__fill"></i></div>
+    </div>
+    <div class="mh-hpbig" style="--w:340px">
+      <div class="mh-hpbig__head"><i data-i="heart"></i><b data-g="hp">100</b><span>/ <span data-g="hpMax">100</span></span></div>
+      <div class="mh-bar mh-t-health" data-g-bar="hp" data-critical="25"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div>
+    </div>
+  </div>
+
+  <!-- Sol alt: meydan okuma -->
+  <div class="mh-anchor mh-bl mh-hide-crop">
+    <div class="mh-panel mh-challenge">
+      <div class="mh-challenge__head"><i data-i="target"></i><b data-g="challengeTitle">Meydan okuma</b><span class="mh-challenge__count"><span data-g="challenge">0</span><span> / <span data-g="challengeMax">100</span></span></span></div>
+      <div class="mh-milestones"><div class="mh-bar mh-t-accent" data-g-bar="challenge"><i class="mh-bar__fill"></i></div><i style="left:25%"></i><i style="left:50%"></i><i style="left:75%"></i><i style="left:100%"></i></div>
+    </div>
+  </div>
+
+  <!-- Sağ alt: seri + hediye haritası -->
+  <div class="mh-anchor mh-br" style="gap:12px">
+    <div class="mh-panel mh-streak mh-hidden mh-hide-vertical" data-g-streak data-decay="6000"><i data-i="streak"></i><span class="mh-streak__count">0</span><span class="mh-streak__label"><b>Kombo</b><span class="mh-sub">Puan çarpanı</span></span><i class="mh-streak__decay"></i></div>
+    <div class="mh-giftmap mh-hide-crop" style="--cols:2;width:420px">
+      <div class="mh-giftmap__item is-common"><span class="mh-giftmap__art">🌹</span><b>Gül <small>1</small></b><span>+1 düşman</span></div>
+      <div class="mh-giftmap__item is-rare"><span class="mh-giftmap__art">🍩</span><b>Donut <small>30</small></b><span>+1 can</span></div>
+      <div class="mh-giftmap__item is-epic"><span class="mh-giftmap__art">🚀</span><b>Roket <small>1.000</small></b><span>Ekranı temizle</span></div>
+      <div class="mh-giftmap__item is-legendary"><span class="mh-giftmap__art">🦁</span><b>Aslan <small>29.999</small></b><span>Boss gelir</span></div>
+    </div>
+  </div>
+</div>
+
+<script src="../../kit/js/mhud-icons.js"></script>
+<script src="../../kit/js/mhud.js"></script>
+<script src="../shared/mhgame.js"></script>
+<script>
+  /* Kombo etiketi ve milestone işaretleri */
+  MHGame.on('set', function (d) {
+    var st = MHGame.state;
+    if ('combo' in d) MHGame.set({ comboLabel: d.combo > 1 ? '×' + d.combo : '' });
+    if ('challenge' in d) document.querySelectorAll('.mh-milestones > i').forEach(function (m) { m.classList.toggle('on', parseFloat(m.style.left) / 100 <= st.challenge / (st.challengeMax || 100)); });
+    if ('hp' in d) MH.vignette('#vignette', d.hp / (st.hpMax || 100) * 100);
+  });
+
+  MHGame.boot({
+    game: 'arena', theme: 'neon', scene: 'bright',
+    defaults: { score: 0, combo: 1, lives: 3, level: 1, xp: 0, xpMax: 1000, wave: 1, kills: 0, coins: 0, deaths: 0, wins: 0, losses: 0, hp: 100, hpMax: 100, onScreen: 0, queued: 0, maxEnemies: 25, streak: 0, boss: false, challenge: 0, challengeMax: 100, challengeTitle: '100 leş meydan okuması', player: 'Oyuncu' },
+    demo: function (G) {
+      var S = { player: 'Amiral Router', score: 48250, combo: 1, lives: 3, level: 18, xp: 640, wave: 6, kills: 64, coins: 36540, deaths: 2, wins: 4, losses: 1, hp: 76, onScreen: 12, queued: 30, streak: 0, challenge: 64 };
+      var LB = [{ name: 'NabeMedia', value: 12400 }, { name: 'MSK', value: 8150 }, { name: 'RAPAFI', value: 5020 }, { name: 'anonim_42', value: 2210 }, { name: 'mira.live', value: 980 }];
+      var NAMES = LB.map(function (x) { return x.name; }).concat(['serkan_tv']);
+      var GIFTS = [{ name: 'Gül', art: '🌹', tier: 'common', coins: 1, effect: '+1 düşman', effectIcon: 'enemy', add: 1 },
+        { name: 'Donut', art: '🍩', tier: 'rare', coins: 30, effect: '+1 can', effectIcon: 'heart-plus', life: 1 },
+        { name: 'Roket', art: '🚀', tier: 'epic', coins: 1000, effect: 'Ekran temizlendi', effectIcon: 'bomb', clear: true },
+        { name: 'Aslan', art: '🦁', tier: 'legendary', coins: 29999, effect: 'Boss geldi', effectIcon: 'boss', boss: true }];
+      G.set(S); G.send('game:leaderboard', LB);
+      function kill() {
+        if (S.onScreen <= 0) return;
+        S.onScreen--; S.kills++; S.streak++; S.combo = Math.min(8, 1 + Math.floor(S.streak / 4)); S.score += 50 * S.combo; S.xp += 40; S.challenge = Math.min(100, S.challenge + 1);
+        if (S.queued > 0) { S.queued--; S.onScreen++; }
+        if (S.xp >= 1000) { S.xp -= 1000; S.level++; G.send('game:levelUp', { level: S.level, rewards: [{ icon: 'coins', label: '+500 jeton' }] }); }
+        if (S.boss) { S.bossHp = Math.max(0, S.bossHp - G.int(400, 900)); if (!S.bossHp) { S.boss = false; S.wins++; G.send('game:loot', { tier: 'legendary', icon: 'chest', name: 'Boss sandığı', desc: '+2.500 skor', amount: 1 }); S.score += 2500; } }
+        if (Math.random() < .5) G.send('game:kill', { actor: S.player, victim: G.pick(['Slime', 'İskelet', 'Robot', 'Yarasa']), weapon: G.pick(['sword', 'bow', 'bolt', 'fire-circle']), self: true });
+        if (S.onScreen === 0 && S.queued === 0) { S.wave++; S.onScreen = 10; S.queued = 20; G.send('game:announce', { kicker: 'Dalga temizlendi', title: 'Dalga ' + S.wave }); }
+      }
+      function gift() {
+        var g = G.pick(GIFTS), from = G.pick(NAMES);
+        G.send('game:gift', Object.assign({ from: from }, g));
+        var row = LB.filter(function (x) { return x.name === from; })[0]; if (!row) LB.push(row = { name: from, value: 0 });
+        row.value += g.coins; LB.sort(function (a, b) { return b.value - a.value; }); G.send('game:leaderboard', LB.map(function (x) { return { name: x.name, value: MH.fmt(x.value), icon: 'coin' }; }));
+        if (g.add) S.queued += g.add; if (g.life) S.lives = Math.min(5, S.lives + 1);
+        if (g.clear) { S.kills += S.onScreen; S.score += S.onScreen * 100; S.onScreen = 0; MH.flash('#screen'); }
+        if (g.boss) { S.boss = true; S.bossName = 'Kristal Golem · ' + from; S.bossHp = 12000; S.bossHpMax = 12000; }
+      }
+      function hurt() {
+        S.hp -= G.int(8, 20); G.send('game:damage', { angle: G.int(0, 359) });
+        if (S.hp <= 0) { S.hp = 100; S.lives--; S.deaths++; S.streak = 0; S.combo = 1; if (S.lives <= 0) { S.losses++; S.lives = 3; G.send('game:announce', { kicker: 'Oyun bitti', title: 'Kaybettin', tone: 'danger' }); } }
+      }
+      setInterval(function () {
+        var r = Math.random();
+        if (r < .55) { kill(); kill(); } else if (r < .78) gift(); else hurt();
+        if (Math.random() < .1) G.send('game:social', { kind: G.pick(['join', 'follow', 'share', 'like', 'sub']), name: G.pick(NAMES) });
+        G.set(S);
+      }, 1200);
+    }
+  });
+</script>
+</body>
+</html>

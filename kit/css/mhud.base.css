@@ -1,0 +1,532 @@
+/* ==========================================================================
+   MHud — temel katman
+   NUI sıfırlama, ekran yerleşimi, yardımcı sınıflar ve tüm temel yapı taşları:
+   panel, başlık, ayırıcı, tuş, buton, rozet, bar, halka, form kontrolleri,
+   sekme, liste satırı, tablo, avatar, ipucu, yükleniyor.
+   ========================================================================== */
+
+/* ---------- Kapsam ve sıfırlama ---------- */
+:where(.mh), :where(.mh) *, :where(.mh) *::before, :where(.mh) *::after { box-sizing: border-box; }
+.mh {
+  color: var(--mh-text);
+  font-family: var(--mh-font-ui);
+  font-size: var(--mh-fs-md);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  user-select: none;
+}
+/* :where() sıfır özgüllük verir; bileşen sınıfları her zaman kazanır */
+:where(.mh) :where(button, input, select, textarea) { font: inherit; color: inherit; }
+:where(.mh) :where(button) { cursor: pointer; background: none; border: 0; padding: 0; }
+:where(.mh) :where(img, svg) { display: block; }
+:where(.mh) :where(:focus) { outline: none; }
+:where(.mh) :where(:focus-visible) { outline: 2px solid var(--mh-accent-line); outline-offset: 2px; }
+
+/* NUI gövdesi: oyunun üstünde saydam ve tıklamaları geçirir */
+html.mh-nui, html.mh-nui body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: transparent !important; }
+
+/* ---------- Ekran ve çapalar ---------- */
+.mh-screen { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: var(--mh-z-hud); }
+.mh-catch, .mh-catch * { pointer-events: auto; }
+.mh-anchor { position: absolute; display: flex; flex-direction: column; gap: var(--mh-gap); }
+.mh-tl { top: var(--mh-safe-y); left: var(--mh-safe-x); align-items: flex-start; }
+.mh-tc { top: var(--mh-safe-y); left: 50%; transform: translateX(-50%); align-items: center; }
+.mh-tr { top: var(--mh-safe-y); right: var(--mh-safe-x); align-items: flex-end; }
+.mh-ml { top: 50%; left: var(--mh-safe-x); transform: translateY(-50%); align-items: flex-start; }
+.mh-mc { top: 50%; left: 50%; transform: translate(-50%, -50%); align-items: center; }
+.mh-mr { top: 50%; right: var(--mh-safe-x); transform: translateY(-50%); align-items: flex-end; }
+.mh-bl { bottom: var(--mh-safe-y); left: var(--mh-safe-x); align-items: flex-start; justify-content: flex-end; }
+.mh-bc { bottom: var(--mh-safe-y); left: 50%; transform: translateX(-50%); align-items: center; justify-content: flex-end; }
+.mh-br { bottom: var(--mh-safe-y); right: var(--mh-safe-x); align-items: flex-end; justify-content: flex-end; }
+
+/* ---------- Yardımcılar ---------- */
+.mh-hidden { display: none !important; }
+.mh-flex { display: flex; align-items: center; }
+.mh-col { display: flex; flex-direction: column; }
+.mh-wrap { flex-wrap: wrap; }
+.mh-between { justify-content: space-between; }
+.mh-grow { flex: 1 1 auto; min-width: 0; }
+.mh-gap-1 { gap: 4px; } .mh-gap-2 { gap: 8px; } .mh-gap-3 { gap: 12px; } .mh-gap-4 { gap: 16px; } .mh-gap-5 { gap: 24px; }
+.mh-num { font-family: var(--mh-font-num); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+.mh-mono { font-family: var(--mh-font-mono); font-variant-numeric: tabular-nums; }
+.mh-display { font-family: var(--mh-font-display); font-weight: var(--mh-display-weight); text-transform: var(--mh-display-case); letter-spacing: var(--mh-display-track); }
+.mh-dim  { color: var(--mh-text-2); }
+.mh-mute { color: var(--mh-text-3); }
+.mh-accent-text { color: var(--mh-accent); }
+.mh-ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mh-hud-text { text-shadow: var(--mh-hud-shadow); }
+
+/* ---------- İkon ---------- */
+.mh-i {
+  width: 1.25em; height: 1.25em; flex: none; display: inline-block; vertical-align: -0.25em;
+  fill: currentColor; stroke: none;   /* MDI tabanlı dolgulu ikonlar */
+}
+.mh-i--sm { width: 14px; height: 14px; }
+.mh-i--md { width: 18px; height: 18px; }
+.mh-i--lg { width: 24px; height: 24px; }
+.mh-i--xl { width: 32px; height: 32px; }
+
+/* ==========================================================================
+   PANEL
+   Panel üzerindeki ::before / ::after temalara ayrılmıştır (köşe braketleri,
+   baklava süsleri, neon kenar). Bileşenler bunları kullanmaz.
+   ========================================================================== */
+.mh-panel {
+  position: relative;
+  background: var(--mh-surface);
+  border: var(--mh-border-w) solid var(--mh-line);
+  border-radius: var(--mh-r-panel);
+  box-shadow: var(--mh-panel-shadow);
+  -webkit-backdrop-filter: blur(var(--mh-blur));
+  backdrop-filter: blur(var(--mh-blur));
+}
+.mh-panel--solid { background: var(--mh-surface-solid); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.mh-panel--flat  { box-shadow: none; }
+.mh-panel--ghost { background: transparent; border-color: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.mh-pad   { padding: 14px 16px; }
+.mh-pad-s { padding: 10px 12px; }
+.mh-pad-l { padding: 20px 24px; }
+
+.mh-panel__head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; border-bottom: 1px solid var(--mh-line-soft);
+}
+.mh-panel__foot {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px; border-top: 1px solid var(--mh-line-soft);
+}
+
+/* ---------- Tipografi ---------- */
+.mh-kicker {
+  display: block;
+  font-family: var(--mh-kicker-font);
+  font-size: var(--mh-kicker-size);
+  font-weight: var(--mh-kicker-weight);
+  letter-spacing: var(--mh-kicker-track);
+  text-transform: uppercase;
+  color: var(--mh-text-3);
+  line-height: 1.2;
+}
+.mh-kicker--accent { color: var(--mh-accent); }
+.mh-title {
+  font-family: var(--mh-font-display);
+  font-weight: var(--mh-display-weight);
+  text-transform: var(--mh-display-case);
+  letter-spacing: var(--mh-display-track);
+  font-size: var(--mh-fs-xl);
+  line-height: 1.05;
+  color: var(--mh-text);
+}
+.mh-title--sm { font-size: var(--mh-fs-lg); }
+.mh-title--lg { font-size: var(--mh-fs-2xl); }
+.mh-title--xl { font-size: var(--mh-fs-3xl); }
+.mh-sub { font-size: var(--mh-fs-sm); color: var(--mh-text-2); line-height: 1.45; }
+
+/* ---------- Ayırıcı ---------- */
+.mh-rule {
+  position: relative; height: 1px; border: 0; margin: 0; flex: none;
+  background: var(--mh-line);
+}
+.mh-rule--fade { background: linear-gradient(90deg, transparent, var(--mh-line-strong) 20%, var(--mh-line-strong) 80%, transparent); }
+.mh-rule--accent { background: linear-gradient(90deg, var(--mh-accent-line), transparent); }
+.mh-vrule { width: 1px; align-self: stretch; background: var(--mh-line); flex: none; }
+
+/* ==========================================================================
+   TUŞ KAPAĞI
+   ========================================================================== */
+.mh-key {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  min-width: 24px; height: 24px; padding: 0 7px;
+  font-family: var(--mh-font-ui); font-size: 11px; font-weight: 700; letter-spacing: .02em;
+  color: var(--mh-text);
+  background: linear-gradient(180deg, rgb(255 255 255 / .14), rgb(255 255 255 / .06));
+  border: 1px solid var(--mh-line-strong);
+  border-bottom-width: 2px;
+  border-radius: var(--mh-r-2);
+  text-shadow: none;
+  line-height: 1;
+}
+.mh-key--solid { background: var(--mh-text); color: #0b0d10; border-color: var(--mh-text); border-bottom-color: rgb(var(--mh-text-rgb) / .6); }
+.mh-key--accent { background: var(--mh-accent); color: var(--mh-on-accent); border-color: var(--mh-accent); }
+.mh-key--sm { min-width: 20px; height: 20px; font-size: 10px; padding: 0 5px; }
+.mh-key--lg { min-width: 32px; height: 32px; font-size: 13px; padding: 0 9px; }
+.mh-key--round { border-radius: 50%; padding: 0; width: 24px; }
+.mh-key .mh-i { width: 14px; height: 14px; }
+
+.mh-hint { display: inline-flex; align-items: center; gap: 8px; font-size: var(--mh-fs-sm); color: var(--mh-text-2); }
+.mh-hint b { color: var(--mh-text); font-weight: 600; }
+.mh-hints { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+
+/* ==========================================================================
+   BUTON
+   ========================================================================== */
+.mh-btn {
+  --btn-bg: var(--mh-raise-2);
+  --btn-fg: var(--mh-text);
+  --btn-bd: var(--mh-line);
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 38px;
+  /* harf aralığı son harften sonra da boşluk bırakır; sol dolgu onu dengeler → yazı optik olarak ortada */
+  padding: 0 var(--btn-px, 16px) 0 calc(var(--btn-px, 16px) + var(--btn-ls, .01em));
+  font-family: var(--mh-font-ui); font-size: 13px; font-weight: 600; letter-spacing: var(--btn-ls, .01em); white-space: nowrap; line-height: 1;
+  color: var(--btn-fg); background: var(--btn-bg);
+  border: 1px solid var(--btn-bd); border-radius: var(--mh-r-control);
+  transition: background var(--mh-dur-2) var(--mh-ease), border-color var(--mh-dur-2) var(--mh-ease),
+              color var(--mh-dur-2) var(--mh-ease), transform var(--mh-dur-1) var(--mh-ease), box-shadow var(--mh-dur-2);
+}
+.mh-btn:hover { --btn-bg: var(--mh-raise-3); --btn-bd: var(--mh-line-strong); }
+.mh-btn:active { transform: translateY(1px); }
+.mh-btn .mh-i { width: 16px; height: 16px; }
+.mh-btn--primary { --btn-bg: var(--mh-accent); --btn-fg: var(--mh-on-accent); --btn-bd: var(--mh-accent); box-shadow: var(--mh-accent-glow); }
+.mh-btn--primary:hover { --btn-bg: rgb(var(--mh-accent-rgb) / .86); --btn-bd: var(--mh-accent); }
+.mh-btn--outline { --btn-bg: transparent; --btn-bd: var(--mh-line-strong); }
+.mh-btn--outline:hover { --btn-bg: var(--mh-raise); --btn-bd: var(--mh-accent-line); }
+.mh-btn--ghost { --btn-bg: transparent; --btn-bd: transparent; --btn-fg: var(--mh-text-2); }
+.mh-btn--ghost:hover { --btn-bg: var(--mh-raise); --btn-bd: transparent; --btn-fg: var(--mh-text); }
+.mh-btn--tone { --btn-bg: rgb(var(--tone-rgb) / .14); --btn-bd: rgb(var(--tone-rgb) / .42); --btn-fg: rgb(var(--tone-rgb)); }
+.mh-btn--tone:hover { --btn-bg: rgb(var(--tone-rgb) / .24); --btn-bd: rgb(var(--tone-rgb) / .7); --btn-fg: rgb(var(--tone-rgb)); }
+.mh-btn--sm { --btn-px: 11px; height: 30px; font-size: 12px; gap: 6px; }
+.mh-btn--lg { --btn-px: 22px; height: 46px; font-size: 14px; }
+.mh-btn--block { display: flex; width: 100%; }
+.mh-btn--icon { width: 38px; padding: 0; }
+.mh-btn--sm.mh-btn--icon { width: 30px; }
+.mh-btn[disabled], .mh-btn.is-disabled { opacity: .38; pointer-events: none; }
+.mh-btn .mh-key { margin-left: 2px; height: 20px; min-width: 20px; font-size: 10px; }
+.mh-btn--primary .mh-key { background: rgb(0 0 0 / .14); border-color: rgb(0 0 0 / .2); color: inherit; }
+
+/* Basılı tut butonu: --p 0..1 dolum */
+.mh-btn--hold { overflow: hidden; }
+.mh-btn--hold::after {
+  content: ""; position: absolute; inset: 0; transform-origin: left; transform: scaleX(var(--p, 0));
+  background: rgb(255 255 255 / .18); pointer-events: none;
+}
+
+/* ---------- Segment & çip ---------- */
+.mh-seg { display: inline-flex; padding: 3px; gap: 2px; background: var(--mh-raise); border: 1px solid var(--mh-line-soft); border-radius: calc(var(--mh-r-control) + 2px); }
+.mh-seg > button {
+  height: 28px; padding: 0 12px; border-radius: var(--mh-r-control);
+  font-size: 12px; font-weight: 600; color: var(--mh-text-2);
+  transition: background var(--mh-dur-2), color var(--mh-dur-2);
+}
+.mh-seg > button:hover { color: var(--mh-text); background: var(--mh-raise); }
+.mh-seg > button.is-active { color: var(--mh-on-accent); background: var(--mh-accent); }
+
+.mh-chip {
+  display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px;
+  font-size: 12px; font-weight: 500; color: var(--mh-text-2);
+  border: 1px solid var(--mh-line); border-radius: var(--mh-r-pill); background: transparent;
+  transition: all var(--mh-dur-2);
+}
+.mh-chip:hover { color: var(--mh-text); border-color: var(--mh-line-strong); }
+.mh-chip.is-active { color: var(--mh-accent); border-color: var(--mh-accent-line); background: var(--mh-accent-soft); }
+.mh-chip .mh-i { width: 14px; height: 14px; }
+
+/* ==========================================================================
+   ROZET
+   ========================================================================== */
+.mh-badge {
+  --tone-rgb: var(--mh-text-rgb);
+  display: inline-flex; align-items: center; gap: 5px; flex: none;
+  height: 20px; padding: 0 7px;
+  font-family: var(--mh-font-ui); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: rgb(var(--tone-rgb));
+  background: rgb(var(--tone-rgb) / .12);
+  border: 1px solid rgb(var(--tone-rgb) / .32);
+  border-radius: var(--mh-r-1);
+  line-height: 1; white-space: nowrap;
+}
+.mh-badge--solid { background: rgb(var(--tone-rgb)); color: #0b0d10; border-color: transparent; }
+.mh-badge--pill { border-radius: var(--mh-r-pill); padding: 0 9px; }
+.mh-badge--dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 6px currentColor; }
+.mh-badge--live::before { animation: mh-blink 1.2s steps(2, jump-none) infinite; }
+.mh-badge .mh-i { width: 12px; height: 12px; }
+@keyframes mh-blink { 50% { opacity: .25; } }
+
+/* Sayı balonu */
+.mh-count {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px;
+  font-family: var(--mh-font-num); font-size: 11px; font-weight: 700; color: var(--mh-on-accent);
+  background: var(--mh-accent); border-radius: var(--mh-r-pill);
+}
+
+/* ==========================================================================
+   BAR (can, zırh, ilerleme…)
+   <div class="mh-bar mh-t-health"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div>
+   Değer, JS ile transform: scaleX() olarak yazılır — layout tetiklemez.
+   ========================================================================== */
+.mh-bar {
+  --t: var(--tone-rgb, var(--mh-accent-rgb));
+  --h: 6px;
+  position: relative; height: var(--h); width: 100%;
+  background: var(--mh-track);
+  border-radius: var(--mh-bar-r, 1px);
+  overflow: hidden;
+}
+.mh-bar__fill, .mh-bar__ghost, .mh-bar__gain {
+  position: absolute; inset: 0; transform-origin: left center; transform: scaleX(var(--v, 0));
+  border-radius: inherit;
+}
+.mh-bar__ghost { background: rgb(255 255 255 / .55); transition: transform .55s var(--mh-ease) .35s; }
+.mh-bar__gain  { background: rgb(var(--t) / .35); }
+.mh-bar__fill  {
+  background: rgb(var(--t));
+  box-shadow: 0 0 calc(10px * var(--mh-glow-a)) rgb(var(--t) / .7);
+  transition: transform var(--mh-dur-3) var(--mh-ease), background var(--mh-dur-3);
+}
+.mh-bar--grad .mh-bar__fill { background: linear-gradient(90deg, rgb(var(--t) / .75), rgb(var(--t))); }
+.mh-bar--xs { --h: 3px; } .mh-bar--sm { --h: 4px; } .mh-bar--md { --h: 8px; } .mh-bar--lg { --h: 12px; } .mh-bar--xl { --h: 18px; }
+/* Çentikli bar: --notch = segment sayısı */
+.mh-bar--notch::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(90deg, transparent 0 calc(100% / var(--notch, 10) - 2px), rgb(0 0 0 / .55) calc(100% / var(--notch, 10) - 2px) calc(100% / var(--notch, 10)));
+}
+.mh-bar.is-critical .mh-bar__fill { animation: mh-critical 1s ease-in-out infinite; }
+@keyframes mh-critical { 50% { opacity: .45; } }
+
+/* Barlı satır: etiket + değer + bar */
+.mh-meter { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 6px 10px; }
+.mh-meter__label { font-size: var(--mh-fs-xs); color: var(--mh-text-2); }
+.mh-meter__value { font-family: var(--mh-font-num); font-size: var(--mh-fs-sm); font-weight: 600; font-variant-numeric: tabular-nums; }
+.mh-meter .mh-bar { grid-column: 1 / -1; }
+
+/* ==========================================================================
+   HALKA (ring) — SVG, pathLength=100
+   <svg class="mh-ring" viewBox="0 0 48 48"><circle class="mh-ring__track" cx="24" cy="24" r="20" pathLength="100"/>
+     <circle class="mh-ring__fill" cx="24" cy="24" r="20" pathLength="100"/></svg>
+   ========================================================================== */
+.mh-ring { --t: var(--tone-rgb, var(--mh-accent-rgb)); --sw: 4; width: 48px; height: 48px; transform: rotate(-90deg); overflow: visible; }
+.mh-ring circle { fill: none; stroke-width: var(--sw); }
+.mh-ring__track { stroke: var(--mh-track); }
+.mh-ring__fill {
+  stroke: rgb(var(--t));
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: calc(100 - var(--v, 0) * 100);
+  stroke-linecap: var(--mh-ring-cap, round);
+  filter: drop-shadow(0 0 calc(4px * var(--mh-glow-a)) rgb(var(--t) / .8));
+  transition: stroke-dashoffset var(--mh-dur-3) var(--mh-ease), stroke var(--mh-dur-3);
+}
+
+/* ---------- Segment ölçer (şarjör, can parçaları) ---------- */
+.mh-pips { --t: var(--tone-rgb, var(--mh-accent-rgb)); display: flex; gap: 3px; }
+.mh-pips > i { flex: 1; min-width: 4px; height: 4px; background: var(--mh-track); border-radius: 1px; transition: background var(--mh-dur-2); }
+.mh-pips > i.on { background: rgb(var(--t)); box-shadow: 0 0 calc(6px * var(--mh-glow-a)) rgb(var(--t)); }
+.mh-pips--tall > i { height: 10px; }
+
+/* ==========================================================================
+   FORM KONTROLLERİ
+   ========================================================================== */
+.mh-field { display: flex; flex-direction: column; gap: 6px; }
+.mh-input {
+  height: 38px; width: 100%; padding: 0 12px;
+  color: var(--mh-text); background: rgb(0 0 0 / .28);
+  border: 1px solid var(--mh-line); border-radius: var(--mh-r-control);
+  font-size: 13px; transition: border-color var(--mh-dur-2), background var(--mh-dur-2);
+  user-select: text;
+}
+.mh-input::placeholder { color: var(--mh-text-3); }
+.mh-input:hover { border-color: var(--mh-line-strong); }
+.mh-input:focus { border-color: var(--mh-accent-line); background: rgb(0 0 0 / .4); outline: none; }
+.mh-input-wrap { position: relative; display: flex; align-items: center; }
+.mh-input-wrap > .mh-i { position: absolute; left: 11px; width: 16px; height: 16px; color: var(--mh-text-3); pointer-events: none; }
+.mh-input-wrap > .mh-input { padding-left: 34px; }
+.mh-input-wrap > .mh-key { position: absolute; right: 8px; }
+textarea.mh-input { height: auto; min-height: 76px; padding: 10px 12px; resize: none; line-height: 1.45; }
+
+/* Anahtar (toggle) */
+.mh-toggle { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13px; }
+.mh-toggle input { position: absolute; opacity: 0; pointer-events: none; }
+.mh-toggle__track {
+  position: relative; width: 36px; height: 20px; flex: none;
+  background: var(--mh-raise-2); border: 1px solid var(--mh-line); border-radius: var(--mh-r-pill);
+  transition: background var(--mh-dur-2), border-color var(--mh-dur-2);
+}
+.mh-toggle__track::after {
+  content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: var(--mh-toggle-knob-r, 50%);
+  background: var(--mh-text-2); transition: transform var(--mh-dur-3) var(--mh-spring), background var(--mh-dur-2);
+}
+.mh-toggle input:checked + .mh-toggle__track { background: var(--mh-accent-soft); border-color: var(--mh-accent-line); }
+.mh-toggle input:checked + .mh-toggle__track::after { transform: translateX(16px); background: var(--mh-accent); }
+
+/* Onay kutusu */
+.mh-check { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13px; }
+.mh-check input { position: absolute; opacity: 0; pointer-events: none; }
+.mh-check__box {
+  width: 18px; height: 18px; flex: none; display: grid; place-items: center;
+  border: 1.5px solid var(--mh-line-strong); border-radius: var(--mh-r-1); transition: all var(--mh-dur-2);
+}
+.mh-check__box::after { content: ""; width: 9px; height: 5px; border: 2px solid var(--mh-on-accent); border-top: 0; border-right: 0; transform: rotate(-45deg) translate(1px, -1px) scale(0); transition: transform var(--mh-dur-2) var(--mh-spring); }
+.mh-check input:checked + .mh-check__box { background: var(--mh-accent); border-color: var(--mh-accent); }
+.mh-check input:checked + .mh-check__box::after { transform: rotate(-45deg) translate(1px, -1px) scale(1); }
+.mh-check--radio .mh-check__box { border-radius: 50%; }
+.mh-check--radio .mh-check__box::after { width: 8px; height: 8px; border: 0; border-radius: 50%; background: var(--mh-on-accent); transform: scale(0); }
+.mh-check--radio input:checked + .mh-check__box::after { transform: scale(1); }
+
+/* Kaydırıcı */
+.mh-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 18px; background: transparent; cursor: pointer; --v: 50%; }
+.mh-slider::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--mh-accent) 0 var(--v), var(--mh-track) var(--v) 100%);
+}
+.mh-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px; margin-top: -5px; border-radius: 50%;
+  background: var(--mh-text); border: 3px solid var(--mh-accent); box-shadow: 0 0 0 4px rgb(0 0 0 / .3);
+  transition: transform var(--mh-dur-2);
+}
+.mh-slider:hover::-webkit-slider-thumb { transform: scale(1.15); }
+
+/* Değer seçici (GTA tarzı ‹ değer ›) */
+.mh-stepper { display: inline-flex; align-items: center; gap: 2px; min-width: 150px; justify-content: space-between; }
+.mh-stepper > button { width: 24px; height: 24px; display: grid; place-items: center; color: var(--mh-text-2); border-radius: var(--mh-r-1); transition: color var(--mh-dur-1), background var(--mh-dur-1); }
+.mh-stepper > button:hover { color: var(--mh-accent); background: var(--mh-raise); }
+.mh-stepper > button .mh-i { width: 16px; height: 16px; }
+.mh-stepper__value { flex: 1; text-align: center; font-size: 13px; font-weight: 600; white-space: nowrap; }
+
+/* ==========================================================================
+   SEKMELER
+   ========================================================================== */
+.mh-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--mh-line-soft); }
+.mh-tabs > button {
+  position: relative; display: inline-flex; align-items: center; gap: 8px;
+  height: 42px; padding: 0 14px;
+  font-family: var(--mh-font-display); font-weight: var(--mh-display-weight); text-transform: var(--mh-display-case);
+  font-size: 15px; letter-spacing: .06em; color: var(--mh-text-3);
+  transition: color var(--mh-dur-2);
+}
+.mh-tabs > button:hover { color: var(--mh-text); }
+.mh-tabs > button.is-active { color: var(--mh-text); }
+.mh-tabs > button::after {
+  content: ""; position: absolute; left: 14px; right: 14px; bottom: -1px; height: 2px;
+  background: var(--mh-accent); transform: scaleX(0); transition: transform var(--mh-dur-3) var(--mh-ease);
+  box-shadow: var(--mh-accent-glow);
+}
+.mh-tabs > button.is-active::after { transform: scaleX(1); }
+.mh-tabs > button .mh-count { height: 16px; min-width: 16px; font-size: 10px; }
+
+/* ==========================================================================
+   LİSTE SATIRI (menü öğesi)
+   ========================================================================== */
+.mh-list { display: flex; flex-direction: column; }
+.mh-row {
+  position: relative; display: flex; align-items: center; gap: 12px;
+  min-height: 46px; padding: 8px 14px;
+  border-bottom: 1px solid var(--mh-line-soft);
+  transition: background var(--mh-dur-1);
+  cursor: pointer;
+}
+.mh-row:hover { background: var(--mh-raise); }
+.mh-row::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: var(--mh-accent); transform: scaleY(0); transition: transform var(--mh-dur-2) var(--mh-ease);
+}
+.mh-row.is-active { background: linear-gradient(90deg, var(--mh-accent-soft), transparent 70%); }
+.mh-row.is-active::before { transform: scaleY(1); box-shadow: var(--mh-accent-glow); }
+.mh-row.is-disabled { opacity: .4; pointer-events: none; }
+.mh-row__icon {
+  width: 34px; height: 34px; flex: none; display: grid; place-items: center;
+  background: var(--mh-raise); border: 1px solid var(--mh-line-soft); border-radius: var(--mh-r-2); color: var(--mh-text-2);
+}
+.mh-row.is-active .mh-row__icon { color: var(--mh-accent); border-color: var(--mh-accent-line); }
+.mh-row__icon .mh-i { width: 18px; height: 18px; }
+.mh-row__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.mh-row__title { font-size: 14px; font-weight: 600; color: var(--mh-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mh-row__sub { font-size: 12px; color: var(--mh-text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mh-row__meta { flex: none; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--mh-text-2); }
+.mh-row__price { font-family: var(--mh-font-num); font-weight: 600; font-size: 15px; color: var(--mh-success); font-variant-numeric: tabular-nums; }
+
+/* ==========================================================================
+   TABLO
+   ========================================================================== */
+.mh-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.mh-table th {
+  height: 34px; padding: 0 12px; text-align: left;
+  font-family: var(--mh-kicker-font); font-size: var(--mh-kicker-size); font-weight: var(--mh-kicker-weight);
+  letter-spacing: var(--mh-kicker-track); text-transform: uppercase; color: var(--mh-text-3);
+  border-bottom: 1px solid var(--mh-line);
+}
+.mh-table td { height: 42px; padding: 0 12px; border-bottom: 1px solid var(--mh-line-soft); white-space: nowrap; }
+.mh-table .r { text-align: right; }
+.mh-table .c { text-align: center; }
+.mh-table td.mh-num { font-size: 15px; font-weight: 600; }
+.mh-table tr.is-self td { background: var(--mh-accent-soft); }
+.mh-table tr.is-self td:first-child { box-shadow: inset 2px 0 0 var(--mh-accent); }
+.mh-table tr.is-dead td { opacity: .45; }
+
+/* ==========================================================================
+   AVATAR & SIRA
+   ========================================================================== */
+.mh-avatar {
+  --tone-rgb: var(--mh-text-rgb);
+  position: relative; width: 36px; height: 36px; flex: none; display: grid; place-items: center;
+  font-family: var(--mh-font-display); font-weight: 700; font-size: 16px; text-transform: uppercase;
+  color: rgb(var(--tone-rgb)); background: rgb(var(--tone-rgb) / .14);
+  border: 1px solid rgb(var(--tone-rgb) / .4); border-radius: var(--mh-r-2);
+  overflow: hidden;
+}
+.mh-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.mh-avatar--sm { width: 26px; height: 26px; font-size: 12px; }
+.mh-avatar--lg { width: 52px; height: 52px; font-size: 22px; }
+.mh-avatar--round { border-radius: 50%; }
+.mh-avatar.is-live { box-shadow: 0 0 0 2px rgb(var(--mh-danger-rgb)), 0 0 12px rgb(var(--mh-danger-rgb) / .5); }
+
+.mh-rank {
+  --tone-rgb: var(--mh-text-rgb);
+  width: 24px; height: 24px; flex: none; display: grid; place-items: center;
+  font-family: var(--mh-font-num); font-weight: 700; font-size: 13px;
+  color: rgb(var(--tone-rgb)); background: rgb(var(--tone-rgb) / .1); border-radius: var(--mh-r-1);
+}
+.mh-rank.is-1 { --tone-rgb: var(--mh-gold-rgb);   background: rgb(var(--tone-rgb)); color: #1a1204; }
+.mh-rank.is-2 { --tone-rgb: var(--mh-silver-rgb); background: rgb(var(--tone-rgb)); color: #10141a; }
+.mh-rank.is-3 { --tone-rgb: var(--mh-bronze-rgb); background: rgb(var(--tone-rgb)); color: #1a0e04; }
+
+/* ==========================================================================
+   İPUCU, YÜKLENİYOR, BOŞ DURUM
+   ========================================================================== */
+.mh-tip {
+  position: absolute; z-index: var(--mh-z-top); max-width: 260px; padding: 8px 10px;
+  font-size: 12px; color: var(--mh-text); background: var(--mh-surface-solid);
+  border: 1px solid var(--mh-line-strong); border-radius: var(--mh-r-2); box-shadow: var(--mh-shadow-pop);
+  pointer-events: none;
+}
+.mh-spinner {
+  width: 22px; height: 22px; border-radius: 50%; flex: none;
+  border: 2px solid var(--mh-track); border-top-color: var(--mh-accent);
+  animation: mh-spin .8s linear infinite;
+}
+.mh-spinner--lg { width: 40px; height: 40px; border-width: 3px; }
+@keyframes mh-spin { to { transform: rotate(360deg); } }
+
+.mh-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 28px; color: var(--mh-text-3); text-align: center; font-size: 13px; }
+.mh-empty .mh-i { width: 28px; height: 28px; opacity: .6; }
+
+/* Kaydırma çubuğu (menüler) */
+.mh-scroll { overflow-y: auto; overscroll-behavior: contain; }
+.mh-scroll::-webkit-scrollbar { width: 6px; }
+.mh-scroll::-webkit-scrollbar-track { background: transparent; }
+.mh-scroll::-webkit-scrollbar-thumb { background: var(--mh-raise-3); border-radius: 3px; }
+.mh-scroll::-webkit-scrollbar-thumb:hover { background: var(--mh-accent-line); }
+
+/* ---------- Giriş / çıkış animasyonları (JS sınıf ekler) ---------- */
+.mh-enter-up    { animation: mh-in-up var(--mh-dur-4) var(--mh-ease-out) both; }
+.mh-enter-down  { animation: mh-in-down var(--mh-dur-4) var(--mh-ease-out) both; }
+.mh-enter-left  { animation: mh-in-left var(--mh-dur-4) var(--mh-ease-out) both; }
+.mh-enter-right { animation: mh-in-right var(--mh-dur-4) var(--mh-ease-out) both; }
+.mh-enter-pop   { animation: mh-in-pop var(--mh-dur-4) var(--mh-spring) both; }
+.mh-enter-fade  { animation: mh-in-fade var(--mh-dur-3) var(--mh-ease) both; }
+.mh-leave       { animation: mh-out var(--mh-dur-3) var(--mh-ease-in) both; }
+.mh-leave-right { animation: mh-out-right var(--mh-dur-3) var(--mh-ease-in) both; }
+.mh-leave-left  { animation: mh-out-left var(--mh-dur-3) var(--mh-ease-in) both; }
+@keyframes mh-in-up    { from { opacity: 0; transform: translateY(14px); } }
+@keyframes mh-in-down  { from { opacity: 0; transform: translateY(-14px); } }
+@keyframes mh-in-left  { from { opacity: 0; transform: translateX(-24px); } }
+@keyframes mh-in-right { from { opacity: 0; transform: translateX(24px); } }
+@keyframes mh-in-pop   { from { opacity: 0; transform: scale(.88); } }
+@keyframes mh-in-fade  { from { opacity: 0; } }
+@keyframes mh-out       { to { opacity: 0; transform: scale(.97); } }
+@keyframes mh-out-right { to { opacity: 0; transform: translateX(30px); } }
+@keyframes mh-out-left  { to { opacity: 0; transform: translateX(-30px); } }
+
+/* data-mh-ring ile eklenen halka, kapsayıcısını doldurur */
+[data-mh-ring] { position: relative; }
+[data-mh-ring] > .mh-ring { width: 100%; height: 100%; }

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MHud — FiveM & RedM HUD kiti</title>
+<link rel="stylesheet" href="kit/css/mhud.css">
+<link rel="stylesheet" href="demo/demo.css">
+<style>
+  .demo-mini { display: flex; flex-direction: column; gap: 10px; width: 210px; padding: 14px; font-family: var(--mh-font-ui); color: var(--mh-text); }
+  .demo-mini .mh-title { font-size: 17px; }
+  .demo-feats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .demo-feat { padding: 16px 18px; border-radius: 12px; background: var(--d-panel); box-shadow: 0 0 0 1px var(--d-line); }
+  .demo-feat b { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 6px; }
+  .demo-feat b .mh-i { width: 17px; height: 17px; color: var(--d-accent); }
+  .demo-feat span { font-size: 13px; color: var(--d-text-2); line-height: 1.55; }
+  @media (max-width: 1280px) { .demo-feats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 960px) { .demo-feats { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body class="mh">
+<main class="demo-main">
+  <header class="demo-head">
+    <span class="demo-head__kicker" lang="en">FiveM · RedM · NUI</span>
+    <h1>MHud — temalı oyun arayüzü kiti</h1>
+    <p>Oyun modları için eksiksiz, bağımlılıksız bir HUD kiti: yaşam göstergeleri, silah, araç, binek, görev, takım skoru, bildirimler, yayın hediyeleri, isim etiketleri, menüler ve tam ekranlar. Aynı işaretleme altı temaya bürünür; GTA V'in modern diliyle RDR2'nin western dili ve eski zaman kâğıt-mürekkep dünyası tek kitte buluşur. Kare/dikey yayın kırpması, GTA V · Red Dead · Left 4 Dead · HTML5 için hazır oyun düzenleri ve 350+ ikon içerir.</p>
+  </header>
+
+  <div class="demo-themecards" id="themes">
+    <button class="demo-themecard" data-theme="modern">
+      <div class="demo-themecard__view" style="background-image:url(demo/scenes/city.svg)"><div data-mh-theme="modern" class="demo-mini mh-panel"><span class="mh-kicker mh-kicker--accent">Aktif görev</span><span class="mh-title">Konvoy baskını</span><div class="mh-bar mh-bar--sm" data-v="62"><i class="mh-bar__fill"></i></div><div class="mh-flex mh-gap-2"><span class="mh-key mh-key--sm">E</span><span style="font-size:12px">Etkileşim</span></div></div></div>
+      <div class="demo-themecard__body"><b>Modern</b><span>GTA Online: koyu cam, ince çizgi, amber vurgu.</span></div>
+    </button>
+    <button class="demo-themecard" data-theme="neon">
+      <div class="demo-themecard__view" style="background-image:url(demo/scenes/night.svg)"><div data-mh-theme="neon" class="demo-mini mh-panel"><span class="mh-kicker">Arena</span><span class="mh-title">Dalga 08</span><div class="mh-bar mh-bar--sm" data-v="74"><i class="mh-bar__fill"></i></div><div class="mh-flex mh-gap-2"><span class="mh-key mh-key--sm">E</span><span style="font-size:12px">Hazır</span></div></div></div>
+      <div class="demo-themecard__body"><b>Neon</b><span>Siber arena; yayın ekranında öne çıkar.</span></div>
+    </button>
+    <button class="demo-themecard" data-theme="tactical">
+      <div class="demo-themecard__view" style="background-image:url(demo/scenes/forest.svg)"><div data-mh-theme="tactical" class="demo-mini mh-panel"><span class="mh-kicker">Görev // 03</span><span class="mh-title">Keşif devriyesi</span><div class="mh-bar mh-bar--sm" data-v="48"><i class="mh-bar__fill"></i></div><div class="mh-flex mh-gap-2"><span class="mh-key mh-key--sm">E</span><span style="font-size:12px">İşaretle</span></div></div></div>
+      <div class="demo-themecard__body"><b>Tactical</b><span>Askerî sim: braketler, mono etiketler.</span></div>
+    </button>
+    <button class="demo-themecard" data-theme="frontier">
+      <div class="demo-themecard__view" style="background-image:url(demo/scenes/desert.svg)"><div data-mh-theme="frontier" class="demo-mini mh-panel"><span class="mh-kicker mh-kicker--accent">Kamp sandığı</span><span class="mh-title">Teçhizat</span><div class="mh-bar mh-bar--sm" data-v="80"><i class="mh-bar__fill"></i></div><div class="mh-flex mh-gap-2"><span class="mh-key mh-key--sm">E</span><span style="font-size:13px">Satın al</span></div></div></div>
+      <div class="demo-themecard__body"><b>Frontier</b><span>RDR2 / RedM: serif, altın çizgi, baklava.</span></div>
+    </button>
+    <button class="demo-themecard" data-theme="oldwest">
+      <div class="demo-themecard__view" style="background-image:url(demo/scenes/town.svg)"><div data-mh-theme="oldwest" class="demo-mini mh-panel"><span class="mh-kicker mh-kicker--accent">Bölüm II</span><span class="mh-title" lang="en">Valentine Bankası</span><div class="mh-bar mh-bar--sm" data-v="66"><i class="mh-bar__fill"></i></div><div class="mh-flex mh-gap-2"><span class="mh-key mh-key--sm">E</span><span style="font-size:13px">Kasayı aç</span></div></div></div>
+      <div class="demo-themecard__body"><b>Old West</b><span>Eski zaman: kâğıt, mürekkep, ahşap tabela, damga.</span></div>
+    </button>
+    <button class="demo-themecard" data-theme="minimal">
+      <div class="demo-themecard__view" style="background-image:url(demo/scenes/city.svg)"><div data-mh-theme="minimal" class="demo-mini mh-panel"><span class="mh-kicker">Aktif görev</span><span class="mh-title">Konvoy baskını</span><div class="mh-bar mh-bar--sm" data-v="62"><i class="mh-bar__fill"></i></div><div class="mh-flex mh-gap-2"><span class="mh-key mh-key--sm">E</span><span style="font-size:12px">Etkileşim</span></div></div></div>
+      <div class="demo-themecard__body"><b>Minimal</b><span>Bulanıklıksız, düz: en ucuz render.</span></div>
+    </button>
+  </div>
+  <p class="demo-note" style="margin-top:14px">Bir temaya tıkla: tüm demo sayfaları o temayla açılır. Vurgu rengi ve arka plan sahnesi sol menüden değişir. Tüm sahneler 1920×1080 tuvalde çizilip pencereye sığdırılır — oyundaki gerçek ölçüyü görürsün.</p>
+
+  <div class="demo-h2"><h2>Sayfalar</h2><p>Her kategori ayrı bir demo sayfasında</p></div>
+  <div class="demo-cards">
+    <a class="demo-card" href="pages/hud.html"><span class="demo-card__icon"><i data-i="heart"></i></span><b>Oyuncu HUD</b><span>Can/zırh barları, RDR2 çekirdekleri, ihtiyaçlar, minimap çerçevesi, pusula, para, aranma, silah, hızlı erişim, ekip, ses, XP.</span><small>15 bileşen</small></a>
+    <a class="demo-card" href="pages/vehicle.html"><span class="demo-card__icon"><i data-i="steering"></i></span><b>Araç & binek</b><span>SVG kadranlı hız göstergesi, kompakt hız, yakıt/motor göstergeleri, uyarı lambaları, at paneli ve bağ seviyesi.</span><small>6 bileşen</small></a>
+    <a class="demo-card" href="pages/combat.html"><span class="demo-card__icon"><i data-i="crosshair"></i></span><b>Çatışma</b><span>Nişangâhlar, vuruş işareti, hasar yönü, uçan hasar sayıları, ölüm akışı, boss barı, kilitlenme, düşük can vinyeti.</span><small>8 bileşen</small></a>
+    <a class="demo-card" href="pages/mode.html"><span class="demo-card__icon"><i data-i="flag"></i></span><b>Oyun modu</b><span>Takım skoru, tur, ele geçirme, dalga, skor tablosu; beceri kontrolü, QTE, alan daralması, ganimet, izleyici modu, ko-op hayatta kalma.</span><small>18 bileşen</small></a>
+    <a class="demo-card" href="pages/world.html"><span class="demo-card__icon"><i data-i="pin"></i></span><b>Dünya katmanı</b><span>Havuzlu isim etiketleri, hedef işaretçileri, nesne istemleri, basılı tut halkası, iptal edilebilir ilerleme.</span><small>6 bileşen</small></a>
+    <a class="demo-card" href="pages/broadcast.html"><span class="demo-card__icon"><i data-i="phone"></i></span><b>Yayın düzeni</b><span>Kare ve dikey (TikTok/Reels/Shorts) kırpma; seviye, can, ekrandaki/kuyruktaki düşman, G/M, ölüm, seri, meydan okuma, hediye haritası.</span><small>12 bileşen · MH.crop</small></a>
+    <a class="demo-card" href="pages/games.html"><span class="demo-card__icon"><i data-i="gamepad"></i></span><b>Oyun ön ayarları</b><span>GTA V, Red Dead, Left 4 Dead ve HTML5 için hazır yayın HUD'ları; tek veri protokolü, WebSocket köprüsü.</span><small>4 oyun</small></a>
+    <a class="demo-card" href="pages/western.html"><span class="demo-card__icon"><i data-i="hat"></i></span><b>Eski Batı</b><span>Aranıyor afişi, mürekkep damgası, telgraf, gazete manşeti, hesap defteri, kupon, ahşap tabela.</span><small>7 bileşen · Old West</small></a>
+    <a class="demo-card" href="pages/notifications.html"><span class="demo-card__icon"><i data-i="bell"></i></span><b>Bildirimler</b><span>Toast, duyuru, görev şeridi, seviye atlama, başarım, eşya alma, altyazı, diyalog, sohbet, kayan yazı.</span><small>10 bileşen</small></a>
+    <a class="demo-card" href="pages/stream.html"><span class="demo-card__icon"><i data-i="gift"></i></span><b>Yayın & hediyeler</b><span>Kombolu hediye kartları, büyük hediye anı, izleyici oylaması, beğeni hedefi, destekçiler, olay kuyruğu.</span><small>9 bileşen</small></a>
+    <a class="demo-card" href="pages/menus.html"><span class="demo-card__icon"><i data-i="list"></i></span><b>Menüler</b><span>Menü kabuğu, klasik GTA listesi, mağaza, envanter, ekip, istatistikler (grafikler, başarımlar, maç geçmişi), etkinlikler, ayarlar.</span><small>10 bileşen</small></a>
+    <a class="demo-card" href="pages/social.html"><span class="demo-card__icon"><i data-i="crew"></i></span><b>Ekip & kanallar</b><span>Ekip üyeleri, yardım, para gönderme, rütbe & izinler, davetler, ekip kasası, cephanelik, kanallar (routing bucket), arkadaşlar, gelen kutusu, takas; genel modal sistemi.</span><small>Veri güdümlü menü · 9 bölüm</small></a>
+    <a class="demo-card" href="pages/interaction.html"><span class="demo-card__icon"><i data-i="pointer"></i></span><b>Etkileşim</b><span>SVG dilimli radial menü, silah çarkı, bağlam menüsü, onay ve metin modalları.</span><small>5 bileşen</small></a>
+    <a class="demo-card" href="pages/screens.html"><span class="demo-card__icon"><i data-i="focus"></i></span><b>Tam ekranlar</b><span>Ölüm & yeniden doğma, tur sonu podyumu, sunucu yükleme ekranı.</span><small>3 ekran</small></a>
+    <a class="demo-card" href="pages/components.html"><span class="demo-card__icon"><i data-i="layers"></i></span><b>Temel bileşenler</b><span>Tokenlar, tipografi, buton, tuş, rozet, bar, halka, form kontrolleri, tablo, 350+ ikon (gruplu, aranabilir), silah silüetleri.</span><small>Katalog</small></a>
+  </div>
+
+  <div class="demo-h2"><h2>Hızlı başlangıç</h2><p>Bir NUI sayfasında</p></div>
+<pre class="demo-code"><span class="c">&lt;!-- nui/index.html --&gt;</span>
+&lt;html class=<span class="s">"mh-nui"</span>&gt;
+&lt;link rel=<span class="s">"stylesheet"</span> href=<span class="s">"kit/css/mhud.css"</span>&gt;
+&lt;body class=<span class="s">"mh"</span> data-mh-theme=<span class="s">"oldwest"</span>&gt;   <span class="c">&lt;!-- modern | neon | tactical | frontier | oldwest | minimal --&gt;</span>
+  &lt;div class=<span class="s">"mh-screen"</span>&gt;
+    &lt;div class=<span class="s">"mh-anchor mh-bl"</span>&gt; … çekirdekler, minimap çerçevesi … &lt;/div&gt;
+    &lt;div class=<span class="s">"mh-anchor mh-tr"</span>&gt;&lt;div class=<span class="s">"mh-toasts"</span> data-mh=<span class="s">"toasts"</span>&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;script src=<span class="s">"kit/js/mhud-icons.js"</span>&gt;&lt;/script&gt;
+  &lt;script src=<span class="s">"kit/js/mhud.js"</span>&gt;&lt;/script&gt;
+&lt;/body&gt;
+
+<span class="c">-- client.lua: kit hazır gelen genel çağrıyı dinler</span>
+<span class="k">SendNUIMessage</span>({ action = <span class="s">'mhud'</span>, fn = <span class="s">'toast'</span>, args = { { tone = <span class="s">'success'</span>, title = <span class="s">'Görev tamamlandı'</span> } } })
+<span class="k">exports</span>.mhud:Gift({ from = <span class="s">'NabeMedia'</span>, name = <span class="s">'Aslan'</span>, art = <span class="s">'🦁'</span>, tier = <span class="s">'legendary'</span> })</pre>
+
+  <div class="demo-h2"><h2>Neden böyle?</h2></div>
+  <div class="demo-feats">
+    <div class="demo-feat"><b><i data-i="layers"></i>Tek işaretleme, altı tema</b><span>Temalar yalnızca tokenları ve birkaç süslemeyi ezer. Yeni tema = yeni bir CSS dosyası. İç içe tema da çalışır.</span></div>
+    <div class="demo-feat"><b><i data-i="bolt"></i>Performans önce</b><span>Barlar <code>transform: scaleX</code>, etiketler <code>translate3d</code> ile yazılır; layout tetiklenmez. Minimal tema bulanıklığı tamamen kapatır.</span></div>
+    <div class="demo-feat"><b><i data-i="wifi"></i>Çevrimdışı</b><span>Yazı tipleri ve ikonlar kitin içinde gelir; internet erişimi olmayan sunucuda da birebir aynı görünür.</span></div>
+    <div class="demo-feat"><b><i data-i="world"></i>FiveM + RedM</b><span>Tek resource iki oyunda çalışır; RedM'de varsayılan tema Old West/Frontier, FiveM'de Modern. HTML arayüzü olmayan oyunlarda OBS + WebSocket.</span></div>
+    <div class="demo-feat"><b><i data-i="gift"></i>Yayına hazır</b><span>Hediye kombosu, oylama, hedef çubuğu ve olay kuyruğu TikTok/EulerStream olaylarına doğrudan bağlanır.</span></div>
+    <div class="demo-feat"><b><i data-i="keyboard"></i>Bağımlılık yok</b><span>Saf HTML/CSS ve küçük vanilla JS. Framework, derleme veya paket yöneticisi gerekmez; ikonlar kitin içinde.</span></div>
+  </div>
+</main>
+
+<script src="kit/js/mhud-icons.js"></script>
+<script src="kit/js/mhud.js"></script>
+<script src="demo/demo.js"></script>
+</body>
+</html>

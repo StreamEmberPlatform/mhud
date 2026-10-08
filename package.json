@@ -1,0 +1,44 @@
+{
+  "name": "@streamemberplatform/mhud",
+  "version": "1.2.0",
+  "description": "Themed, dependency-free HUD & UI kit for game modes and live-stream overlays (FiveM, RedM, OBS, HTML5): vitals, weapons, kill feed, gifts, broadcast crop, crew & channel menus, 6 themes.",
+  "keywords": ["hud", "game-ui", "nui", "fivem", "redm", "gta5", "rdr2", "overlay", "obs", "stream", "tiktok", "ui-kit", "css"],
+  "homepage": "https://streamemberplatform.github.io/mhud/",
+  "bugs": { "url": "https://github.com/StreamEmberPlatform/mhud/issues" },
+  "repository": { "type": "git", "url": "git+https://github.com/StreamEmberPlatform/mhud.git" },
+  "license": "MIT",
+  "author": "Stream Ember Platform",
+  "type": "module",
+  "main": "./dist/mhud.js",
+  "style": "./dist/mhud.css",
+  "unpkg": "./dist/mhud.min.js",
+  "jsdelivr": "./dist/mhud.min.js",
+  "exports": {
+    ".": { "style": "./dist/mhud.css", "default": "./dist/mhud.js" },
+    "./css": "./dist/mhud.css",
+    "./css/min": "./dist/mhud.min.css",
+    "./js": "./dist/mhud.js",
+    "./js/min": "./dist/mhud.min.js",
+    "./game": "./dist/mhud-game.js",
+    "./game.css": "./dist/mhud-game.css",
+    "./dist/*": "./dist/*",
+    "./kit/*": "./kit/*",
+    "./games/*": "./games/*",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": true,
+  "files": ["dist", "kit", "games", "LICENSE", "README.md", "CHANGELOG.md"],
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "sync": "node tools/sync-resource.mjs",
+    "icons": "node tools/build-icons.cjs",
+    "serve": "npx --yes serve -l 5173 .",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@mdi/svg": "7.4.47",
+    "esbuild": "^0.28.2"
+  },
+  "publishConfig": { "access": "public" },
+  "engines": { "node": ">=18" }
+}

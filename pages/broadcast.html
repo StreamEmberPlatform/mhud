@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yayın düzeni — MHud</title>
+<link rel="stylesheet" href="../kit/css/mhud.css">
+<link rel="stylesheet" href="../demo/demo.css">
+<style>
+  .bc-wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: start; }
+  .bc-side { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .bc-side__label { font-size: 12px; color: var(--d-text-3); }
+  .bc-phone { position: relative; overflow: hidden; border-radius: 26px; background: #000; box-shadow: 0 0 0 8px #15171c, 0 0 0 9px #2a2d35, 0 30px 60px -20px rgb(0 0 0 / .8); }
+  .bc-phone.is-square { border-radius: 10px; box-shadow: 0 0 0 1px #2a2d35, 0 30px 60px -20px rgb(0 0 0 / .8); }
+  .bc-phone .demo-canvas { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+  .bc-phone__notch { position: absolute; top: 8px; left: 50%; width: 90px; height: 22px; margin-left: -45px; border-radius: 12px; background: #000; z-index: 300; }
+  .bc-phone.is-square .bc-phone__notch { display: none; }
+  .bc-ui { position: absolute; inset: 0; z-index: 250; pointer-events: none; }
+  .bc-ui__btns { position: absolute; right: 8px; bottom: 120px; display: flex; flex-direction: column; gap: 14px; align-items: center; color: #fff; }
+  .bc-ui__btns span { display: flex; flex-direction: column; align-items: center; gap: 2px; font: 600 10px var(--d-font); text-shadow: 0 1px 2px #000; }
+  .bc-ui__btns .mh-i { width: 28px; height: 28px; filter: drop-shadow(0 1px 2px #000); }
+  .bc-ui__cap { position: absolute; left: 12px; right: 60px; bottom: 18px; color: #fff; font: 12px/1.4 var(--d-font); text-shadow: 0 1px 2px #000; }
+  .bc-ui__cap b { display: block; font-size: 13px; margin-bottom: 2px; }
+  .bc-phone:not(.has-ui) .bc-ui { display: none; }
+  .bc-controls { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; margin-bottom: 14px; }
+  .bc-controls label { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--d-text-2); }
+  @media (max-width: 1280px) { .bc-wrap { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body class="mh">
+<main class="demo-main">
+  <header class="demo-head">
+    <span class="demo-head__kicker">Yayın & oyunlar</span>
+    <h1>Yayın düzeni: kare ve dikey kırpma</h1>
+    <p>Yayıncı oyunun orta kısmını kırparak kare (1:1) ya da dikey (9:16, TikTok/Reels/Shorts) yayınlıyorsa kenarlardaki HUD görünmez. <code>MH.crop('vertical', { platform: 'tiktok' })</code> tüm köşe çapalarını yayına giren alana çeker ve platform arayüzünün (sağdaki butonlar, alttaki açıklama) kapattığı bölgeyi boş bırakır. Soldaki sahne oyunun tamamı, sağdaki telefon izleyicinin gördüğü.</p>
+  </header>
+
+  <div class="bc-controls mh-catch">
+    <label>Kırpma <div class="mh-seg" id="crop-seg"><button data-v="wide">16:9</button><button data-v="square">Kare 1:1</button><button data-v="vertical" class="is-active">Dikey 9:16</button><button data-v="portrait">4:5</button></div></label>
+    <label>Platform <div class="mh-seg" id="pf-seg"><button data-v="none">Yok</button><button data-v="tiktok" class="is-active">TikTok</button><button data-v="reels">Reels</button><button data-v="shorts">Shorts</button></div></label>
+    <label class="mh-toggle"><input type="checkbox" id="guide" checked><span class="mh-toggle__track"></span>Kırpma kılavuzu</label>
+  </div>
+
+  <div class="bc-wrap">
+    <div class="demo-stage-wrap">
+      <div class="demo-stage" id="stage"><div class="mh-screen" id="screen-a"></div></div>
+      <div class="demo-actions">
+        <span class="demo-actions__label">Dene:</span>
+        <button class="demo-btn" data-act="spawn"><i data-i="enemy"></i>Düşman doğur</button>
+        <button class="demo-btn" data-act="kill"><i data-i="skull-crossbones"></i>Öldür</button>
+        <button class="demo-btn" data-act="hurt"><i data-i="heart-broken"></i>Hasar</button>
+        <button class="demo-btn" data-act="die"><i data-i="skull"></i>Öl</button>
+        <button class="demo-btn" data-act="win"><i data-i="trophy"></i>Kazan</button>
+        <button class="demo-btn" data-act="lose"><i data-i="loss"></i>Kaybet</button>
+        <button class="demo-btn" data-act="gift"><i data-i="gift"></i>Hediye</button>
+      </div>
+    </div>
+    <div class="bc-side">
+      <div class="bc-phone has-ui" id="phone">
+        <span class="bc-phone__notch"></span>
+        <div class="demo-canvas mh" id="canvas-b" style="width:1920px;height:1080px"><div class="demo-scene"></div><div class="mh-screen" id="screen-b"></div></div>
+        <div class="bc-ui"><div class="bc-ui__btns"><span><i data-i="heart"></i>48 B</span><span><i data-i="chat"></i>1.204</span><span><i data-i="share"></i>Paylaş</span><span><i data-i="gift"></i>Hediye</span></div>
+          <div class="bc-ui__cap"><b>@amiralrouter</b>Hediyeler düşman çağırıyor! 🌹 = 1 düşman · 🦁 = boss</div></div>
+      </div>
+      <span class="bc-side__label" id="phone-label">İzleyicinin gördüğü · 9:16</span>
+    </div>
+  </div>
+
+  <div class="demo-h2"><h2>Yayıncı istatistikleri</h2><p>Telefonda bile okunacak büyük değerler · <code>MH.stat(kök, 'deaths', 3)</code></p></div>
+  <div class="demo-specs">
+    <div class="demo-spec demo-spec--2">
+      <div class="demo-spec__view mh-col" style="--h:240px;gap:12px">
+        <div class="mh-statbar">
+          <div class="mh-chip-stat mh-t-accent"><i data-i="xp"></i><b>24</b><span>Seviye</span></div>
+          <div class="mh-chip-stat mh-t-health"><i data-i="heart"></i><b>82<small>/100</small></b><span>Can</span></div>
+          <div class="mh-chip-stat mh-t-danger"><i data-i="enemy"></i><b>14</b><span>Ekranda</span></div>
+          <div class="mh-chip-stat mh-t-warn"><i data-i="queue"></i><b>37</b><span>Kuyrukta</span></div>
+          <div class="mh-chip-stat mh-t-success"><i data-i="trophy"></i><b>5<small>–2</small></b><span>G / M</span></div>
+          <div class="mh-chip-stat"><i data-i="skull"></i><b>3</b><span>Ölüm</span></div>
+        </div>
+        <div class="mh-statbar mh-statbar--lg">
+          <div class="mh-chip-stat mh-t-danger"><i data-i="enemy"></i><b>14</b><span>Ekranda</span></div>
+          <div class="mh-chip-stat mh-t-warn"><i data-i="queue"></i><b>37</b><span>Kuyrukta</span></div>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>İstatistik şeridi</b><span><code>.mh-statbar</code> › <code>.mh-chip-stat.mh-t-*</code>; <code>--lg</code> büyük, <code>--stack</code> dikey. Kırpmada kendiliğinden alt satıra kayar.</span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view" style="--h:240px">
+        <div class="mh-panel mh-statcard">
+          <div class="mh-statcard__head"><div class="mh-levelring" data-mh-ring style="--v:.64"><b>24</b><small>SVY</small></div><div class="mh-statcard__name"><b>Amiral Router</b><span class="mh-sub">Hayatta kal · Dalga 8</span></div></div>
+          <div class="mh-statcard__grid">
+            <div class="mh-statcard__cell mh-t-danger"><i data-i="enemy"></i><div><b>14</b><span>Ekranda</span></div></div>
+            <div class="mh-statcard__cell mh-t-warn"><i data-i="queue"></i><div><b>37</b><span>Kuyrukta</span></div></div>
+            <div class="mh-statcard__cell mh-t-success"><i data-i="trophy"></i><div><b>5–2</b><span>G / M</span></div></div>
+            <div class="mh-statcard__cell"><i data-i="skull"></i><div><b>3</b><span>Ölüm</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>Yayıncı kartı</b><span><code>.mh-statcard</code> — dikey yayın için tek bakışta seviye ve sayılar.</span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view mh-col" style="--h:220px;gap:14px">
+        <div class="mh-panel mh-enemy" id="enemy-spec">
+          <div class="mh-enemy__part is-on"><i data-i="enemy"></i><div><b data-k="on">14</b><span>Ekranda</span></div></div>
+          <div class="mh-enemy__part is-queue"><i data-i="hourglass"></i><div><b data-k="queued">37</b><span>Kuyrukta</span></div></div>
+          <div class="mh-bar mh-t-danger" data-v="70"><i class="mh-bar__fill"></i></div>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>Düşman sayacı</b><span><code>MH.enemies(el, { onScreen, queued, max })</code> — sınıra yaklaşınca <code>is-swarm</code> ile kırmızı parlar.</span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view mh-col" style="--h:220px;gap:14px">
+        <div class="mh-panel mh-wl"><div class="mh-wl__score"><b class="w">5</b><i>–</i><b class="l">2</b></div><div class="mh-wl__meta"><span class="mh-kicker">Son maçlar</span><div class="mh-history" data-history="WWLWWLW"></div></div></div>
+      </div>
+      <div class="demo-spec__meta"><b>Galibiyet / mağlubiyet</b><span><code>.mh-wl</code> + <code>MH.history(el, 'WWLW')</code> (G/M/B kareleri; son maç çerçeveli).</span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view mh-col" style="--h:220px;gap:18px">
+        <div class="mh-hpbig"><div class="mh-hpbig__head"><i data-i="heart"></i><b>82</b><span>/ 100</span></div><div class="mh-bar mh-t-health" data-v="82"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div></div>
+        <div class="mh-flex mh-gap-3"><div class="mh-levelring" data-mh-ring style="--v:.3;--size:64px"><b>12</b><small>SVY</small></div><div class="mh-levelring mh-t-legendary" data-mh-ring style="--v:.85"><b>48</b></div></div>
+      </div>
+      <div class="demo-spec__meta"><b>Büyük can & seviye halkası</b><span><code>.mh-hpbig</code>, <code>.mh-levelring</code> (<code>--size</code>)</span></div>
+    </div>
+  </div>
+
+  <div class="demo-h2"><h2>Etkileşimli oyun parçaları</h2><p>Seri, meydan okuma, hediye haritası, sosyal akış</p></div>
+  <div class="demo-specs">
+    <div class="demo-spec">
+      <div class="demo-spec__view mh-col" style="--h:220px;gap:14px">
+        <div class="mh-panel mh-streak" id="streak"><i data-i="streak"></i><span class="mh-streak__count">5</span><span class="mh-streak__label"><b>Öldürme serisi</b><span class="mh-sub">+%25 para</span></span><i class="mh-streak__decay"></i></div>
+      </div>
+      <div class="demo-spec__meta"><b>Öldürme serisi</b><span><code>MH.streak(el, 6, { decay: 6000, hot: 5 })</code> — alt çizgi sönünce seri biter. <a href="#" onclick="window.__st=(window.__st||5)+1;MH.streak('#streak',window.__st);return false">+1</a></span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view" style="--h:220px">
+        <div class="mh-panel mh-challenge">
+          <div class="mh-challenge__head"><i data-i="target"></i><b>100 öldürme meydan okuması</b><span class="mh-challenge__count">64<span> / 100</span></span></div>
+          <div class="mh-milestones"><div class="mh-bar mh-t-accent" data-v="64"><i class="mh-bar__fill"></i></div><i class="on" style="left:25%"></i><i class="on" style="left:50%"></i><i style="left:75%"></i><i style="left:100%"></i></div>
+          <div class="mh-challenge__rewards"><span>25 · $500</span><span>50 · Zırh</span><span>75 · Boss</span><span>100 · 🏆</span></div>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>Meydan okuma</b><span><code>.mh-challenge</code> — ara hedeflerle (baklava işaretleri) ilerleme.</span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view" style="--h:220px">
+        <div class="mh-social">
+          <div class="mh-social__item mh-t-info"><i data-i="user-plus"></i><b>RAPAFI</b><span>katıldı</span></div>
+          <div class="mh-social__item mh-t-danger"><i data-i="follow"></i><b>MSK</b><span>takip etti</span></div>
+          <div class="mh-social__item mh-t-success"><i data-i="share"></i><b>NabeMedia</b><span>paylaştı</span></div>
+          <div class="mh-social__item mh-t-gold"><i data-i="star"></i><b>anonim_42</b><span>abone oldu</span></div>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>Sosyal akış</b><span><code>MH.social({ kind: 'join' | 'follow' | 'share' | 'like' | 'sub', name })</code></span></div>
+    </div>
+    <div class="demo-spec demo-spec--3">
+      <div class="demo-spec__view" style="--h:200px">
+        <div class="mh-giftmap" style="--cols:4;width:100%">
+          <div class="mh-giftmap__item is-common"><span class="mh-giftmap__art">🌹</span><b>Gül <small>1</small></b><span>1 düşman doğar</span></div>
+          <div class="mh-giftmap__item is-rare"><span class="mh-giftmap__art">🍩</span><b>Donut <small>30</small></b><span>+20 can</span></div>
+          <div class="mh-giftmap__item is-rare"><span class="mh-giftmap__art"><i data-i="bomb"></i></span><b>Bomba <small>99</small></b><span>Ekrandakiler patlar</span></div>
+          <div class="mh-giftmap__item is-epic"><span class="mh-giftmap__art">🚀</span><b>Roket <small>1.000</small></b><span>Hava saldırısı</span></div>
+          <div class="mh-giftmap__item is-epic"><span class="mh-giftmap__art"><i data-i="zombie"></i></span><b>Sürü <small>2.000</small></b><span>+25 zombi kuyruğa</span></div>
+          <div class="mh-giftmap__item is-legendary"><span class="mh-giftmap__art">🦁</span><b>Aslan <small>29.999</small></b><span>Boss gelir</span></div>
+          <div class="mh-giftmap__item is-legendary"><span class="mh-giftmap__art">🪐</span><b>Evren <small>44.999</small></b><span>Herkese 2× para</span></div>
+          <div class="mh-giftmap__item"><span class="mh-giftmap__art"><i data-i="like"></i></span><b>1.000 beğeni</b><span>Cephane yağmuru</span></div>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>Hediye → etki haritası</b><span><code>.mh-giftmap</code> (<code>--cols</code>) — izleyiciye hangi hediyenin ne yaptığını gösterir. Dikey yayında 2 sütuna düşür.</span></div>
+    </div>
+  </div>
+</main>
+
+<script src="../kit/js/mhud-icons.js"></script>
+<script src="../kit/js/mhud.js"></script>
+<script src="../demo/demo.js"></script>
+<script>
+  /* ---- Yayıncı HUD şablonu (iki kopyaya basılır: tam sahne + telefon) ---- */
+  function hud(id) {
+    return '' +
+    '<div class="mh-anchor mh-tc" style="gap:10px">' +
+      '<div class="mh-statbar" style="justify-content:center">' +
+        '<div class="mh-chip-stat mh-t-accent"><i data-i="xp"></i><b data-stat="level">24</b><span>Seviye</span></div>' +
+        '<div class="mh-chip-stat mh-t-health"><i data-i="heart"></i><b><span data-stat="hp">82</span><small>/100</small></b><span>Can</span></div>' +
+        '<div class="mh-chip-stat mh-t-success"><i data-i="trophy"></i><b><span data-stat="w">5</span><small>–<span data-stat="l">2</span></small></b><span>G / M</span></div>' +
+        '<div class="mh-chip-stat"><i data-i="skull"></i><b data-stat="deaths">3</b><span>Ölüm</span></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="mh-anchor mh-ml" style="margin-top:-60px"><div class="mh-gifts" data-mh="gifts" id="gifts-' + id + '" style="--w:330px"></div></div>' +
+    '<div class="mh-anchor mh-mr" style="margin-top:-60px"><div class="mh-feed" id="feed-' + id + '"></div></div>' +
+    '<div class="mh-anchor mh-mc"><div class="mh-crosshair"><i></i><i></i><i></i><i></i><b></b></div></div>' +
+    '<div class="mh-anchor mh-bc" style="gap:10px">' +
+      '<div class="mh-panel mh-enemy" id="enemy-' + id + '">' +
+        '<div class="mh-enemy__part is-on"><i data-i="enemy"></i><div><b data-k="on">14</b><span>Ekranda</span></div></div>' +
+        '<div class="mh-enemy__part is-queue"><i data-i="hourglass"></i><div><b data-k="queued">37</b><span>Kuyrukta</span></div></div>' +
+        '<div class="mh-bar mh-t-danger"><i class="mh-bar__fill"></i></div>' +
+      '</div>' +
+      '<div class="mh-hpbig" style="--w:300px"><div class="mh-hpbig__head"><i data-i="heart"></i><b data-stat="hp">82</b><span>/ 100</span></div><div class="mh-bar mh-t-health" id="hp-' + id + '" data-critical="25"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div></div>' +
+    '</div>' +
+    '<div class="mh-anchor mh-bl mh-hide-crop"><div class="mh-giftmap" style="--cols:2;width:420px">' +
+      '<div class="mh-giftmap__item is-common"><span class="mh-giftmap__art">🌹</span><b>Gül <small>1</small></b><span>1 düşman</span></div>' +
+      '<div class="mh-giftmap__item is-rare"><span class="mh-giftmap__art">🍩</span><b>Donut <small>30</small></b><span>+20 can</span></div>' +
+      '<div class="mh-giftmap__item is-epic"><span class="mh-giftmap__art">🚀</span><b>Roket <small>1.000</small></b><span>Hava saldırısı</span></div>' +
+      '<div class="mh-giftmap__item is-legendary"><span class="mh-giftmap__art">🦁</span><b>Aslan <small>29.999</small></b><span>Boss gelir</span></div>' +
+    '</div></div>' +
+    '<div class="mh-anchor mh-br mh-hide-vertical"><div class="mh-panel mh-streak mh-hidden" id="streak-' + id + '"><i data-i="streak"></i><span class="mh-streak__count">0</span><span class="mh-streak__label"><b>Seri</b><span class="mh-sub">+%25 para</span></span><i class="mh-streak__decay"></i></div></div>';
+  }
+  var A = document.getElementById('screen-a'), B = document.getElementById('screen-b');
+  A.innerHTML = hud('a'); B.innerHTML = hud('b');
+  MH.mount(A); MH.mount(B);
+
+  /* ---- Kırpma ---- */
+  var mode = 'vertical', platform = 'tiktok', guide = true;
+  var RATIO = { wide: 16 / 9, square: 1, vertical: 9 / 16, portrait: 4 / 5 };
+  function layout() {
+    MH.crop(mode, { target: A, platform: platform, guide: guide });
+    MH.crop(mode, { target: B, platform: platform });
+    var H = 560, k = H / 1080, cw = 1080 * RATIO[mode], inset = (1920 - Math.min(1920, cw)) / 2;
+    var ph = document.getElementById('phone'), cv = document.getElementById('canvas-b');
+    ph.style.width = Math.min(1920, cw) * k + 'px'; ph.style.height = H + 'px';
+    cv.style.transform = 'scale(' + k + ') translateX(' + (-inset) + 'px)';
+    ph.classList.toggle('is-square', mode !== 'vertical' && mode !== 'portrait');
+    ph.classList.toggle('has-ui', platform !== 'none' && (mode === 'vertical' || mode === 'portrait'));
+    document.getElementById('phone-label').textContent = 'İzleyicinin gördüğü · ' + { wide: '16:9', square: '1:1', vertical: '9:16', portrait: '4:5' }[mode];
+  }
+  function seg(id, fn) {
+    var g = document.getElementById(id);
+    g.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; g.querySelectorAll('button').forEach(function (x) { x.classList.toggle('is-active', x === b); }); fn(b.getAttribute('data-v')); layout(); });
+  }
+  seg('crop-seg', function (v) { mode = v; });
+  seg('pf-seg', function (v) { platform = v; });
+  document.getElementById('guide').addEventListener('change', function () { guide = this.checked; layout(); });
+  setTimeout(layout, 30);
+
+  /* ---- Demo durumu ---- */
+  var S = { on: 14, queued: 37, max: 20, hp: 82, deaths: 3, w: 5, l: 2, streak: 0, level: 24 };
+  function sync() {
+    ['a', 'b'].forEach(function (id) {
+      MH.enemies('#enemy-' + id, { onScreen: S.on, queued: S.queued, max: S.max });
+      MH.bar('#hp-' + id, S.hp, { critical: 25 });
+    });
+    MH.stat(document, 'hp', S.hp); MH.stat(document, 'deaths', S.deaths); MH.stat(document, 'w', S.w); MH.stat(document, 'l', S.l); MH.stat(document, 'level', S.level);
+  }
+  var GIFTS = [{ from: 'anonim_42', name: 'Gül', art: '🌹', tier: 'common', coins: 1, effect: '1 düşman doğdu', effectIcon: 'enemy', add: 1 },
+    { from: 'RAPAFI', name: 'Donut', art: '🍩', tier: 'rare', coins: 30, effect: '+20 can', effectIcon: 'heart-plus', heal: 20 },
+    { from: 'NabeMedia', name: 'Aslan', art: '🦁', tier: 'legendary', coins: 29999, effect: 'Boss geldi', effectIcon: 'skull', add: 5 }];
+  var ACT = {
+    spawn: function () { S.queued += 5; sync(); },
+    kill: function () {
+      if (S.on <= 0) return; S.on--; if (S.queued > 0) { S.queued--; S.on++; } S.streak++;
+      ['a', 'b'].forEach(function (id) { MH.kill({ target: '#feed-' + id, actor: 'Amiral Router', victim: Demo.pick(['Zombi', 'Haydut', 'Bandit #12']), weapon: 'carbine', self: true }); MH.streak('#streak-' + id, S.streak); });
+      sync();
+    },
+    hurt: function () { S.hp = Math.max(1, S.hp - 15); sync(); },
+    die: function () { S.deaths++; S.hp = 100; S.streak = 0; sync(); },
+    win: function () { S.w++; S.level++; sync(); },
+    lose: function () { S.l++; sync(); },
+    gift: function () {
+      var g = Demo.pick(GIFTS), k = g.from + g.name;
+      MH.gift(Object.assign({}, g, { target: '#gifts-a', key: k + 'a' })); MH.gift(Object.assign({}, g, { target: '#gifts-b', key: k + 'b' }));
+      if (g.add) S.queued += g.add; if (g.heal) S.hp = Math.min(100, S.hp + g.heal); sync();
+    }
+  };
+  Demo.on('[data-act]', function (e) { ACT[e.currentTarget.getAttribute('data-act')](); });
+  sync();
+  setInterval(function () { if (Math.random() < .6) ACT.kill(); if (Math.random() < .35) ACT.gift(); if (Math.random() < .2) ACT.hurt(); }, 1400);
+  setInterval(function () { MH.enemies('#enemy-spec', { onScreen: Math.round(Demo.rand(4, 20)), queued: Math.round(Demo.rand(10, 60)), max: 20 }); }, 1800);
+</script>
+</body>
+</html>

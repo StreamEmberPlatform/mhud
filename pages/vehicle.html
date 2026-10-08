@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Araç & Binek — MHud</title>
+<link rel="stylesheet" href="../kit/css/mhud.css">
+<link rel="stylesheet" href="../demo/demo.css">
+<style>
+  :is([data-mh-theme="frontier"], [data-mh-theme="oldwest"]) .demo-not-frontier { display: none !important; }
+  body:not([data-mh-theme="frontier"]):not([data-mh-theme="oldwest"]) .demo-only-frontier { display: none !important; }
+</style>
+</head>
+<body class="mh">
+<main class="demo-main">
+  <header class="demo-head">
+    <span class="demo-head__kicker">Oyun içi HUD</span>
+    <h1>Araç & binek</h1>
+    <p>Hız göstergesi kadranı ilk <code>MH.speedo()</code> çağrısında SVG olarak çizilir; sonraki çağrılar yalnızca yay uzunluğunu değiştirir. RedM için at paneli çekirdekler ve bağ seviyesiyle gelir.</p>
+  </header>
+
+  <div class="demo-stage-wrap">
+    <div class="demo-stage" id="stage">
+      <div class="mh-screen" id="screen">
+        <div class="mh-anchor mh-bl">
+          <div class="mh-flex mh-gap-4" style="align-items:flex-end">
+            <div class="mh-minimap">
+              <div class="mh-minimap__map"><img class="demo-map" alt="" src="../demo/scenes/minimap.svg" style="width:100%;height:100%;object-fit:cover;transform:scale(1.6) rotate(-20deg)"></div>
+              <div class="mh-minimap__frame"></div><span class="mh-minimap__north">K</span>
+              <div class="mh-minimap__zone"><span>Del Perro Otoyolu</span><span class="mh-num">22:07</span></div>
+            </div>
+            <div class="mh-location" style="padding-bottom:6px">
+              <span class="mh-location__dir">B</span><span class="mh-vrule"></span>
+              <div><div class="mh-location__street">Del Perro Otoyolu</div><div class="mh-location__zone">Pacific Bluffs · Los Santos</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Araç -->
+        <div class="mh-anchor mh-br demo-not-frontier" style="gap:14px">
+          <div class="mh-flex mh-gap-5" style="align-items:flex-end">
+            <div class="mh-col mh-gap-3" style="padding-bottom:14px;align-items:flex-end">
+              <div class="mh-col" style="align-items:flex-end;gap:2px">
+                <span class="mh-kicker" lang="en">Pegassi Zentorno</span>
+                <span class="mh-badge mh-num" style="font-size:11px;letter-spacing:.12em">34 KTR 2026</span>
+              </div>
+              <div class="mh-gauges">
+                <div class="mh-gauge"><i data-i="gas"></i><div class="mh-bar mh-t-warn" id="fuel" data-v="64" data-critical="15"><i class="mh-bar__fill"></i></div></div>
+                <div class="mh-gauge"><i data-i="engine"></i><div class="mh-bar mh-t-success" id="engine" data-v="88" data-critical="25"><i class="mh-bar__fill"></i></div></div>
+                <div class="mh-gauge"><i data-i="flame"></i><div class="mh-bar mh-t-info" id="nitro" data-v="40"><i class="mh-bar__fill"></i></div></div>
+              </div>
+            </div>
+            <div class="mh-speedo" id="speedo">
+              <svg class="mh-speedo__dial" viewBox="0 0 240 240"></svg>
+              <div class="mh-speedo__center">
+                <span class="mh-speedo__value" id="speed">0</span>
+                <span class="mh-speedo__unit">KM/S</span>
+                <span class="mh-speedo__gear" id="gear">1</span>
+              </div>
+              <div class="mh-speedo__lamps">
+                <span class="mh-lamp on" title="Emniyet kemeri" id="belt"><i data-i="user-shield"></i></span>
+                <span class="mh-lamp on" title="Farlar" style="--tone-rgb:var(--mh-info-rgb)"><i data-i="sun"></i></span>
+                <span class="mh-lamp" title="Hız sabitleyici" id="cruise"><i data-i="gauge"></i></span>
+                <span class="mh-lamp" title="Kilit"><i data-i="lock"></i></span>
+                <span class="mh-lamp" title="Motor arızası" id="check"><i data-i="engine"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- At (RedM) -->
+        <div class="mh-anchor mh-br demo-only-frontier" style="gap:16px">
+          <div class="mh-mount">
+            <div class="mh-mount__info" style="align-items:flex-end">
+              <span class="mh-kicker">Binek</span>
+              <span class="mh-mount__name">Boadicea</span>
+              <div class="mh-mount__bond" title="Bağ seviyesi 3/4"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+            </div>
+            <div class="mh-cores">
+              <div class="mh-core mh-t-health" data-mh-ring id="horse-hp" style="--v:.9;--core:.8"><span class="mh-core__fill"></span><i data-i="horse"></i></div>
+              <div class="mh-core mh-t-stamina" data-mh-ring id="horse-st" style="--v:.7;--core:.6"><span class="mh-core__fill"></span><i data-i="horseshoe"></i></div>
+            </div>
+          </div>
+          <div class="mh-hints"><span class="mh-hint"><span class="mh-key">X</span>Sür</span><span class="mh-hint"><span class="mh-key">H</span>Okşa</span><span class="mh-hint"><span class="mh-key">B</span>Heybe</span></div>
+        </div>
+
+        <div class="mh-anchor mh-tr">
+          <div class="mh-prompt">
+            <div class="mh-prompt__row"><span class="mh-key">F</span>Araçtan in</div>
+            <div class="mh-prompt__row"><span class="mh-key">B</span>Emniyet kemeri<small id="belt-state">Takılı</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-actions">
+      <span class="demo-actions__label">Dene:</span>
+      <button class="demo-btn" data-act="gas"><i data-i="arrow-up"></i>Gaza bas</button>
+      <button class="demo-btn" data-act="brake"><i data-i="arrow-down"></i>Fren</button>
+      <button class="demo-btn" data-act="belt"><i data-i="user-shield"></i>Kemer</button>
+      <button class="demo-btn" data-act="cruise"><i data-i="gauge"></i>Sabitleyici</button>
+      <button class="demo-btn" data-act="crash"><i data-i="alert"></i>Çarp</button>
+      <span class="demo-sep"></span>
+      <button class="demo-btn" onclick="Demo.fullscreen('#stage')"><i data-i="focus"></i>Tam ekran</button>
+    </div>
+  </div>
+
+  <div class="demo-h2"><h2>Hız göstergeleri</h2><p>Kadran, sayısal ve göstergeler</p></div>
+  <div class="demo-specs">
+    <div class="demo-spec">
+      <div class="demo-spec__view" style="--h:300px">
+        <div class="mh-speedo" id="speedo2">
+          <svg class="mh-speedo__dial" viewBox="0 0 240 240"></svg>
+          <div class="mh-speedo__center"><span class="mh-speedo__value">148</span><span class="mh-speedo__unit">KM/S</span><span class="mh-speedo__gear">4</span></div>
+          <div class="mh-speedo__lamps"><span class="mh-lamp on"><i data-i="user-shield"></i></span><span class="mh-lamp is-warn"><i data-i="engine"></i></span><span class="mh-lamp"><i data-i="gauge"></i></span></div>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>Kadran</b><span><code>MH.speedo(el, { speed, max, rpm, gear })</code>. Kırmızı bölge son %15'tir; iç ince yay devir göstergesidir.</span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view" style="--h:300px">
+        <div class="mh-speed-mini">
+          <span class="mh-speed-mini__value">87</span>
+          <div class="mh-speed-mini__side">
+            <span class="mh-speedo__gear" style="margin:0;width:26px;height:26px;font-size:15px">3</span>
+            <span class="mh-speed-mini__unit">KM/S</span>
+            <div class="mh-pips mh-t-success" data-pips="11/14"></div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>Sayısal (kompakt)</b><span><code>.mh-speed-mini</code> — devir parçaları son üç segmentte kırmızıya döner. Motosiklet ve tekne için ideal.</span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view mh-col" style="--h:300px;gap:24px">
+        <div class="mh-gauges" style="width:200px">
+          <div class="mh-gauge is-low"><i data-i="gas"></i><div class="mh-bar mh-t-danger is-critical" data-v="9"><i class="mh-bar__fill"></i></div></div>
+          <div class="mh-gauge"><i data-i="engine"></i><div class="mh-bar mh-t-warn" data-v="46"><i class="mh-bar__fill"></i></div></div>
+          <div class="mh-gauge"><i data-i="battery"></i><div class="mh-bar mh-t-success" data-v="92"><i class="mh-bar__fill"></i></div></div>
+        </div>
+        <div class="mh-flex mh-gap-2">
+          <span class="mh-lamp on"><i data-i="user-shield"></i></span>
+          <span class="mh-lamp on" style="--tone-rgb:var(--mh-info-rgb)"><i data-i="sun"></i></span>
+          <span class="mh-lamp on" style="--tone-rgb:var(--mh-warn-rgb)"><i data-i="gauge"></i></span>
+          <span class="mh-lamp is-warn"><i data-i="alert"></i></span>
+          <span class="mh-lamp"><i data-i="lock"></i></span>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>Göstergeler & lambalar</b><span><code>.mh-gauge</code> yakıt/motor/akü; <code>.mh-lamp.on</code> ya da <code>.is-warn</code> (yanıp söner).</span></div>
+    </div>
+  </div>
+
+  <div class="demo-h2"><h2>Binek (RedM)</h2><p>At canı, dayanıklılığı ve bağ seviyesi</p></div>
+  <div class="demo-specs">
+    <div class="demo-spec demo-spec--2">
+      <div class="demo-spec__view" style="--h:220px;gap:60px">
+        <div class="mh-mount">
+          <div class="mh-cores">
+            <div class="mh-core mh-t-health" data-mh-ring style="--v:.95;--core:.9"><span class="mh-core__fill"></span><i data-i="horse"></i></div>
+            <div class="mh-core mh-t-stamina" data-mh-ring style="--v:.4;--core:.7"><span class="mh-core__fill"></span><i data-i="horseshoe"></i></div>
+          </div>
+          <div class="mh-mount__info"><span class="mh-kicker">Arap safkanı</span><span class="mh-mount__name">Rachel</span><div class="mh-mount__bond"><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+        </div>
+        <div class="mh-mount">
+          <div class="mh-cores"><div class="mh-core mh-core--sm mh-t-health is-low" data-mh-ring style="--v:.14;--core:.2"><span class="mh-core__fill"></span><i data-i="horse"></i></div></div>
+          <div class="mh-mount__info"><span class="mh-mount__name" style="font-size:15px">Yaralı</span><span class="mh-sub">Tonik gerekli</span></div>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>At paneli</b><span><code>.mh-mount</code> = çekirdekler + isim + <code>.mh-mount__bond</code> (baklava şeklinde 4 kademe).</span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view" style="--h:220px">
+        <div class="mh-prompt">
+          <div class="mh-prompt__row"><span class="mh-key">E</span>Ata bin</div>
+          <div class="mh-prompt__row"><span class="mh-key">H</span>Okşa<small>Bağ +1</small></div>
+          <div class="mh-prompt__row is-disabled"><span class="mh-key">G</span>Fırçala<small>Fırça yok</small></div>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>Binek istemleri</b><span><code>.mh-prompt__row</code> + <code>is-disabled</code> ve sağ açıklama.</span></div>
+    </div>
+  </div>
+</main>
+
+<script src="../kit/js/mhud-icons.js"></script>
+<script src="../kit/js/mhud.js"></script>
+<script src="../demo/demo.js"></script>
+<script>
+  var V = { speed: 0, target: 64, rpm: .2, gear: 1, belt: true, cruise: false, fuel: 64, engine: 88 };
+  MH.speedo('#speedo', { max: 280, speed: 0 });
+  MH.speedo('#speedo2', { max: 240, speed: 148, rpm: .72, gear: 4 });
+  setInterval(function () {
+    if (!V.cruise) V.target = Math.max(0, V.target - .15);
+    V.speed += (V.target - V.speed) * .06;
+    V.gear = V.speed < 2 ? 'N' : Math.min(6, 1 + Math.floor(V.speed / 42));
+    var band = V.gear === 'N' ? 0 : (V.speed % 42) / 42;
+    V.rpm = V.gear === 'N' ? .12 : .25 + band * .7;
+    MH.speedo('#speedo', { speed: V.speed, rpm: V.rpm, gear: V.gear });
+    V.fuel = Math.max(0, V.fuel - V.speed / 40000); MH.bar('#fuel', V.fuel, { critical: 15 });
+  }, 33);
+  var A = {
+    gas: function () { V.target = Math.min(280, V.target + 60); },
+    brake: function () { V.target = 0; V.cruise = false; document.getElementById('cruise').classList.remove('on'); },
+    belt: function () { V.belt = !V.belt; document.getElementById('belt').classList.toggle('on', V.belt); document.getElementById('belt-state').textContent = V.belt ? 'Takılı' : 'Takılı değil';
+      if (!V.belt) MH.toast({ tone: 'warn', icon: 'user-shield', title: 'Emniyet kemeri çözüldü', text: 'Kaza anında araçtan fırlayabilirsin.', duration: 3000 }); },
+    cruise: function () { V.cruise = !V.cruise; document.getElementById('cruise').classList.toggle('on', V.cruise); },
+    crash: function () { V.engine = Math.max(5, V.engine - 30); MH.bar('#engine', V.engine, { critical: 25 }); V.target = 0; V.speed *= .3; MH.flash('#screen', true); document.getElementById('check').classList.toggle('is-warn', V.engine < 40); }
+  };
+  Demo.on('[data-act]', function (e) { A[e.currentTarget.getAttribute('data-act')](); });
+  var th = document.createElement('div'); th.className = 'mh-anchor mh-tc'; th.style.top = '120px';
+  th.innerHTML = '<div class="mh-toasts" data-mh="toasts"></div>'; document.getElementById('screen').appendChild(th);
+</script>
+</body>
+</html>

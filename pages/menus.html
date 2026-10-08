@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menüler — MHud</title>
+<link rel="stylesheet" href="../kit/css/mhud.css">
+<link rel="stylesheet" href="../demo/demo.css">
+</head>
+<body class="mh">
+<main class="demo-main">
+  <header class="demo-head">
+    <span class="demo-head__kicker">Arayüz</span>
+    <h1>Menüler</h1>
+    <p>Tam sayfa menü kabuğu (gezinme · liste · önizleme), GTA'nın klasik etkileşim menüsü, mağaza kartları, envanter ızgarası ve ayar satırları. Sahnede sol menüden bölüm değiştir; klasik menü ok tuşları ve Enter ile çalışır.</p>
+  </header>
+
+  <div class="demo-stage-wrap">
+    <div class="demo-stage" id="stage">
+      <div class="mh-screen" id="screen">
+        <div class="mh-layer mh-catch">
+          <div class="mh-scrim mh-scrim--soft"></div>
+          <section class="mh-panel mh-menu" style="--w:1240px;--h:760px">
+            <header class="mh-menu__head">
+              <div class="mh-menu__title"><span class="mh-kicker mh-kicker--accent"><span lang="en">Event Fabric</span> · Oyuncu menüsü</span><span class="mh-title">Etkileşim menüsü</span></div>
+              <div class="mh-menu__stats">
+                <div class="mh-stat"><span class="mh-kicker">Nakit</span><b style="color:var(--mh-success)">$12.480</b></div>
+                <div class="mh-stat"><span class="mh-kicker">Ekip kasası</span><b>$86.300</b></div>
+              </div>
+              <div class="mh-player"><span class="mh-avatar mh-t-accent">AR</span><div><div class="mh-player__name">Amiral Router</div><div class="mh-player__sub">Mavi takım · Seviye 42</div></div></div>
+            </header>
+
+            <div class="mh-menu__body" id="menu-body">
+              <nav class="mh-menu__nav" id="nav">
+                <div class="mh-nav__group"><span class="mh-kicker">Oyuncu</span></div>
+                <button class="mh-nav__item is-active" data-sec="inv"><i data-i="backpack"></i>Envanter<small>14</small></button>
+                <button class="mh-nav__item" data-sec="shop"><i data-i="store"></i>Mağaza<span class="mh-count">3</span></button>
+                <button class="mh-nav__item" data-sec="grid"><i data-i="grid"></i>Çanta</button>
+                <button class="mh-nav__item" data-sec="team"><i data-i="users"></i>Ekip<small>4</small></button>
+                <div class="mh-nav__group"><span class="mh-kicker">Sunucu</span></div>
+                <button class="mh-nav__item" data-sec="events"><i data-i="flag"></i>Etkinlikler<span class="mh-count">2</span></button>
+                <button class="mh-nav__item" data-sec="stats"><i data-i="stats"></i>İstatistik</button>
+                <div class="mh-nav__group"><span class="mh-kicker">Sistem</span></div>
+                <button class="mh-nav__item" data-sec="set"><i data-i="settings"></i>Ayarlar</button>
+                <button class="mh-nav__item" data-sec="quit"><i data-i="door"></i>Çıkış</button>
+              </nav>
+
+              <!-- Envanter (liste) -->
+              <div class="mh-menu__main" data-panel="inv">
+                <div class="mh-menu__toolbar">
+                  <div class="mh-input-wrap" style="width:300px"><i data-i="search"></i><input class="mh-input" placeholder="Envanterde ara…"></div>
+                  <div class="mh-seg" data-mh-seg="filter" style="margin-left:auto"><button class="is-active">Hepsi</button><button>Silah</button><button>Sarf</button><button>Eşya</button></div>
+                </div>
+                <div class="mh-list mh-scroll" style="flex:1" id="inv-list">
+                  <div class="mh-row is-active" data-item="carbine"><span class="mh-row__icon"><i data-i="rifle"></i></span><div class="mh-row__main"><span class="mh-row__title">Karabina tüfeği</span><span class="mh-row__sub">Otomatik tüfek · 180 mermi</span></div><div class="mh-row__meta"><span class="mh-badge mh-t-info">Kuşanıldı</span><span class="mh-num">×1</span></div></div>
+                  <div class="mh-row" data-item="shotgun"><span class="mh-row__icon"><i data-i="shotgun"></i></span><div class="mh-row__main"><span class="mh-row__title">Pompalı tüfek</span><span class="mh-row__sub">Yakın mesafe · 42 fişek</span></div><div class="mh-row__meta"><span class="mh-num">×1</span></div></div>
+                  <div class="mh-row" data-item="medkit"><span class="mh-row__icon"><i data-i="first-aid"></i></span><div class="mh-row__main"><span class="mh-row__title">İlk yardım çantası</span><span class="mh-row__sub">Canı tamamen doldurur</span></div><div class="mh-row__meta"><span class="mh-num">×3</span></div></div>
+                  <div class="mh-row" data-item="vest"><span class="mh-row__icon"><i data-i="shield"></i></span><div class="mh-row__main"><span class="mh-row__title">Ağır yelek</span><span class="mh-row__sub">Zırh +100</span></div><div class="mh-row__meta"><span class="mh-badge mh-t-legendary">Destansı</span><span class="mh-num">×2</span></div></div>
+                  <div class="mh-row" data-item="grenade"><span class="mh-row__icon"><i data-i="grenade"></i></span><div class="mh-row__main"><span class="mh-row__title">El bombası</span><span class="mh-row__sub">Alan hasarı · 6 m yarıçap</span></div><div class="mh-row__meta"><span class="mh-num">×4</span></div></div>
+                  <div class="mh-row" data-item="lantern"><span class="mh-row__icon"><i data-i="lantern"></i></span><div class="mh-row__main"><span class="mh-row__title">Fener</span><span class="mh-row__sub">Pil %72</span></div><div class="mh-row__meta"><span class="mh-num">×1</span></div></div>
+                  <div class="mh-row" data-item="food"><span class="mh-row__icon"><i data-i="meat"></i></span><div class="mh-row__main"><span class="mh-row__title">Konserve</span><span class="mh-row__sub">Açlık giderir</span></div><div class="mh-row__meta"><span class="mh-num">×7</span></div></div>
+                  <div class="mh-row is-disabled"><span class="mh-row__icon"><i data-i="lock"></i></span><div class="mh-row__main"><span class="mh-row__title">Kilitli yuva</span><span class="mh-row__sub">Seviye 45'te açılır</span></div></div>
+                </div>
+              </div>
+
+              <!-- Mağaza (kartlar) -->
+              <div class="mh-menu__main mh-hidden" data-panel="shop">
+                <div class="mh-tabs" data-mh-tabs="" style="padding:0 16px"><button class="is-active">Silahlar</button><button>Askerler</button><button>Atlar</button><button>Erzak</button></div>
+                <div class="mh-cards mh-scroll" style="flex:1">
+                  <div class="mh-card is-legendary is-active"><div class="mh-card__art"><span class="mh-badge mh-t-gold">Efsanevi</span><i data-weapon="sniper"></i></div><div class="mh-card__body"><span class="mh-card__name">Keskin nişancı tüfeği</span><span class="mh-card__sub">Tek atış · 900 m</span></div><div class="mh-card__foot"><span class="mh-price">$24.500</span><span class="mh-key mh-key--sm">E</span></div></div>
+                  <div class="mh-card is-epic"><div class="mh-card__art"><span class="mh-badge mh-t-legendary">Destansı</span><i data-weapon="carbine"></i></div><div class="mh-card__body"><span class="mh-card__name">Karabina Mk II</span><span class="mh-card__sub">Otomatik · 30'luk şarjör</span></div><div class="mh-card__foot"><span class="mh-price"><s>$14.000</s>$11.200</span></div></div>
+                  <div class="mh-card is-rare is-owned"><div class="mh-card__art"><span class="mh-badge mh-t-info">Nadir</span><i data-weapon="shotgun"></i></div><div class="mh-card__body"><span class="mh-card__name">Pompalı tüfek</span><span class="mh-card__sub">Yakın mesafe</span></div><div class="mh-card__foot"><span class="mh-price">Sahipsin</span><i data-i="circle-check" style="color:var(--mh-success)"></i></div></div>
+                  <div class="mh-card is-common"><div class="mh-card__art"><i data-weapon="pistol"></i></div><div class="mh-card__body"><span class="mh-card__name">Tabanca</span><span class="mh-card__sub">Yarı otomatik</span></div><div class="mh-card__foot"><span class="mh-price">$1.200</span></div></div>
+                  <div class="mh-card is-rare"><div class="mh-card__art"><i data-weapon="smg"></i></div><div class="mh-card__body"><span class="mh-card__name">Hafif makineli</span><span class="mh-card__sub">Yüksek atış hızı</span></div><div class="mh-card__foot"><span class="mh-price">$6.800</span></div></div>
+                  <div class="mh-card is-epic is-locked"><div class="mh-card__art"><span class="mh-badge"><i data-i="lock"></i>Svy 50</span><i data-weapon="repeater"></i></div><div class="mh-card__body"><span class="mh-card__name">Kollu tüfek</span><span class="mh-card__sub">Seviye 50 gerekir</span></div><div class="mh-card__foot"><span class="mh-price is-locked">$9.900</span></div></div>
+                </div>
+              </div>
+
+              <!-- Çanta (ızgara) -->
+              <div class="mh-menu__main mh-hidden" data-panel="grid" style="padding:18px;gap:16px">
+                <div class="mh-weight">
+                  <div class="mh-weight__row"><span class="mh-kicker">Taşıma kapasitesi</span><span><b>18,4</b> / 30 kg</span></div>
+                  <div class="mh-bar mh-bar--md mh-t-warn" data-v="61"><i class="mh-bar__fill"></i></div>
+                </div>
+                <div class="mh-inv" style="--cols:7">
+                  <div class="mh-cell is-active"><span class="mh-cell__key">1</span><i data-i="rifle"></i><span class="mh-cell__count">1</span></div>
+                  <div class="mh-cell is-rare"><span class="mh-cell__key">2</span><i data-i="pistol"></i><span class="mh-cell__count">1</span></div>
+                  <div class="mh-cell"><span class="mh-cell__key">3</span><i data-i="knife"></i></div>
+                  <div class="mh-cell is-epic"><span class="mh-cell__key">4</span><i data-i="grenade"></i><span class="mh-cell__count">4</span></div>
+                  <div class="mh-cell"><span class="mh-cell__key">5</span><i data-i="first-aid"></i><span class="mh-cell__count">3</span></div>
+                  <div class="mh-cell"><i data-i="bullets"></i><span class="mh-cell__count">180</span></div>
+                  <div class="mh-cell is-legendary"><i data-i="diamond"></i><span class="mh-cell__count">2</span></div>
+                  <div class="mh-cell"><i data-i="meat"></i><span class="mh-cell__count">7</span></div>
+                  <div class="mh-cell"><i data-i="bottle"></i><span class="mh-cell__count">4</span></div>
+                  <div class="mh-cell"><i data-i="key"></i><span class="mh-cell__count">3</span></div>
+                  <div class="mh-cell"><i data-i="phone"></i></div>
+                  <div class="mh-cell is-rare"><i data-i="lantern"></i></div>
+                  <div class="mh-cell"><i data-i="tool"></i></div>
+                  <div class="mh-cell"><i data-i="cash"></i><span class="mh-cell__count">$450</span></div>
+                  <div class="mh-cell is-empty"></div><div class="mh-cell is-empty"></div><div class="mh-cell is-empty"></div><div class="mh-cell is-empty"></div><div class="mh-cell is-empty"></div><div class="mh-cell is-empty"></div><div class="mh-cell is-empty"></div>
+                </div>
+              </div>
+
+              <!-- Ekip -->
+              <div class="mh-menu__main mh-hidden" data-panel="team">
+                <div class="mh-menu__toolbar"><span class="mh-title mh-title--sm">Gece Kuşları</span><span class="mh-badge mh-t-accent" style="margin-left:8px">4 / 6</span><a class="mh-btn mh-btn--sm mh-btn--ghost" style="margin-left:auto" href="social.html"><i data-i="crew"></i>Tam ekip menüsü</a><button class="mh-btn mh-btn--sm mh-btn--primary" id="team-invite"><i data-i="user-plus"></i>Davet et</button></div>
+                <table class="mh-table">
+                  <thead><tr><th>Üye</th><th>Rol</th><th class="r">Katkı</th><th class="r">Durum</th></tr></thead>
+                  <tbody>
+                    <tr class="is-self"><td><div class="mh-flex mh-gap-2"><span class="mh-avatar mh-avatar--sm mh-t-team1">AR</span>Amiral Router</div></td><td><span class="mh-badge mh-t-gold"><i data-i="crown-f"></i>Lider</span></td><td class="r mh-num">$42.000</td><td class="r"><span class="mh-badge mh-badge--dot mh-t-success">Çevrimiçi</span></td></tr>
+                    <tr><td><div class="mh-flex mh-gap-2"><span class="mh-avatar mh-avatar--sm mh-t-team1">NM</span>NabeMedia</div></td><td><span class="mh-badge">Üye</span></td><td class="r mh-num">$28.300</td><td class="r"><span class="mh-badge mh-badge--dot mh-t-success">Çevrimiçi</span></td></tr>
+                    <tr><td><div class="mh-flex mh-gap-2"><span class="mh-avatar mh-avatar--sm mh-t-team1">MS</span>MSK</div></td><td><span class="mh-badge">Üye</span></td><td class="r mh-num">$12.000</td><td class="r"><span class="mh-badge mh-badge--dot mh-t-warn">AFK</span></td></tr>
+                    <tr class="is-dead"><td><div class="mh-flex mh-gap-2"><span class="mh-avatar mh-avatar--sm">RA</span>RAPAFI</div></td><td><span class="mh-badge">Üye</span></td><td class="r mh-num">$4.000</td><td class="r"><span class="mh-badge mh-badge--dot">Çevrimdışı</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Ayarlar -->
+              <div class="mh-menu__main mh-hidden mh-scroll" data-panel="set">
+                <div class="mh-setting"><div class="mh-setting__text"><b>HUD ölçeği</b><span>Tüm arayüzü büyütür veya küçültür</span></div><div class="mh-setting__control"><input type="range" class="mh-slider" min="70" max="130" value="100" data-out="#o1" data-unit="%"><b id="o1">100%</b></div></div>
+                <div class="mh-setting"><div class="mh-setting__text"><b>Tema</b><span>HUD görünüm dili</span></div><div class="mh-setting__control"><div class="mh-stepper" data-mh-stepper="Modern|Neon|Tactical|Frontier|Minimal" data-index="0" id="theme-step"></div></div></div>
+                <div class="mh-setting"><div class="mh-setting__text"><b>İsim etiketleri</b><span>Kafa üstü isim ve can barları</span></div><div class="mh-setting__control"><label class="mh-toggle"><input type="checkbox" checked><span class="mh-toggle__track"></span></label></div></div>
+                <div class="mh-setting"><div class="mh-setting__text"><b>Etiket mesafesi</b><span>Daha kısa mesafe = daha yüksek FPS</span></div><div class="mh-setting__control"><input type="range" class="mh-slider" min="20" max="150" value="60" data-out="#o2" data-unit=" m"><b id="o2">60 m</b></div></div>
+                <div class="mh-setting"><div class="mh-setting__text"><b>Hasar sayıları</b><span>Vuruşta uçan sayıları göster</span></div><div class="mh-setting__control"><label class="mh-toggle"><input type="checkbox"><span class="mh-toggle__track"></span></label></div></div>
+                <div class="mh-setting"><div class="mh-setting__text"><b>Nişangâh</b><span>Biçim</span></div><div class="mh-setting__control"><div class="mh-seg" data-mh-seg="cross"><button class="is-active">Artı</button><button>Nokta</button><button>Halka</button></div></div></div>
+                <div class="mh-setting"><div class="mh-setting__text"><b>Bildirim konumu</b><span>Toast'ların çıktığı köşe</span></div><div class="mh-setting__control"><label class="mh-check mh-check--radio"><input type="radio" name="pos" checked><span class="mh-check__box"></span>Sağ üst</label><label class="mh-check mh-check--radio"><input type="radio" name="pos"><span class="mh-check__box"></span>Sol üst</label></div></div>
+              </div>
+
+
+              <!-- İstatistik -->
+              <div class="mh-menu__main mh-hidden mh-scroll" data-panel="stats">
+                <div class="mh-stats">
+                  <div class="mh-flex mh-between">
+                    <div><span class="mh-kicker mh-kicker--accent">Sezon 3 · son 30 gün</span><div class="mh-title" style="margin-top:4px">Oyuncu istatistikleri</div></div>
+                    <div class="mh-seg" data-mh-seg="range"><button>7 gün</button><button class="is-active">30 gün</button><button>Tümü</button></div>
+                  </div>
+                  <div class="mh-stats__tiles">
+                    <div class="mh-tile mh-t-danger"><i data-i="skull-crossbones"></i><span class="mh-kicker">Öldürme</span><b>1.284</b><span class="mh-delta is-up">▲ %12</span><div class="mh-tile__spark mh-t-danger" data-spark="12,18,15,22,19,28,24,31,27,35,30,38" data-w="160" data-h="30"></div></div>
+                    <div class="mh-tile mh-t-info"><i data-i="crosshair"></i><span class="mh-kicker">Ö/A oranı</span><b>2,41</b><span class="mh-delta is-up">▲ 0,18</span><div class="mh-tile__spark mh-t-info" data-spark="1.8,2.1,1.9,2.3,2.2,2.0,2.4,2.5,2.3,2.6,2.4,2.41" data-w="160" data-h="30"></div></div>
+                    <div class="mh-tile mh-t-success"><i data-i="trophy"></i><span class="mh-kicker">Galibiyet</span><b>%64</b><span class="mh-delta is-down">▼ %3</span><div class="mh-tile__spark mh-t-success" data-spark="70,68,72,66,69,65,67,63,66,62,65,64" data-w="160" data-h="30"></div></div>
+                    <div class="mh-tile mh-t-warn"><i data-i="clock"></i><span class="mh-kicker">Oynama</span><b>86 sa</b><small>Ortalama 2,9 sa / gün</small><div class="mh-tile__spark mh-t-warn" data-spark="2,3,1,4,3,2,5,3,4,2,3,3" data-w="160" data-h="30"></div></div>
+                  </div>
+                  <div class="mh-stats__grid">
+                    <div class="mh-box">
+                      <div class="mh-box__head"><span class="mh-kicker">Son 14 maç · öldürme</span><span class="mh-badge mh-t-accent">En iyi: 31</span></div>
+                      <div class="mh-columns" id="kills-col" style="--h:120px"></div>
+                    </div>
+                    <div class="mh-box">
+                      <div class="mh-box__head"><span class="mh-kicker">Galibiyet / mağlubiyet</span></div>
+                      <div class="mh-flex mh-gap-4">
+                        <div class="mh-donut mh-t-success" data-mh-ring style="--v:.64"><div><b>%64</b><span>Galibiyet</span></div></div>
+                        <div class="mh-col mh-gap-2">
+                          <div class="mh-flex mh-gap-2"><span class="mh-badge mh-t-success">82 G</span><span class="mh-badge mh-t-danger">46 M</span></div>
+                          <span class="mh-sub">Son 10 maç</span><div class="mh-history" data-history="WWLWWWLWLW"></div>
+                          <span class="mh-sub">En uzun seri: <b style="color:var(--mh-text)">9 galibiyet</b></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mh-stats__grid">
+                    <div class="mh-box">
+                      <div class="mh-box__head"><span class="mh-kicker">Silah kullanımı · öldürme</span></div>
+                      <div class="mh-hbars" id="weapon-bars"></div>
+                    </div>
+                    <div class="mh-box">
+                      <div class="mh-box__head"><span class="mh-kicker">Başarımlar</span><span class="mh-sub">18 / 42</span></div>
+                      <div class="mh-col mh-gap-3">
+                        <div class="mh-achieve"><i data-i="trophy"></i><b>Keskin nişancı</b><small>500 / 500</small><div class="mh-bar mh-t-gold" data-v="100"><i class="mh-bar__fill"></i></div></div>
+                        <div class="mh-achieve"><i data-i="fist"></i><b>Çıplak eller</b><small>38 / 50</small><div class="mh-bar mh-t-accent" data-v="76"><i class="mh-bar__fill"></i></div></div>
+                        <div class="mh-achieve"><i data-i="zombie"></i><b>Sürü avcısı</b><small>2.140 / 5.000</small><div class="mh-bar mh-t-accent" data-v="43"><i class="mh-bar__fill"></i></div></div>
+                        <div class="mh-achieve is-locked"><i data-i="lock"></i><b>Ölümsüz</b><small>0 / 1</small><div class="mh-bar" data-v="0"><i class="mh-bar__fill"></i></div></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mh-box">
+                    <div class="mh-box__head"><span class="mh-kicker">Maç geçmişi</span><span class="mh-sub">Son 5</span></div>
+                    <div class="mh-matches">
+                      <div class="mh-match"><span class="mh-rank" style="background:rgb(var(--mh-success-rgb));color:#06140a">G</span><div><b style="font-family:var(--mh-font-ui)">Takım ölüm maçı</b> <small>· Vinewood · 14:32</small></div><b>24 / 6</b><span class="mh-badge mh-t-gold">MVP</span></div>
+                      <div class="mh-match"><span class="mh-rank" style="background:rgb(var(--mh-danger-rgb));color:#fff">M</span><div><b style="font-family:var(--mh-font-ui)">Hayatta kal</b> <small>· Dalga 9 · 21:04</small></div><b>61 / 1</b><span class="mh-badge">Dalga 9</span></div>
+                      <div class="mh-match"><span class="mh-rank" style="background:rgb(var(--mh-success-rgb));color:#06140a">G</span><div><b style="font-family:var(--mh-font-ui)">Bölge kontrolü</b> <small>· Paleto · 18:11</small></div><b>17 / 9</b><span class="mh-badge mh-t-info">3 nokta</span></div>
+                      <div class="mh-match"><span class="mh-rank" style="background:rgb(var(--mh-success-rgb));color:#06140a">G</span><div><b style="font-family:var(--mh-font-ui)">Western düello</b> <small>· Valentine · 06:40</small></div><b>5 / 0</b><span class="mh-badge mh-t-accent">Kusursuz</span></div>
+                      <div class="mh-match"><span class="mh-rank" style="background:var(--mh-raise-3)">B</span><div><b style="font-family:var(--mh-font-ui)">Konvoy baskını</b> <small>· Sandy · 12:55</small></div><b>11 / 7</b><span class="mh-badge">Berabere</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Etkinlikler -->
+              <div class="mh-menu__main mh-hidden mh-scroll" data-panel="events">
+                <div class="mh-events">
+                  <div class="mh-flex mh-between" style="margin-bottom:4px"><div><span class="mh-kicker mh-kicker--accent">Sunucu takvimi</span><div class="mh-title" style="margin-top:4px">Etkinlikler</div></div><div class="mh-seg" data-mh-seg="ev"><button class="is-active">Yaklaşan</button><button>Geçmiş</button></div></div>
+                  <div class="mh-event is-live"><div class="mh-event__date"><b>08</b><span>Eki</span></div><div class="mh-event__body"><div class="mh-flex mh-gap-2"><b>Konvoy baskını</b><span class="mh-badge mh-badge--dot mh-badge--live mh-t-danger">Canlı</span></div><div class="mh-event__meta"><span><i data-i="clock"></i>21:30 – 22:30</span><span><i data-i="users"></i>24 / 32</span><span><i data-i="cash"></i>$50.000 ödül havuzu</span></div></div><button class="mh-btn mh-btn--primary mh-btn--sm">Katıl</button></div>
+                  <div class="mh-event"><div class="mh-event__date"><b>09</b><span>Eki</span></div><div class="mh-event__body"><div class="mh-flex mh-gap-2"><b>Zombi gecesi</b><span class="mh-badge mh-t-info">Yarın</span></div><div class="mh-event__meta"><span><i data-i="clock"></i>22:00</span><span><i data-i="zombie"></i>Hayatta kal · 4 kişilik ekip</span><span><i data-i="gift"></i>Hediye 2× etki</span></div></div><button class="mh-btn mh-btn--outline mh-btn--sm"><i data-i="bell"></i>Hatırlat</button></div>
+                  <div class="mh-event"><div class="mh-event__date"><b>11</b><span>Eki</span></div><div class="mh-event__body"><div class="mh-flex mh-gap-2"><b>Western düello turnuvası</b><span class="mh-badge mh-t-gold">Turnuva</span></div><div class="mh-event__meta"><span><i data-i="clock"></i>20:00</span><span><i data-i="revolver"></i>Yalnız tabanca</span><span><i data-i="trophy"></i>Kupa + $100.000</span></div></div><button class="mh-btn mh-btn--outline mh-btn--sm">Kayıt ol</button></div>
+                  <div class="mh-event"><div class="mh-event__date"><b>14</b><span>Eki</span></div><div class="mh-event__body"><div class="mh-flex mh-gap-2"><b>Yayıncılar arası savaş</b><span class="mh-badge mh-t-legendary">Özel</span></div><div class="mh-event__meta"><span><i data-i="clock"></i>21:00</span><span><i data-i="broadcast"></i>8 yayıncı · izleyici oyu</span></div></div><button class="mh-btn mh-btn--outline mh-btn--sm">Detay</button></div>
+                </div>
+              </div>
+              <!-- Önizleme -->
+              <aside class="mh-menu__aside" id="aside">
+                <div class="mh-preview"><span class="mh-badge mh-t-info">Kuşanıldı</span><i data-weapon="carbine" id="pv-art"></i></div>
+                <div><div class="mh-title mh-title--lg" id="pv-name">Karabina tüfeği</div><div class="mh-sub" id="pv-sub">Otomatik tüfek · 5,56 mm</div></div>
+                <div class="mh-rule"></div>
+                <div class="mh-statlines">
+                  <div class="mh-statline"><span class="mh-kicker">Hasar</span><div class="mh-bar" data-v="64"><i class="mh-bar__gain" style="--g:.72"></i><i class="mh-bar__fill"></i></div><b>64</b></div>
+                  <div class="mh-statline"><span class="mh-kicker">Menzil</span><div class="mh-bar" data-v="82"><i class="mh-bar__fill"></i></div><b>82</b></div>
+                  <div class="mh-statline"><span class="mh-kicker">Atış hızı</span><div class="mh-bar" data-v="70"><i class="mh-bar__fill"></i></div><b>70</b></div>
+                  <div class="mh-statline"><span class="mh-kicker">Şarjör</span><div class="mh-bar" data-v="30"><i class="mh-bar__fill"></i></div><b>30</b></div>
+                </div>
+                <div class="mh-col mh-gap-2" style="margin-top:auto">
+                  <button class="mh-btn mh-btn--primary mh-btn--block"><span class="mh-key mh-key--sm">E</span>Kullan / kuşan</button>
+                  <div class="mh-flex mh-gap-2"><button class="mh-btn mh-btn--outline mh-grow"><i data-i="hand"></i>Yere bırak</button><button class="mh-btn mh-btn--tone mh-t-danger mh-grow" id="destroy"><i data-i="x"></i>Yok et</button></div>
+                </div>
+              </aside>
+            </div>
+
+            <footer class="mh-menu__foot">
+              <div class="mh-hints">
+                <span class="mh-hint"><span class="mh-key">↑</span><span class="mh-key">↓</span>Seç</span>
+                <span class="mh-hint"><span class="mh-key">ENTER</span>Onayla</span>
+                <span class="mh-hint"><span class="mh-key">Q</span><span class="mh-key">E</span>Sekme</span>
+                <span class="mh-hint"><span class="mh-key">ESC</span>Kapat</span>
+              </div>
+              <span class="mh-mute" style="font-size:12px">F1 ile her yerde aç</span>
+            </footer>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-h2"><h2>Klasik menü</h2><p>GTA etkileşim menüsü (NativeUI) — klavyeyle gezinir</p></div>
+  <div class="demo-specs">
+    <div class="demo-spec">
+      <div class="demo-spec__view" style="--h:600px;--dim:.15;align-items:flex-start">
+        <div class="mh-classic" id="classic">
+          <div class="mh-classic__banner"><b>Etkileşim</b></div>
+          <div class="mh-classic__sub"><span>Ana menü</span><span id="cl-count">1 / 9</span></div>
+          <div class="mh-classic__list">
+            <div class="mh-classic__item is-active" data-desc="Kıyafet, aksesuar ve dövme seçenekleri."><span>Görünüm</span><em><i data-i="chev-r"></i></em></div>
+            <div class="mh-classic__item" data-desc="Envanterdeki sarf malzemelerini kullan."><span>Envanter</span><em><i data-i="chev-r"></i></em></div>
+            <div class="mh-classic__item" data-desc="Pasif modda diğer oyunculara hasar veremez ve hasar almazsın."><span>Pasif mod</span><em><label class="mh-check"><input type="checkbox"><span class="mh-check__box"></span></label></em></div>
+            <div class="mh-classic__item" data-desc="Ruh halini değiştir: animasyonlar ve yürüyüş stili."><span>Ruh hali</span><em><div class="mh-stepper" data-mh-stepper="Normal|Mutlu|Sinirli|Yorgun"></div></em></div>
+            <div class="mh-classic__item" data-desc="Kişisel aracını yakınına çağır."><span>Aracı çağır</span><em class="mh-num">$250</em></div>
+            <div class="mh-classic__item" data-desc="Takım arkadaşlarına konumunu gönder."><i data-i="pin"></i><span>Konum paylaş</span></div>
+            <div class="mh-classic__item" data-desc="Ekip ayarları ve davetler."><span>Ekip</span><em><span class="mh-count">2</span><i data-i="chev-r"></i></em></div>
+            <div class="mh-classic__item is-disabled" data-desc="Seviye 50 gerekir."><span>CEO yetkileri</span><em><i data-i="lock"></i></em></div>
+            <div class="mh-classic__item" data-desc="Oturumdan ayrıl ve ana menüye dön."><span>Oturumdan ayrıl</span></div>
+          </div>
+          <div class="mh-classic__desc"><i data-i="info"></i><span id="cl-desc">Kıyafet, aksesuar ve dövme seçenekleri.</span></div>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>Klasik liste</b><span><code>MH.listNav('#classic', { onChange, onSelect })</code> — ↑↓ seç, ←→ değer değiştir, Enter onayla.</span></div>
+    </div>
+    <div class="demo-spec demo-spec--2">
+      <div class="demo-spec__view" style="--h:600px;--dim:.3">
+        <div class="mh-panel mh-pad-l" style="width:560px;display:flex;flex-direction:column;gap:18px">
+          <div class="mh-flex mh-between"><div><span class="mh-kicker mh-kicker--accent">Kamp sandığı</span><div class="mh-title mh-title--lg">Teçhizat &amp; kiralık adamlar</div></div><div class="mh-stat"><span class="mh-kicker">Kese</span><b style="color:var(--mh-accent)">$45,00</b></div></div>
+          <div class="mh-tabs" data-mh-tabs=""><button class="is-active">I · Silahlar</button><button>II · Askerler</button><button>III · Atlar</button><button>IV · Erzak</button></div>
+          <div class="mh-list">
+            <div class="mh-row is-active"><span class="mh-row__icon"><i data-i="pistol"></i></span><div class="mh-row__main"><span class="mh-row__title">Cattleman revolver</span><span class="mh-row__sub">Güvenilir, altı atışlık</span></div><span class="mh-row__price">$12,50</span></div>
+            <div class="mh-row"><span class="mh-row__icon"><i data-i="rifle"></i></span><div class="mh-row__main"><span class="mh-row__title">Litchfield repeater</span><span class="mh-row__sub">Uzun menzil</span></div><span class="mh-row__price">$28,00</span></div>
+            <div class="mh-row"><span class="mh-row__icon"><i data-i="dynamite"></i></span><div class="mh-row__main"><span class="mh-row__title">Dinamit</span><span class="mh-row__sub">3 adet</span></div><span class="mh-row__price">$9,75</span></div>
+            <div class="mh-row"><span class="mh-row__icon"><i data-i="bow"></i></span><div class="mh-row__main"><span class="mh-row__title">Av yayı</span><span class="mh-row__sub">Sessiz</span></div><span class="mh-row__price">$7,00</span></div>
+          </div>
+          <div class="mh-hints"><span class="mh-hint"><span class="mh-key">ENTER</span>Satın al</span><span class="mh-hint"><span class="mh-key">F5</span>Kapat</span></div>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>Kompakt mağaza paneli</b><span><code>.mh-panel</code> + <code>.mh-tabs</code> + <code>.mh-row</code>. Frontier temasında RedM Battle Director'ın kamp sandığı menüsünün birebir karşılığıdır.</span></div>
+    </div>
+  </div>
+</main>
+
+<script src="../kit/js/mhud-icons.js"></script>
+<script src="../kit/js/mhud.js"></script>
+<script src="../demo/demo.js"></script>
+<script>
+  var ITEMS = {
+    carbine: { n: 'Karabina tüfeği', s: 'Otomatik tüfek · 5,56 mm', a: MH.weapon('carbine') },
+    shotgun: { n: 'Pompalı tüfek', s: 'Yakın mesafe · 12 kalibre', a: MH.weapon('shotgun') },
+    medkit: { n: 'İlk yardım çantası', s: 'Canı tamamen doldurur', a: MH.icon('first-aid') },
+    vest: { n: 'Ağır yelek', s: 'Zırh +100 · Destansı', a: MH.icon('shield') },
+    grenade: { n: 'El bombası', s: 'Alan hasarı · 6 m', a: MH.icon('grenade') },
+    lantern: { n: 'Fener', s: 'Pil %72', a: MH.icon('lantern') },
+    food: { n: 'Konserve', s: 'Açlık +35', a: MH.icon('meat') }
+  };
+  var list = document.getElementById('inv-list');
+  list.addEventListener('click', function (e) {
+    var r = e.target.closest('.mh-row'); if (!r || r.classList.contains('is-disabled')) return;
+    list.querySelectorAll('.mh-row').forEach(function (x) { x.classList.toggle('is-active', x === r); });
+    var it = ITEMS[r.getAttribute('data-item')]; if (!it) return;
+    document.getElementById('pv-name').textContent = it.n; document.getElementById('pv-sub').textContent = it.s;
+    var pv = document.querySelector('.mh-preview'); var old = pv.querySelector('svg'); old.outerHTML = it.a;
+  });
+  var body = document.getElementById('menu-body');
+  document.getElementById('nav').addEventListener('click', function (e) {
+    var b = e.target.closest('.mh-nav__item'); if (!b) return;
+    if (b.getAttribute('data-sec') !== 'quit') document.querySelectorAll('.mh-nav__item').forEach(function (x) { x.classList.toggle('is-active', x === b); });
+    var sec = b.getAttribute('data-sec');
+    if (sec === 'quit') {
+      MH.confirm({ title: 'Oyundan çıkılsın mı?', text: 'Kaydedilmemiş ilerleme kaybolabilir. Ana menüye dönülecek.', danger: true, ok: 'Çıkış yap', icon: 'door' })
+        .then(function (ok) { MH.toast({ tone: ok ? 'danger' : 'info', title: ok ? 'Çıkış yapılıyor…' : 'Oyunda kaldın', duration: 2200 }); });
+      return;
+    }
+    document.querySelectorAll('[data-panel]').forEach(function (p) { p.classList.toggle('mh-hidden', p.getAttribute('data-panel') !== sec); });
+    var aside = document.getElementById('aside');
+    var withAside = sec === 'inv' || sec === 'shop';
+    aside.classList.toggle('mh-hidden', !withAside);
+    body.classList.toggle('mh-menu__body--2', !withAside);
+  });
+  document.getElementById('destroy').addEventListener('click', function () {
+    MH.confirm({ title: 'Eşyayı yok et?', text: 'Bu işlem geri alınamaz. Eşya kalıcı olarak silinecek.', danger: true, ok: 'Yok et' }).then(function (ok) {
+      MH.toast({ tone: ok ? 'danger' : 'info', title: ok ? 'Eşya yok edildi' : 'Vazgeçildi', duration: 2500 });
+    });
+  });
+  var th = document.createElement('div'); th.className = 'mh-anchor mh-tr'; th.style.zIndex = 90;
+  th.innerHTML = '<div class="mh-toasts" data-mh="toasts"></div>'; document.getElementById('screen').appendChild(th);
+  document.getElementById('team-invite').addEventListener('click', function () {
+    MH.choose({ kicker: 'Gece Kuşları', title: 'Ekibe davet et', icon: 'user-plus', multi: true, ok: 'Davet gönder',
+      items: ['deniz_33', 'ali_kaptan', 'tolga.exe', 'kaan', 'speedking', 'ricky'].map(function (n, i) { return { id: n, label: n, sub: (i + 1) * 120 + ' m' }; }) })
+      .then(function (ids) { if (ids) MH.toast({ tone: 'success', icon: 'send', title: ids.length + ' davet gönderildi', duration: 2400 }); });
+  });
+  // İstatistik grafikleri
+  MH.columns('#kills-col', [18, 24, 12, 31, 22, 15, 27, 9, 20, 26, 14, 29, 21, 24].map(function (v, i) { return { label: i + 1, value: v, tone: v >= 28 ? 'gold' : null }; }));
+  MH.bars('#weapon-bars', [
+    { label: 'Karabina', value: 482, icon: 'rifle' }, { label: 'Tabanca', value: 296, icon: 'pistol' }, { label: 'Pompalı', value: 214, icon: 'shotgun' },
+    { label: 'Keskin nişancı', value: 151, icon: 'sniper' }, { label: 'Pala', value: 88, icon: 'machete' }, { label: 'Yumruk', value: 53, icon: 'fist' }
+  ]);
+  // Klasik menü
+  var items = document.querySelectorAll('#classic .mh-classic__item');
+  MH.listNav('#classic', { onChange: function (el) {
+    document.getElementById('cl-desc').textContent = el.getAttribute('data-desc');
+    document.getElementById('cl-count').textContent = (Array.prototype.indexOf.call(items, el) + 1) + ' / ' + items.length;
+  }});
+  // Tema adımlayıcı sayfanın temasını da değiştirsin
+  MH.on('stepper', function (d) { if (d.el.id === 'theme-step') Demo.set('theme', d.value.toLowerCase()); });
+</script>
+</body>
+</html>

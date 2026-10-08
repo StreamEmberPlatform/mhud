@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Etkileşim — MHud</title>
+<link rel="stylesheet" href="../kit/css/mhud.css">
+<link rel="stylesheet" href="../demo/demo.css">
+</head>
+<body class="mh">
+<main class="demo-main">
+  <header class="demo-head">
+    <span class="demo-head__kicker">Arayüz</span>
+    <h1>Etkileşim</h1>
+    <p>Dilimli radial menü (SVG), silah çarkı, bağlam menüsü ve modallar. Radial'da fareyi gezdir: seçili dilim vurgulanır, ortadaki göbek açıklamayı gösterir. Sahnede sağ tıkla: bağlam menüsü açılır.</p>
+  </header>
+
+  <div class="demo-stage-wrap">
+    <div class="demo-stage" id="stage">
+      <div class="mh-screen" id="screen">
+        <div class="mh-anchor mh-mc mh-catch"><div id="radial"></div></div>
+        <div class="mh-anchor mh-tl">
+          <div class="mh-panel mh-pad" style="width:300px">
+            <span class="mh-kicker">Son seçim</span>
+            <div class="mh-title mh-title--sm" id="picked" style="margin-top:6px">—</div>
+            <div class="mh-sub" style="margin-top:4px">Radial'a tıkla ya da sahnede sağ tıkla.</div>
+          </div>
+        </div>
+        <div class="mh-anchor mh-bc">
+          <div class="mh-hints"><span class="mh-hint"><span class="mh-key mh-key--sm"><i data-i="mouse"></i></span>Seç</span><span class="mh-hint"><span class="mh-key">TAB</span>Bırakınca onayla</span><span class="mh-hint"><span class="mh-key">ESC</span>Kapat</span></div>
+        </div>
+        <div class="mh-anchor mh-tr"><div class="mh-toasts" data-mh="toasts"></div></div>
+      </div>
+    </div>
+    <div class="demo-actions">
+      <span class="demo-actions__label">Dene:</span>
+      <button class="demo-btn" data-act="confirm"><i data-i="alert"></i>Onay modalı</button>
+      <button class="demo-btn" data-act="danger"><i data-i="x"></i>Tehlikeli onay</button>
+      <button class="demo-btn" data-act="input"><i data-i="keyboard"></i>Metin girişi</button>
+      <button class="demo-btn" data-act="wheel"><i data-i="crosshair"></i>Silah çarkı</button>
+      <button class="demo-btn" data-act="radial"><i data-i="grid"></i>Etkileşim radyali</button>
+    </div>
+  </div>
+
+  <div class="demo-h2"><h2>Radial & bağlam</h2><p><code>MH.radial(el, items, opts)</code> · <code>MH.context(x, y, items)</code></p></div>
+  <div class="demo-specs">
+    <div class="demo-spec">
+      <div class="demo-spec__view mh-catch" style="--h:420px;--dim:.3"><div id="wheel2"></div></div>
+      <div class="demo-spec__meta"><b>Silah çarkı</b><span>Dilim simgesi olarak silah silüeti; alt satırda mermi sayısı (<code>sub</code>).</span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view" style="--h:420px;align-items:flex-start;padding-top:50px">
+        <div class="mh-panel mh-context" style="position:relative">
+          <div class="mh-context__head"><span class="mh-kicker">NabeMedia üzerinde</span></div>
+          <button class="mh-context__item"><i data-i="user"></i><span>Profili gör</span><span class="mh-key mh-key--sm">P</span></button>
+          <button class="mh-context__item is-active"><i data-i="user-plus"></i><span>Ekibe davet et</span></button>
+          <button class="mh-context__item"><i data-i="pin"></i><span>İşaretle</span><span class="mh-key mh-key--sm">M</span></button>
+          <button class="mh-context__item"><i data-i="cash"></i><span>Para gönder</span><small>$</small></button>
+          <div class="mh-context__sep"></div>
+          <button class="mh-context__item"><i data-i="volume-off"></i><span>Sustur</span></button>
+          <button class="mh-context__item is-danger"><i data-i="ban"></i><span>Oyundan at</span></button>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>Bağlam menüsü</b><span>Ekran kenarına taşarsa kendini içeri kaydırır; dışarı tıklayınca kapanır. <code>danger: true</code>, <code>key</code>, <code>'-'</code> ayırıcı.</span></div>
+    </div>
+    <div class="demo-spec">
+      <div class="demo-spec__view" style="--h:420px;--dim:.35">
+        <div class="mh-panel mh-modal mh-t-danger" style="animation:none">
+          <div class="mh-modal__body"><div class="mh-modal__icon"><i data-i="alert"></i></div><div class="mh-title">Eşyayı yok et?</div><div class="mh-sub">Bu işlem geri alınamaz. Ağır yelek kalıcı olarak silinecek.</div></div>
+          <div class="mh-modal__actions"><button class="mh-btn mh-btn--ghost"><span class="mh-key mh-key--sm">ESC</span>Vazgeç</button><button class="mh-btn mh-btn--tone mh-t-danger"><span class="mh-key mh-key--sm">ENTER</span>Yok et</button></div>
+        </div>
+      </div>
+      <div class="demo-spec__meta"><b>Onay modalı</b><span><code>await MH.confirm({ title, text, danger })</code> → <code>true</code> / <code>false</code>. ESC ve Enter klavyeden çalışır.</span></div>
+    </div>
+  </div>
+</main>
+
+<script src="../kit/js/mhud-icons.js"></script>
+<script src="../kit/js/mhud.js"></script>
+<script src="../demo/demo.js"></script>
+<script>
+  var INTERACT = [
+    { icon: 'backpack', label: 'Envanter', desc: 'Çantanı aç' },
+    { icon: 'store', label: 'Mağaza', desc: 'Silah ve erzak satın al' },
+    { icon: 'users', label: 'Ekip', desc: 'Ekip ayarları ve davetler' },
+    { icon: 'car', label: 'Araç', desc: 'Kişisel aracını çağır' },
+    { icon: 'pin', label: 'İşaret', desc: 'Haritaya hedef koy' },
+    { icon: 'mood', label: 'Animasyon', desc: 'Selam ver, dans et…', disabled: false },
+    { icon: 'phone', label: 'Telefon', desc: 'Mesajlar ve kişiler' },
+    { icon: 'settings', label: 'Ayarlar', desc: 'HUD ve kontrol ayarları' }
+  ];
+  INTERACT[5].icon = 'sparkles';
+  var WEAPONS = [
+    { w: 'carbine', label: 'Tüfek', sub: '24 / 180' }, { w: 'smg', label: 'SMG', sub: '30 / 90' }, { w: 'shotgun', label: 'Pompalı', sub: '6 / 24' },
+    { w: 'sniper', label: 'Nişancı', sub: '5 / 20' }, { w: 'pistol', label: 'Tabanca', sub: '12 / 48' }, { icon: 'knife', label: 'Bıçak', sub: '—' },
+    { icon: 'grenade', label: 'Bomba', sub: '×3' }, { icon: 'hand', label: 'Yumruk', sub: '—' }
+  ];
+  function wheel(sel, size) {
+    var r = MH.radial(sel, WEAPONS.map(function (w) { return { icon: w.icon || 'crosshair', label: w.label, sub: w.sub, desc: w.sub }; }), { size: size, title: 'Silahlar', hint: 'Fareyle seç', inner: .38, onPick: pick });
+    // silüetleri ikonların yerine koy
+    document.querySelectorAll(sel + ' .mh-radial__item').forEach(function (it, i) {
+      if (!WEAPONS[i].w) return;
+      var svg = it.querySelector('.mh-i'); svg.outerHTML = MH.weapon(WEAPONS[i].w, 'mh-i');
+      var s = it.querySelector('.mh-weapon-art'); s.style.width = '74px'; s.style.height = '24px';
+    });
+    return r;
+  }
+  function pick(it) { document.getElementById('picked').textContent = it.label; MH.toast({ tone: 'accent', icon: 'check', title: it.label + ' seçildi', duration: 1800 }); }
+  function interact() { MH.radial('#radial', INTERACT, { size: 520, title: 'Etkileşim', hint: 'Bir seçenek seç', onPick: pick }); }
+  interact();
+  wheel('#wheel2', 360);
+
+  document.getElementById('screen').addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+    var r = this.getBoundingClientRect(), k = r.width / 1920;
+    MH.context((e.clientX - r.left) / k, (e.clientY - r.top) / k, [
+      { icon: 'user', label: 'Profili gör', key: 'P' }, { icon: 'user-plus', label: 'Ekibe davet et' },
+      { icon: 'pin', label: 'İşaretle', key: 'M' }, '-', { icon: 'volume-off', label: 'Sustur' },
+      { icon: 'ban', label: 'Oyundan at', danger: true, onClick: function () { A.danger(); } }
+    ], { title: 'NabeMedia üzerinde', onPick: pick });
+  });
+  var A = {
+    confirm: function () { MH.confirm({ title: 'Ekibe katıl?', text: 'NabeMedia seni Gece Kuşları ekibine davet ediyor.', ok: 'Katıl', icon: 'users' }).then(function (ok) { MH.toast({ tone: ok ? 'success' : 'info', title: ok ? 'Ekibe katıldın' : 'Davet reddedildi', duration: 2200 }); }); },
+    danger: function () { MH.confirm({ title: 'Oyuncuyu at?', text: 'NabeMedia sunucudan atılacak.', danger: true, ok: 'At' }).then(function (ok) { MH.toast({ tone: ok ? 'danger' : 'info', title: ok ? 'Oyuncu atıldı' : 'Vazgeçildi', duration: 2200 }); }); },
+    input: function () { MH.input({ title: 'Plaka değiştir', label: 'Yeni plaka', placeholder: '34 ABC 123', max: 8, ok: 'Kaydet' }).then(function (v) { if (v) MH.toast({ tone: 'success', title: 'Plaka güncellendi', text: v, duration: 2200 }); }); },
+    wheel: function () { wheel('#radial', 560); },
+    radial: interact
+  };
+  Demo.on('[data-act]', function (e) { A[e.currentTarget.getAttribute('data-act')](); });
+</script>
+</body>
+</html>

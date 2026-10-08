@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Tema: MINIMAL — data-mh-theme="minimal"
+   Tek renkli, düz, sakin. Bulanıklık, parlama ve katmanlı gölge yok:
+   en ucuz render. Zayıf makineler ve yüksek oyuncu sayılı sunucular için.
+   ========================================================================== */
+
+[data-mh-theme="minimal"] {
+  --mh-font-display: 'MH Inter', 'Segoe UI', sans-serif;
+  --mh-font-num:     'MH Inter', 'Segoe UI', sans-serif;
+  --mh-display-weight: 650;
+  --mh-display-case: none;
+  --mh-display-track: -.01em;
+  --mh-kicker-size: 11px;
+  --mh-kicker-weight: 500;
+  --mh-kicker-track: .04em;
+
+  --mh-surface-rgb: 16 18 22;
+  --mh-surface-a: .9;
+  --mh-surface-solid: #111317;
+  --mh-text-rgb: 244 245 247;
+
+  --mh-accent-rgb: 244 245 247;
+  --mh-accent-2-rgb: 160 168 180;
+  --mh-on-accent: #0e1013;
+
+  --mh-r-panel: 10px;
+  --mh-r-control: 7px;
+  --mh-r-2: 6px;
+  --mh-r-3: 8px;
+  --mh-blur: 0px;
+  --mh-glow-a: 0;
+  --mh-panel-shadow: none;
+  --mh-shadow-pop: 0 12px 32px rgb(0 0 0 / .5);
+  --mh-hud-shadow: 0 1px 2px rgb(0 0 0 / .9);
+  --mh-text-shadow: none;
+  --mh-bar-r: 3px;
+}
+
+/* Bulanıklığı tamamen kapat (blur(0) bile ayrı katman oluşturur) */
+[data-mh-theme="minimal"] .mh-panel, [data-mh-theme="minimal"] .mh-need::before, [data-mh-theme="minimal"] .mh-versus__mid,
+[data-mh-theme="minimal"] .mh-effect, [data-mh-theme="minimal"] .mh-slot, [data-mh-theme="minimal"] .mh-member,
+[data-mh-theme="minimal"] .mh-prompt__row, [data-mh-theme="minimal"] .mh-toast, [data-mh-theme="minimal"] .mh-kill,
+[data-mh-theme="minimal"] .mh-gift, [data-mh-theme="minimal"] .mh-wprompt__card { -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+[data-mh-theme="minimal"] .mh-panel { border-color: rgb(255 255 255 / .07); }
+[data-mh-theme="minimal"] .mh-kicker { text-transform: none; }
+[data-mh-theme="minimal"] .mh-row.is-active { background: var(--mh-raise-2); }
+[data-mh-theme="minimal"] .mh-row::before { display: none; }
+[data-mh-theme="minimal"] .mh-tabs > button { font-weight: 600; letter-spacing: 0; font-size: 14px; }
+[data-mh-theme="minimal"] .mh-gift.is-legendary::before, [data-mh-theme="minimal"] .mh-gift.is-epic::before { display: none; }
+[data-mh-theme="minimal"] .mh-classic__banner { background: #f4f5f7; }
+[data-mh-theme="minimal"] .mh-classic__banner::after { display: none; }
+[data-mh-theme="minimal"] .mh-classic__banner b { color: #0e1013; text-shadow: none; font-size: 34px; }
+[data-mh-theme="minimal"] .mh-classic__sub { color: var(--mh-text); }
+[data-mh-theme="minimal"] .mh-announce__kicker, [data-mh-theme="minimal"] .mh-ticker__label { letter-spacing: .12em; }
+[data-mh-theme="minimal"] .mh-banner__title, [data-mh-theme="minimal"] .mh-results__title b { color: var(--mh-text); }
+[data-mh-theme="minimal"] .mh-banner.is-fail .mh-banner__title { color: var(--mh-danger); }
+[data-mh-theme="minimal"] .mh-marker__pin::before { border-radius: 50%; transform: none; }
