@@ -1,6 +1,7 @@
 # main dalına her itmede demo sitesini GitHub Pages'e yayınlar:
 #   https://streamemberplatform.github.io/mhud/
-# İlk seferde: Settings > Pages > Source = "GitHub Actions"
+# ÖNCE BİR KEZ: Settings > Pages > Build and deployment > Source = "GitHub Actions"
+# (açılmazsa deploy adımı 404 verir; GITHUB_TOKEN Pages'i kendisi açamaz)
 name: Pages
 
 on:
@@ -19,15 +20,16 @@ concurrency:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
       - run: npm ci
       - run: npm run build
@@ -36,8 +38,8 @@ jobs:
           mkdir _site
           cp -r index.html pages demo kit games dist _site/
           touch _site/.nojekyll
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
