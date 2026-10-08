@@ -5,7 +5,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 name 'mhud'
 author 'Stream Ember'
 description 'MHud - temali NUI HUD kiti (FiveM + RedM)'
-version '1.2.0'
+version '1.3.0'
 
 lua54 'yes'
 

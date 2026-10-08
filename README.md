@@ -15,13 +15,13 @@ ve her HTML5 oyunu. Aynı HTML işaretlemesi altı temaya bürünür: GTA V'in m
 **CDN (her projede, derleme gerekmez):**
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@streamemberplatform/mhud@1.2.0/dist/mhud.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@streamemberplatform/mhud@1.2.0/dist/mhud.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@streamemberplatform/mhud@1.3.0/dist/mhud.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@streamemberplatform/mhud@1.3.0/dist/mhud.min.js"></script>
 ```
 
 `dist/mhud.min.js` ikonları, çekirdeği (`window.MH`) ve sosyal menüyü (`MH.Social`, `MH.trade`) içerir.
 Oyun düzenleri katmanı ayrıdır: `dist/mhud-game.min.js` + `dist/mhud-game.min.css`. Aynı dosyalar unpkg'de de vardır
-(`https://unpkg.com/@streamemberplatform/mhud@1.2.0/dist/mhud.min.css`). **Her zaman tam sürüm yazın** — `@latest`
+(`https://unpkg.com/@streamemberplatform/mhud@1.3.0/dist/mhud.min.css`). **Her zaman tam sürüm yazın** — `@latest`
 güncellemede tüm projelerin görünümünü habersizce değiştirir.
 
 **npm:**
@@ -48,9 +48,11 @@ npm run sync       # kit/ + games/ → integration/mhud/html (FiveM/RedM resourc
 npm run icons      # kit/js/mhud-icons.js'i yeniden üret
 ```
 
-**Sürüm yayınlamak:** `CHANGELOG.md`'yi güncelle, sonra
-`npm version 1.2.1 -m "v%s"` → `git push --follow-tags`. `v*` etiketi GitHub Actions'ta derler, npm'e yayınlar
-(`NPM_TOKEN` gizli anahtarı) ve resource zip'ini Release'e ekler. `main`'e her itme demo sitesini GitHub Pages'e yayınlar.
+**Sürüm yayınlamak:** `CHANGELOG.md`'yi güncelle, sonra `npm version 1.3.1 -m "v%s"` → `git push --follow-tags`.
+`npm version` sürümü kit'e (`MH.version`), resource'a (`fxmanifest.lua`), README'ye ve demoya kendiliğinden yazar.
+`v*` etiketi GitHub Actions'ta derler, npm'e yayınlar ve resource zip'ini Release'e ekler. Kimlik: npm **Trusted Publishing**
+(paket ayarlarında `StreamEmberPlatform/mhud` · `release.yml`) ya da organizasyonun `NPM_TOKEN` secret'ı.
+`main`'e her itme demo sitesini GitHub Pages'e yayınlar.
 
 ---
 

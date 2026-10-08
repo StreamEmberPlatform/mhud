@@ -1,5 +1,5 @@
 # v* etiketi itildiğinde: derle, npm'e yayınla, FiveM/RedM resource zip'ini GitHub Release'e ekle.
-#   git tag v1.2.0 && git push origin v1.2.0
+#   git tag v1.3.0 && git push origin v1.3.0
 # Yayın kimliği (ikisinden biri):
 #  1) Trusted Publishing (önerilen, token yok): npmjs.com > paket > Settings > Trusted Publisher >
 #     GitHub Actions: StreamEmberPlatform / mhud / release.yml  → NPM_TOKEN secret'ını silebilirsin.
