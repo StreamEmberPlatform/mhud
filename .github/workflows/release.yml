@@ -44,6 +44,11 @@ jobs:
           npm run sync
           cd integration && zip -qr "../mhud-resource-${GITHUB_REF_NAME}.zip" mhud
 
+      - name: npm kimliği (teşhis)
+        run: npm whoami || echo "Token yok ya da geçersiz; Trusted Publishing (OIDC) denenecek"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: npm publish
         # NPM_TOKEN boşsa npm OIDC ile (Trusted Publishing) yayınlar
         run: npm publish --provenance --access public

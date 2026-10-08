@@ -1,0 +1,28 @@
+# Her push ve PR'da: bağımlılıkları kur, derle, npm paketinin içeriğini doğrula.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Sürüm tutarlılığı
+        run: |
+          V="$(node -p "require('./package.json').version")"
+          grep -q "version: '$V'" kit/js/mhud.js || { echo "::error::kit/js/mhud.js sürümü $V değil (npm run version)"; exit 1; }
+          grep -q "version '$V'" integration/mhud/fxmanifest.lua || { echo "::error::fxmanifest.lua sürümü $V değil"; exit 1; }
+      - run: npm pack --dry-run
