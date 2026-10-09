@@ -2,7 +2,9 @@
 
 Sürümler [SemVer](https://semver.org/lang/tr/) izler. CDN'de her zaman tam sürüm kullanın (`@2.0.0`).
 
-## 2.0.0 — 2026-10-09
+## 2.0.1 — 2026-10-09
+(2.0.0 etiketi itildi ama npm yayını tamamlanmadı; bu sürüm onun yerine geçer.)
+
 **Kırıcı sürüm; eski sürümle uyumluluk hedeflenmedi.**
 - Kaldırıldı: FiveM/RedM resource'u (`integration/`), hazır oyun düzenleri ve `dist/mhud-game.*` (`games/`), `npm run sync`.
 - Kaldırıldı: `minimal` ve `neon` temaları. Yerine `modern` ya da `tactical` kullanın. Kalan temalar: modern, tactical, frontier, oldwest.
