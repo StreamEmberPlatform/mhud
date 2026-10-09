@@ -1,0 +1,311 @@
+# Yaşam göstergeleri
+Can, zırh, stamina, dayanıklılık gibi 0-100 arası değerler. data-v / data-pips / data-mh-ring ile MH.mount() kurar; sonra MH.bar / MH.ring / MH.core / MH.pips ile güncellenir.
+
+## vitals.bar — Bar
+Tek değer: can, zırh, ilerleme. Boy mh-bar--xs|sm|md|lg|xl, renk mh-t-* tonu. data-critical eşiğin altında yanıp söner.
+JS: `MH.bar(el, 82, { max: 100, critical: 25 })`
+
+```html
+<div class="mh-bar mh-bar--md mh-t-health" data-v="82" data-critical="25"><i class="mh-bar__fill"></i></div>
+```
+
+## vitals.bar-ghost — Hasar izli bar
+Değer düşünce beyaz iz yavaşça kapanır. Oyuncu ve düşman can barı için.
+JS: `MH.bar(el, 40)`
+
+```html
+<div class="mh-bar mh-bar--lg mh-t-health" data-v="64"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div>
+```
+
+## vitals.bar-notch — Çentikli bar
+Eşit bölmeli bar; --notch bölme sayısı. Boss ve sağlık dilimleri için.
+JS: `MH.bar(el, 60)`
+
+```html
+<div class="mh-bar mh-bar--lg mh-bar--notch mh-t-health" data-v="84" style="--notch:10"><i class="mh-bar__fill"></i></div>
+```
+
+## vitals.bar-vertical — Dikey bar
+Ekran kenarına yaslı ince sütun. Yükseklik --len, kalınlık boy sınıfından.
+JS: `MH.bar(el, 70)`
+
+```html
+<div class="mh-flex" style="gap:10px;align-items:flex-end">
+  <div class="mh-bar mh-bar--v mh-bar--md mh-t-health" data-v="82" style="--len:90px"><i class="mh-bar__fill"></i></div>
+  <div class="mh-bar mh-bar--v mh-bar--md mh-t-armor" data-v="55" style="--len:90px"><i class="mh-bar__fill"></i></div>
+  <div class="mh-bar mh-bar--v mh-bar--md mh-t-stamina" data-v="70" style="--len:90px"><i class="mh-bar__fill"></i></div>
+</div>
+```
+
+## vitals.bar-line — Çizgi bar
+2px ince çizgi + uçta parlak çentik (mh-bar--tip). Minimal, profesyonel HUD; yazı altına ya da üstüne konur.
+JS: `MH.bar(el, 72)`
+
+```html
+<div class="mh-col" style="gap:14px;--w:300px;width:300px">
+  <div class="mh-bar mh-bar--line mh-bar--tip mh-t-health" data-v="72"><i class="mh-bar__fill"></i></div>
+  <div class="mh-bar mh-bar--line mh-bar--tip mh-t-armor" data-v="45"><i class="mh-bar__fill"></i></div>
+  <div class="mh-bar mh-bar--line mh-bar--tip mh-t-stamina" data-v="90"><i class="mh-bar__fill"></i></div>
+</div>
+```
+
+## vitals.bar-line-meter — Etiketli çizgi
+mh-meter içinde çizgi bar: üstte küçük etiket solda, değer sağda. Espor yayını sadeliği.
+JS: `MH.bar(el, 64); valueEl.textContent = 64`
+
+```html
+<div class="mh-col" style="gap:12px;width:280px">
+  <div class="mh-meter mh-t-health"><span class="mh-meter__label">CAN</span><span></span><span class="mh-meter__value">82</span><div class="mh-bar mh-bar--line mh-bar--tip" data-v="82"><i class="mh-bar__fill"></i></div></div>
+  <div class="mh-meter mh-t-armor"><span class="mh-meter__label">ZIRH</span><span></span><span class="mh-meter__value">40</span><div class="mh-bar mh-bar--line mh-bar--tip" data-v="40"><i class="mh-bar__fill"></i></div></div>
+</div>
+```
+
+## vitals.bar-tip — Uç ışıklı bar
+Herhangi bir bara mh-bar--tip eklenince dolgu ucunda beyaz parlak çizgi akar. Hasar izi (__ghost) ile iyi gider.
+JS: `MH.bar(el, 55)`
+
+```html
+<div class="mh-bar mh-bar--lg mh-bar--tip mh-t-health" data-v="68" style="width:300px"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div>
+```
+
+## vitals.bar-skew — Eğik bar
+Paralelkenar bar (mh-bar--skew); __text ile değer barın içinde. Aksiyon/yarış HUD'u.
+JS: `MH.bar(el, 76); textEl.textContent = 76`
+
+```html
+<div class="mh-col" style="gap:8px;width:300px">
+  <div class="mh-bar mh-bar--xl mh-bar--skew mh-t-health" data-v="76"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i><span class="mh-bar__text"><span>CAN</span><span>76 / 100</span></span></div>
+  <div class="mh-bar mh-bar--md mh-bar--skew mh-t-armor" data-v="50"><i class="mh-bar__fill"></i></div>
+</div>
+```
+
+## vitals.bar-chevron — Ok uçlu bar
+mh-bar--chevron eğik kesik uçlar, mh-bar--arrow sivri ok. Sci-fi / taktik görünüm.
+JS: `MH.bar(el, 60)`
+
+```html
+<div class="mh-col" style="gap:10px;width:300px">
+  <div class="mh-bar mh-bar--lg mh-bar--chevron mh-t-health" data-v="80"><i class="mh-bar__fill"></i></div>
+  <div class="mh-bar mh-bar--lg mh-bar--arrow mh-t-legendary" data-v="58"><i class="mh-bar__fill"></i></div>
+</div>
+```
+
+## vitals.bar-glass — Cam hap bar
+Yuvarlak (mh-bar--pill) + cam parlaması (mh-bar--glass). Yumuşak, konsol oyunu havası.
+JS: `MH.bar(el, 70)`
+
+```html
+<div class="mh-col" style="gap:10px;width:300px">
+  <div class="mh-bar mh-bar--lg mh-bar--pill mh-bar--glass mh-t-health" data-v="74"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div>
+  <div class="mh-bar mh-bar--md mh-bar--pill mh-bar--glass mh-t-oxygen" data-v="46"><i class="mh-bar__fill"></i></div>
+</div>
+```
+
+## vitals.bar-stripe — Dolan bar
+Hareketli çapraz çizgiler (mh-bar--stripe): yenilenen can, şarj, yükleme. mh-bar--shine ise dolguda dönen ışık süpürmesi.
+JS: `MH.bar(el, 40)`
+
+```html
+<div class="mh-col" style="gap:10px;width:300px">
+  <div class="mh-bar mh-bar--lg mh-bar--stripe mh-t-health" data-v="42"><i class="mh-bar__fill"></i></div>
+  <div class="mh-bar mh-bar--lg mh-bar--shine mh-t-gold" data-v="88"><i class="mh-bar__fill"></i></div>
+</div>
+```
+
+## vitals.bar-heat — Renk geçişli bar
+mh-bar--heat: dolgu kırmızı→sarı→ton geçişli; değer düştükçe yalnız kırmızı kısım kalır.
+JS: `MH.bar(el, 30)`
+
+```html
+<div class="mh-bar mh-bar--lg mh-bar--heat mh-bar--tip mh-t-health" data-v="64" style="width:300px"><i class="mh-bar__fill"></i></div>
+```
+
+## vitals.bar-ticks — Ölçekli bar
+İnce 1px bölme çizgileri (mh-bar--ticks, --ticks adet). Çentikli bardan daha zarif; 25'lik dilimler için --ticks:4.
+JS: `MH.bar(el, 70)`
+
+```html
+<div class="mh-col" style="gap:10px;width:300px">
+  <div class="mh-bar mh-bar--lg mh-bar--ticks mh-t-health" data-v="70" style="--ticks:20"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div>
+  <div class="mh-bar mh-bar--md mh-bar--ticks mh-t-armor" data-v="75" style="--ticks:4"><i class="mh-bar__fill"></i></div>
+</div>
+```
+
+## vitals.bar-frame — Çerçeveli bar
+mh-bar--frame: ton renkli ince kenarlık, içte boşluklu dolgu. mh-bar--bracket: iki uçta köşeli ayraç.
+JS: `MH.bar(el, 66)`
+
+```html
+<div class="mh-col" style="gap:14px;width:300px">
+  <div class="mh-bar mh-bar--frame mh-t-health" data-v="66"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div>
+  <div class="mh-bar mh-bar--md mh-bar--bracket mh-t-accent" data-v="52"><i class="mh-bar__fill"></i></div>
+</div>
+```
+
+## vitals.bar-center — Ortadan / sağdan dolan
+mh-bar--center ortadan iki yana açılır (denge, gürültü, ısı). mh-bar--rtl sağdan dolar: karşı taraftaki rakip barı.
+JS: `MH.bar(el, 50)`
+
+```html
+<div class="mh-col" style="gap:10px;width:300px">
+  <div class="mh-bar mh-bar--md mh-bar--center mh-t-warn" data-v="46"><i class="mh-bar__fill"></i></div>
+  <div class="mh-flex" style="gap:8px"><div class="mh-bar mh-bar--lg mh-bar--tip mh-t-team1" data-v="70"><i class="mh-bar__fill"></i></div><div class="mh-bar mh-bar--lg mh-bar--rtl mh-bar--tip mh-t-team2" data-v="55"><i class="mh-bar__fill"></i></div></div>
+</div>
+```
+
+## vitals.bar-layers — Kalkan ve iyileşme katmanı
+__over aşırı kalkanı çizgili katman olarak gösterir (--o 0..1); __gain iyileşme önizlemesi (transform: scaleX). Tek barda can + ek koruma.
+JS: `MH.bar(el, 60); over.style.setProperty('--o', .3); gain.style.transform = 'scaleX(.85)'`
+
+```html
+<div class="mh-col" style="gap:10px;width:300px">
+  <div class="mh-bar mh-bar--lg mh-t-health" data-v="90"><i class="mh-bar__fill"></i><i class="mh-bar__over" style="--o:.3"></i></div>
+  <div class="mh-bar mh-bar--lg mh-t-health" data-v="55"><i class="mh-bar__gain" style="transform:scaleX(.85)"></i><i class="mh-bar__fill"></i></div>
+</div>
+```
+
+## vitals.bar-duo — Can + ince zırh çizgisi
+Kalın can barı, hemen üstünde 3px zırh çizgisi. İki değeri tek blokta gösterir.
+JS: `MH.bar(hp, 80); MH.bar(armor, 35)`
+
+```html
+<div class="mh-col" style="gap:2px;width:300px">
+  <div class="mh-bar mh-bar--xs mh-t-armor" data-v="35"><i class="mh-bar__fill"></i></div>
+  <div class="mh-bar mh-bar--lg mh-bar--tip mh-t-health" data-v="80"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div>
+</div>
+```
+
+## vitals.strip — Şerit
+Tek satır: ton kenarlı koyu şerit, ikon + bar + sayı. Alt alta dizilir. is-low kritik uyarı. İçine her bar stilini koyabilirsin.
+JS: `MH.bar(bar, 82); el.querySelector('b').textContent = 82`
+
+```html
+<div class="mh-col" style="gap:4px">
+  <div class="mh-strip mh-t-health"><i data-i="heart"></i><div class="mh-bar mh-bar--md mh-bar--tip" data-v="82"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div><b>82</b></div>
+  <div class="mh-strip mh-t-armor"><i data-i="shield"></i><div class="mh-bar mh-bar--md mh-bar--ticks" data-v="50" style="--ticks:4"><i class="mh-bar__fill"></i></div><b>50</b></div>
+  <div class="mh-strip mh-t-stamina is-low"><i data-i="run"></i><div class="mh-bar mh-bar--md" data-v="18"><i class="mh-bar__fill"></i></div><b>18</b></div>
+</div>
+```
+
+## vitals.strip-skew — Eğik şerit
+mh-strip--skew: şerit eğik, içerik düz kalır. Etiket için small. Yarış ve aksiyon modları.
+JS: `MH.bar(bar, v)`
+
+```html
+<div class="mh-col" style="gap:6px;padding-left:8px">
+  <div class="mh-strip mh-strip--skew mh-t-health" style="--w:300px"><small>HP</small><div class="mh-bar mh-bar--lg mh-bar--glass" data-v="76"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div><b>76</b></div>
+  <div class="mh-strip mh-strip--skew mh-t-special" style="--w:300px"><small>NOS</small><div class="mh-bar mh-bar--lg mh-bar--stripe" data-v="40"><i class="mh-bar__fill"></i></div><b>40</b></div>
+</div>
+```
+
+## vitals.plate — Plaka
+Büyük sayı + küçük etiket üstte, altta çizgi bar. Profesyonel/espor görünümü. Sayı yanına small ile /max.
+JS: `MH.bar(bar, 87); valEl.firstChild.textContent = 87`
+
+```html
+<div class="mh-flex" style="gap:28px">
+  <div class="mh-plate mh-t-health" style="--w:200px"><i data-i="heart"></i><span class="mh-plate__label">Can</span><b class="mh-plate__val">87<small>/100</small></b><div class="mh-bar mh-bar--line mh-bar--tip" data-v="87"><i class="mh-bar__fill"></i></div></div>
+  <div class="mh-plate mh-t-armor" style="--w:200px"><i data-i="shield"></i><span class="mh-plate__label">Zırh</span><b class="mh-plate__val">45</b><div class="mh-bar mh-bar--sm mh-bar--ticks" data-v="45" style="--ticks:4"><i class="mh-bar__fill"></i></div></div>
+</div>
+```
+
+## vitals.plate-plates — Plaka + zırh parçaları
+Battle royale tarzı: üstte zırh plakaları (mh-pips data-pips), altta can barı ve büyük sayı.
+JS: `MH.pips(pips, 2); MH.bar(bar, 100)`
+
+```html
+<div class="mh-plate mh-t-health" style="--w:280px"><span class="mh-plate__label">Wraith</span><span></span><b class="mh-plate__val">100</b>
+  <div class="mh-pips mh-pips--tall mh-t-armor" data-pips="2/3"></div>
+  <div class="mh-bar mh-bar--md mh-bar--skew mh-bar--tip" data-v="100"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div>
+</div>
+```
+
+## vitals.vital-row — İkonlu satır
+İkon + bar + sayı tek satırda. is-low sınıfı satırı kırmızıya çevirir.
+JS: `MH.bar(el, 82, { critical: 25 })`
+
+```html
+<div class="mh-vitals" style="--w:280px">
+  <div class="mh-vital mh-t-health"><i data-i="heart"></i><div class="mh-bar" data-v="82" data-critical="25"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div><b class="mh-vital__val">82</b></div>
+</div>
+```
+
+## vitals.vital-stack — Can / zırh / stamina yığını
+Üç ikonlu satır alt alta. mh-vitals__pair iki sütunlu satır verir.
+JS: `MH.bar(el, value)`
+
+```html
+<div class="mh-vitals" style="--w:280px">
+  <div class="mh-vital mh-t-health"><i data-i="heart"></i><div class="mh-bar" data-v="82"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div><b class="mh-vital__val">82</b></div>
+  <div class="mh-vital mh-t-armor"><i data-i="shield"></i><div class="mh-bar" data-v="40"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div><b class="mh-vital__val">40</b></div>
+  <div class="mh-vital mh-t-stamina"><i data-i="run"></i><div class="mh-bar" data-v="68"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div><b class="mh-vital__val">68</b></div>
+</div>
+```
+
+## vitals.vital-slim — Kompakt yığın
+İkon ve sayı gizli, yalnız ince barlar. Az yer kaplayan GTA tarzı HUD.
+JS: `MH.bar(el, value)`
+
+```html
+<div class="mh-vitals mh-vitals--slim" style="--w:220px">
+  <div class="mh-vital mh-t-health"><div class="mh-bar" data-v="82"><i class="mh-bar__fill"></i></div></div>
+  <div class="mh-vital mh-t-armor"><div class="mh-bar" data-v="40"><i class="mh-bar__fill"></i></div></div>
+</div>
+```
+
+## vitals.hpbig — Büyük can
+Yayında öne çıkan sayılı büyük can barı; --w genişlik.
+JS: `MH.bar(el, 82)`
+
+```html
+<div class="mh-hpbig" style="--w:280px"><div class="mh-hpbig__head"><i data-i="heart"></i><b>82</b><span>/ 100</span></div><div class="mh-bar mh-t-health" data-v="82"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div></div>
+```
+
+## vitals.meter — Etiketli ölçer
+Sol etiket, sağ değer, altında bar. Menü ve karakter ekranlarında.
+JS: `MH.bar(el, 64)`
+
+```html
+<div class="mh-meter mh-t-warn" style="width:260px"><span class="mh-meter__label">Dayanıklılık</span><span></span><span class="mh-meter__value">64 / 100</span><div class="mh-bar" data-v="64"><i class="mh-bar__fill"></i></div></div>
+```
+
+## vitals.ring — Değerli halka
+Halkanın ortasında sayı. Dar yerde tek değer (stamina, oksijen). Boyut CSS width/height ile.
+JS: `MH.ring(el, 0.82)`
+
+```html
+<div class="mh-flex" style="gap:12px">
+  <div class="mh-ringval mh-t-health" data-mh-ring style="--v:.82"><b>82</b></div>
+  <div class="mh-ringval mh-t-stamina" data-mh-ring style="--v:.55"><b>55</b></div>
+  <div class="mh-ringval mh-t-oxygen" data-mh-ring style="--v:.3"><b>30</b></div>
+</div>
+```
+
+## vitals.core — Çekirdek
+RDR2 tarzı: dış halka anlık değer, iç dolgu çekirdek. Ana tema frontier/oldwest ama her temada çalışır. is-low kalp atışı, is-boosted altın.
+JS: `MH.core(el, { value: 82, core: 70, low: 25, boosted: false })`
+
+```html
+<div class="mh-cores">
+  <div class="mh-core mh-t-health" data-mh-ring style="--v:.82;--core:.7"><span class="mh-core__fill"></span><i data-i="heart"></i></div>
+  <div class="mh-core mh-t-stamina" data-mh-ring style="--v:.55;--core:1"><span class="mh-core__fill"></span><i data-i="run"></i></div>
+  <div class="mh-core mh-t-special is-boosted" data-mh-ring style="--v:1;--core:.4"><span class="mh-core__fill"></span><i data-i="eye"></i></div>
+  <div class="mh-core mh-core--sm mh-t-health is-low" data-mh-ring style="--v:.14;--core:.2"><span class="mh-core__fill"></span><i data-i="heart"></i></div>
+</div>
+```
+
+## vitals.pips — Segmentler
+Sayılabilir parçalar: şarjör, can dilimi, kombo. data-pips=açık/toplam; mh-pips--tall yüksek.
+JS: `MH.pips(el, 7, 10)`
+
+```html
+<div class="mh-pips mh-pips--tall mh-t-danger" data-pips="7/10" style="width:200px"></div>
+```
+
+## vitals.hearts — Kalpler
+Az sayıda can hakkı (3-10). Aynı data-pips API'si, kalp şeklinde.
+JS: `MH.pips(el, 3, 5)`
+
+```html
+<div class="mh-pips mh-pips--hearts" data-pips="3/5"></div>
+```

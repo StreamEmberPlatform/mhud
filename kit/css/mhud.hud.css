@@ -141,6 +141,16 @@
   font-family: var(--mh-font-num); font-size: 11px; font-weight: 700; color: var(--mh-accent);
 }
 
+/* ---------- v2: yön çipi, hedef oku, koordinat ---------- */
+.mh-heading { display: inline-flex; align-items: baseline; gap: 6px; text-shadow: var(--mh-hud-shadow); }
+.mh-heading b { font-family: var(--mh-font-display); font-size: 28px; font-weight: 700; line-height: 1; color: var(--mh-accent); min-width: 34px; text-align: center; }
+.mh-heading span { font-family: var(--mh-font-num); font-size: 13px; color: var(--mh-text-2); font-variant-numeric: tabular-nums; }
+.mh-wayarrow { --tone-rgb: var(--mh-accent-rgb); display: inline-flex; flex-direction: column; align-items: center; gap: 4px; text-shadow: var(--mh-hud-shadow); }
+.mh-wayarrow > i { width: 38px; height: 38px; background: rgb(var(--tone-rgb)); clip-path: polygon(50% 0, 100% 100%, 50% 78%, 0 100%); transform: rotate(var(--a, 0deg)); transition: transform var(--mh-dur-3) var(--mh-ease); }
+.mh-wayarrow > b { font-family: var(--mh-font-num); font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.mh-coords { display: inline-flex; gap: 12px; font-family: var(--mh-font-num); font-size: 12px; color: var(--mh-text-2); font-variant-numeric: tabular-nums; text-shadow: var(--mh-hud-shadow); }
+.mh-coords b { color: var(--mh-text); font-weight: 600; margin-left: 3px; }
+
 /* ---------- Saat / hava ---------- */
 .mh-clock { display: flex; align-items: center; gap: 10px; text-shadow: var(--mh-hud-shadow); }
 .mh-clock__time { font-family: var(--mh-font-num); font-weight: 600; font-size: 22px; line-height: 1; font-variant-numeric: tabular-nums; }
@@ -150,6 +160,11 @@
 /* ==========================================================================
    SİLAH & MÜHİMMAT
    ========================================================================== */
+/* v2: kompakt mermi sayacı (şarjör / yedek) */
+.mh-ammo { display: inline-flex; align-items: baseline; gap: 4px; text-shadow: var(--mh-hud-shadow); }
+.mh-ammo b { font-family: var(--mh-font-num); font-size: 28px; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+.mh-ammo span { font-family: var(--mh-font-num); font-size: 14px; color: var(--mh-text-2); }
+.mh-ammo.is-low b { color: var(--mh-danger); }
 .mh-weapon { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; text-shadow: var(--mh-hud-shadow); }
 .mh-weapon__name { display: flex; align-items: center; gap: 8px; }
 .mh-weapon__main { display: flex; align-items: center; gap: 14px; }
@@ -168,6 +183,9 @@
 /* ==========================================================================
    PARA
    ========================================================================== */
+/* v2: kompakt para (ikon + tutar) */
+.mh-coin { --tone-rgb: var(--mh-gold-rgb); display: inline-flex; align-items: center; gap: 6px; font-family: var(--mh-font-num); font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; text-shadow: var(--mh-hud-shadow); }
+.mh-coin > .mh-i { width: 16px; height: 16px; color: rgb(var(--tone-rgb)); }
 .mh-cash { position: relative; display: flex; flex-direction: column; align-items: flex-end; gap: 3px; text-shadow: var(--mh-hud-shadow); }
 .mh-cash__value { display: flex; align-items: baseline; gap: 3px; font-family: var(--mh-font-num); font-weight: 600; font-size: 34px; line-height: 1; font-variant-numeric: tabular-nums; }
 .mh-cash__value > small { font-size: .62em; color: var(--mh-success); font-weight: 600; }

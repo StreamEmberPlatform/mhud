@@ -1,4 +1,4 @@
-# main dalına her itmede demo sitesini GitHub Pages'e yayınlar:
+# main dalına her itmede galeriyi GitHub Pages'e yayınlar:
 #   https://streamemberplatform.github.io/mhud/
 # ÖNCE BİR KEZ: Settings > Pages > Build and deployment > Source = "GitHub Actions"
 # (açılmazsa deploy adımı 404 verir; GITHUB_TOKEN Pages'i kendisi açamaz)
@@ -32,12 +32,7 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: npm run build
-      - name: Site klasörü
-        run: |
-          mkdir _site
-          cp -r index.html pages demo kit games dist _site/
-          touch _site/.nojekyll
+      - run: npm run site
       - uses: actions/upload-pages-artifact@v5
         with:
           path: _site

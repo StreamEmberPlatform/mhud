@@ -6,8 +6,7 @@
   var BASE = script.getAttribute('src').replace(/demo\/demo\.js.*$/, '');   // '' veya '../'
 
   var PAGES = [
-    { group: 'Başlangıç', items: [
-      { href: 'index.html', label: 'Genel bakış', icon: 'grid' },
+    { group: 'Sunumlar', items: [
       { href: 'pages/components.html', label: 'Temel bileşenler', icon: 'layers' }
     ]},
     { group: 'Oyun içi HUD', items: [
@@ -19,7 +18,6 @@
     ]},
     { group: 'Yayın & oyunlar', items: [
       { href: 'pages/broadcast.html', label: 'Yayın düzeni (kare/dikey)', icon: 'phone' },
-      { href: 'pages/games.html', label: 'Oyun ön ayarları', icon: 'gamepad' },
       { href: 'pages/western.html', label: 'Eski Batı', icon: 'hat' }
     ]},
     { group: 'Akışlar', items: [
@@ -33,13 +31,14 @@
       { href: 'pages/screens.html', label: 'Tam ekranlar', icon: 'focus' }
     ]}
   ];
+  // build-catalog bu satırı aile listesiyle değiştirir (galeri sitesinde)
+  var CATALOG = [];
+  if (CATALOG.length) PAGES.unshift({ group: 'Bileşen kataloğu', items: [{ href: 'index.html', label: 'Tüm aileler', icon: 'grid' }].concat(CATALOG) });
   var THEMES = [
     { id: 'modern',   label: 'Modern',   note: 'GTA V',  sw: 'linear-gradient(135deg,#0d1117 45%,#f5b83d 45%)', scene: 'city' },
-    { id: 'neon',     label: 'Neon',     note: 'Arena',  sw: 'linear-gradient(135deg,#070b1a 45%,#3ee8ff 45% 72%,#ff3ea5 72%)', scene: 'night' },
     { id: 'tactical', label: 'Tactical', note: 'Askeri', sw: 'linear-gradient(135deg,#0e110c 45%,#c4f052 45%)', scene: 'forest' },
     { id: 'frontier', label: 'Frontier', note: 'RDR2',   sw: 'linear-gradient(135deg,#110d09 45%,#cdaa69 45% 72%,#f1e6cf 72%)', scene: 'desert' },
-    { id: 'oldwest',  label: 'Old West', note: 'Eski Batı', sw: 'linear-gradient(135deg,#e6d6b4 45%,#8e2b1e 45% 72%,#2b1d10 72%)', scene: 'town' },
-    { id: 'minimal',  label: 'Minimal',  note: 'Hafif',  sw: 'linear-gradient(135deg,#111317 45%,#f4f5f7 45%)', scene: 'city' }
+    { id: 'oldwest',  label: 'Old West', note: 'Eski Batı', sw: 'linear-gradient(135deg,#e6d6b4 45%,#8e2b1e 45% 72%,#2b1d10 72%)', scene: 'town' }
   ];
   var ACCENTS = [
     { id: '', c: null }, { id: 'amber', c: '#f5b83d' }, { id: 'crimson', c: '#ff4858' }, { id: 'mint', c: '#46de96' },
@@ -59,6 +58,7 @@
     scene: params.get('scene') || store('scene') || 'auto'
   };
 
+  if (!THEMES.some(function (t) { return t.id === state.theme; })) state.theme = 'modern';
   function sceneUrl(id) {
     if (id === 'none') return 'none';
     return 'url("' + BASE + 'demo/scenes/' + id + '.svg")';
@@ -90,7 +90,7 @@
     PAGES.forEach(function (g) {
       h += '<nav class="demo-group demo-nav"><div class="demo-group__label">' + g.group + '</div>';
       g.items.forEach(function (p) {
-        var active = here.indexOf(p.href) >= 0 || (p.href === 'index.html' && /(^|\/)(index\.html)?$/.test(location.pathname) && location.pathname.indexOf('/pages/') < 0);
+        var active = BASE ? here === p.href : (here.split('/').pop() || 'index.html') === p.href;
         h += '<a href="' + BASE + p.href + '" class="' + (active ? 'is-active' : '') + '">' + I(p.icon) + p.label + '</a>';
       });
       h += '</nav>';
@@ -104,7 +104,7 @@
     h += '<div class="demo-group"><div class="demo-group__label">Sahne</div><div class="demo-scenes">' +
       '<button class="demo-scene-btn" data-scene="auto" style="background:linear-gradient(135deg,#2a3040,#4b3a52)"><span>Otomatik</span></button>' +
       SCENES.map(function (s) { return '<button class="demo-scene-btn" data-scene="' + s + '" style="background-image:' + (s === 'none' ? 'none;background:#1a1d24' : sceneUrl(s)) + '"><span>' + SCENE_LABEL[s] + '</span></button>'; }).join('') + '</div></div>';
-    h += '<div class="demo-side__foot">FiveM &amp; RedM NUI kiti. Tüm ölçüler 1920×1080 referanslıdır.</div>';
+    h += '<div class="demo-side__foot">Sunum sayfaları bileşenlerin bir arada kullanımını gösterir. Tüm ölçüler 1920×1080 referanslıdır.</div>';
     var side = document.createElement('aside');
     side.className = 'demo-side';
     side.innerHTML = h;

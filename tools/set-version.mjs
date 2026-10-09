@@ -10,9 +10,8 @@ const { version } = JSON.parse(await readFile(path.join(root, 'package.json'), '
 const SEMVER = String.raw`\d+\.\d+\.\d+`;
 const rules = [
   ['kit/js/mhud.js', new RegExp(String.raw`(var MH = \{ version: ')${SEMVER}(')`), `$1${version}$2`],
-  ['integration/mhud/fxmanifest.lua', new RegExp(String.raw`(version ')${SEMVER}(')`), `$1${version}$2`],
   ['README.md', new RegExp(String.raw`(@streamemberplatform/mhud@)${SEMVER}`, 'g'), `$1${version}`],
-  ['index.html', new RegExp(String.raw`(@streamemberplatform/mhud@)${SEMVER}`, 'g'), `$1${version}`],
+  ['AI.md', new RegExp(String.raw`(# MHud |@streamemberplatform/mhud@)${SEMVER}`, 'g'), `$1${version}`],
   ['CHANGELOG.md', new RegExp(String.raw`(tam sürüm kullanın \(\`@)${SEMVER}`), `$1${version}`],
   ['.github/workflows/release.yml', new RegExp(String.raw`(git tag v)${SEMVER}( && git push origin v)${SEMVER}`), `$1${version}$2${version}`]
 ];

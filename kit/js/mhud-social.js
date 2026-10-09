@@ -13,7 +13,7 @@
 
    NUI mesajları:  social:state (tam) · social:patch · social:open { section } · social:close
    Geri dönüş:     MH.post('social', { action: 'crew:invite', data: { ids: [..] } })
-   Eylem listesi:  games/README.md ve pages/social.html (Protokol bölümü)
+   Eylem listesi: bu dosyadaki MH.Social API açıklamaları
 
    "Kanal" = aynı sunucuda ayrı dünya (FiveM/RedM routing bucket). Aynı kanaldaki
    oyuncular birbirini görür; başka kanaldakiler görünmez ve etkileşemez.

@@ -1,5 +1,5 @@
-# v* etiketi itildiğinde: derle, npm'e yayınla, FiveM/RedM resource zip'ini GitHub Release'e ekle.
-#   git tag v1.3.0 && git push origin v1.3.0
+# v* etiketi itildiğinde: derle, npm'e yayınla.
+#   git tag v2.0.0 && git push origin v2.0.0
 # Yayın kimliği (ikisinden biri):
 #  1) Trusted Publishing (önerilen, token yok): npmjs.com > paket > Settings > Trusted Publisher >
 #     GitHub Actions: StreamEmberPlatform / mhud / release.yml  → NPM_TOKEN secret'ını silebilirsin.
@@ -39,11 +39,6 @@ jobs:
 
       - run: npm run build
 
-      - name: FiveM/RedM resource paketi
-        run: |
-          npm run sync
-          cd integration && zip -qr "../mhud-resource-${GITHUB_REF_NAME}.zip" mhud
-
       - name: npm kimliği (teşhis)
         run: npm whoami || echo "Token yok ya da geçersiz; Trusted Publishing (OIDC) denenecek"
         env:
@@ -59,4 +54,3 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
-          files: mhud-resource-${{ github.ref_name }}.zip

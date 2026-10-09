@@ -1,6 +1,15 @@
 # Değişiklik günlüğü
 
-Sürümler [SemVer](https://semver.org/lang/tr/) izler. CDN'de her zaman tam sürüm kullanın (`@1.3.0`).
+Sürümler [SemVer](https://semver.org/lang/tr/) izler. CDN'de her zaman tam sürüm kullanın (`@2.0.0`).
+
+## 2.0.0 — 2026-10-09
+**Kırıcı sürüm; eski sürümle uyumluluk hedeflenmedi.**
+- Kaldırıldı: FiveM/RedM resource'u (`integration/`), hazır oyun düzenleri ve `dist/mhud-game.*` (`games/`), `npm run sync`.
+- Kaldırıldı: `minimal` ve `neon` temaları. Yerine `modern` ya da `tactical` kullanın. Kalan temalar: modern, tactical, frontier, oldwest.
+- Yeni: bileşen kataloğu (`catalog/`), aile bazlı galeri ve yapay zeka kılavuzu (`AI.md`, `ai/<aile>.md`; katalogdan üretilir).
+- Yeni — katalog aileleri: yaşam göstergeleri (30), konum & yön (10), ekonomi & durum (12), ekipman & ekip (9), araç & binek (6), bildirimler (12), savaş & dünya (16), menü & ekranlar (14), yayın & izleyici (12), basılı nesneler (7), hayatta kalma & mod (12), grafik & ilerleme (11), temel parçalar (13) — toplam 13 aile, 164 varyant; sosyal menü API olarak `AI.md`'de. Yeni bar stilleri (birleştirilebilir): `mh-bar--line`, `--tip` (uç ışığı), `--skew`, `--chevron`, `--arrow`, `--pill`, `--glass`, `--stripe`, `--shine`, `--heat`, `--ticks`, `--frame`, `--bracket`, `--center`, `--rtl`, `__text`, `__over` (aşırı kalkan); `MH.bar` artık barda `--v` yazar. Yeni yerleşimler: şerit (`mh-strip`, `--skew`), plaka (`mh-plate`). Yeni parçalar: dikey bar (`mh-bar--v`), değerli halka (`mh-ringval`), kalp segmentleri (`mh-pips--hearts`), yön çipi (`mh-heading`), hedef oku (`mh-wayarrow`), koordinat (`mh-coords`), kompakt para (`mh-coin`), mermi sayacı (`mh-ammo`), ikonlu halka (`mh-ringval > .mh-i`); hız kadranı `data-speed` ile kurulur; pusula `data-heading` ile kurulur.
+- Galeri: sol menü (katalog aileleri + sunumlar); sunum sayfaları (`pages/`, oyun ön ayarları hariç) v2 temalarıyla geri geldi.
+- Ortak MH.Atlas adaptörü; overlay oyun yüksekliğine göre ölçekleme, düşman can barında kırmızı ton ve yalnız maksimum can değiştiğinde bar/halkaların yenilenmesi.
 
 ## 1.3.0 — 2026-10-08
 - İlk npm sürümü: `@streamemberplatform/mhud` (dist/ tek dosya CSS ve JS, jsDelivr/unpkg).

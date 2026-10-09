@@ -67,7 +67,7 @@
 
   /* ---------- Vurgu ---------- */
   --mh-accent-rgb:   245 184 61;
-  --mh-accent-2-rgb: 255 122 69;    /* ikincil (gradyan ucu, neon'da magenta) */
+  --mh-accent-2-rgb: 255 122 69;    /* ikincil (gradyan ucu) */
   --mh-on-accent:    #0b0d10;
 
   /* ---------- Anlamsal ---------- */
@@ -109,7 +109,7 @@
   --mh-r-panel: var(--mh-r-3);
   --mh-r-control: var(--mh-r-2);
   --mh-border-w: 1px;
-  --mh-cut: 0px;                 /* neon temasında köşe kesiği */
+  --mh-cut: 0px;                 /* köşe kesiği (temalar isteğe bağlı kullanır) */
 
   --mh-safe-x: 40px;             /* ekran güvenli alanı (1080p) */
   --mh-safe-y: 32px;

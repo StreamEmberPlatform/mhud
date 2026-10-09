@@ -1,0 +1,127 @@
+# Ekonomi ve durum
+Para, aranma/ödül, saat ve hava, seviye ve XP, etki simgeleri, seri, sıralama. Sayılar MH.count / MH.money ile akıcı değişir.
+
+## economy.cash — Para ve banka
+Sağ üst köşe para göstergesi; artış/azalış farkı kısa süre yüzer. İkinci satır banka bakiyesi (kaldırılabilir).
+JS: `MH.money(el, 12480, { symbol: '$' })`
+
+```html
+<div class="mh-cash">
+  <div class="mh-cash__value"><small>$</small><b data-cash>12.480</b></div>
+  <div class="mh-cash__bank"><i data-i="bank"></i><span>1.204.900</span></div>
+</div>
+```
+
+## economy.coin — Kompakt para
+Tek satır ikon + tutar: puan, jeton, altın. Tonu mh-t-* ile değiştir; satır içi kullanılır.
+JS: `MH.money(el.querySelector('b'), 12400)`
+
+```html
+<div class="mh-flex" style="gap:20px">
+  <div class="mh-coin"><i data-i="coin-f"></i><b>12.400</b></div>
+  <div class="mh-coin mh-t-info"><i data-i="bolt"></i><b>240</b></div>
+</div>
+```
+
+## economy.wanted — Aranma yıldızları
+GTA tarzı 5 yıldız; dolu olanlara on sınıfı, is-flashing yanıp söner.
+JS: `el.querySelectorAll('.mh-i').forEach((s, i) => s.classList.toggle('on', i < 3))`
+
+```html
+<div class="mh-wanted is-flashing"><i data-i="star-f" class="on"></i><i data-i="star-f" class="on"></i><i data-i="star-f"></i><i data-i="star-f"></i><i data-i="star-f"></i></div>
+```
+
+## economy.bounty — Ödül mührü
+RDR2 tarzı: kafatası mührü + başındaki ödül tutarı.
+JS: `MH.count(el.querySelector('.mh-bounty__amount'), 4500)`
+
+```html
+<div class="mh-bounty"><span class="mh-bounty__seal"><i data-i="skull"></i></span><div><span class="mh-kicker">Başında ödül</span><div class="mh-bounty__amount">$45,00</div></div></div>
+```
+
+## economy.clock — Saat ve hava
+Hava ikonu + saat + durum ve gün. İkon ad değişince hava değişir (sun, rain, …).
+JS: `el.querySelector('.mh-clock__time').textContent = '06:40'`
+
+```html
+<div class="mh-clock"><i data-i="sun"></i><span class="mh-clock__time">21:14</span><span class="mh-clock__meta"><span>Açık · 24°C</span><span>Cumartesi</span></span></div>
+```
+
+## economy.xp — Seviye ve XP
+Elmas seviye rozeti + XP barı + kazanılan puan. Alt kenar HUD'u.
+JS: `MH.bar(el.querySelector('.mh-bar'), 77)`
+
+```html
+<div class="mh-xp" style="--w:340px">
+  <div class="mh-xp__level"><span>42</span></div>
+  <div class="mh-xp__body">
+    <div class="mh-xp__meta"><span>Seviye 42 · <b>+250 RP</b></span><span class="mh-num">18.450 / 24.000</span></div>
+    <div class="mh-bar" data-v="77"><i class="mh-bar__gain"></i><i class="mh-bar__fill"></i></div>
+  </div>
+</div>
+```
+
+## economy.levelring — Seviye halkası
+Halka içinde seviye numarası; small etiketi altta. --size boyut, ton mh-t-*.
+JS: `MH.ring(el, 0.64)`
+
+```html
+<div class="mh-flex" style="gap:18px">
+  <div class="mh-levelring" data-mh-ring style="--v:.64"><b>24</b><small>SVY</small></div>
+  <div class="mh-levelring mh-t-legendary" data-mh-ring style="--v:.85;--size:64px"><b>48</b></div>
+</div>
+```
+
+## economy.effects — Etki simgeleri
+Aktif buff/debuff'lar: simge, kalan süre (--v kalan oran), yığın sayısı. is-debuff kırmızı, is-expiring yanıp söner.
+JS: `el.style.setProperty('--v', 0.4)`
+
+```html
+<div class="mh-effects">
+  <div class="mh-effect" style="--v:.72"><i data-i="shield-f"></i><span class="mh-effect__time">0:43</span></div>
+  <div class="mh-effect" style="--v:.4"><i data-i="run"></i><span class="mh-effect__time">0:18</span><span class="mh-effect__stack">2</span></div>
+  <div class="mh-effect is-debuff" style="--v:.85"><i data-i="flame"></i><span class="mh-effect__time">0:06</span></div>
+</div>
+```
+
+## economy.effect-line — Etki satırı
+Simgesiz metin satırı: ad + süre. Ton çubuğu soldadır; western/oldwest'te simge yerine tercih edilir.
+JS: `el.querySelector('b').textContent = '00:43'`
+
+```html
+<div class="mh-col mh-gap-2" style="align-items:flex-start">
+  <div class="mh-effect-line mh-t-success"><span class="mh-kicker">Kalkan</span><b>00:43</b></div>
+  <div class="mh-effect-line mh-t-accent"><span class="mh-kicker">Tonik etkisi</span><b>01:20</b></div>
+</div>
+```
+
+## economy.streak — Seri / kombo
+Sayı büyür, alttaki çubuk süre dolunca söner; 5 ve üstünde is-hot kırmızı. Sayıyı MH.streak yönetir.
+JS: `MH.streak(el, 5, { hot: 5, decay: 6000 })`
+
+```html
+<div class="mh-panel mh-streak"><i data-i="streak"></i><span class="mh-streak__count">5</span><span class="mh-streak__label"><b>Öldürme serisi</b><span class="mh-sub">+%25 para</span></span><i class="mh-streak__decay"></i></div>
+```
+
+## economy.chip-stat — İstatistik çipleri
+Yayın overlay'inde yan yana duran büyük sayı kartları (seviye, can, öldürme). mh-statbar--lg büyütür.
+JS: `MH.stat(root, 'kills', 12)`
+
+```html
+<div class="mh-statbar">
+  <div class="mh-chip-stat mh-t-accent"><i data-i="xp"></i><b>24</b><span>Seviye</span></div>
+  <div class="mh-chip-stat mh-t-health"><i data-i="heart"></i><b>82<small>/100</small></b><span>Can</span></div>
+</div>
+```
+
+## economy.standings — Sıralama
+Skor tablosu satırları: sıra rozeti (is-1/2/3 madalya), ad, skor. is-self kendi satırın.
+
+```html
+<div class="mh-panel mh-standings">
+  <div class="mh-standing"><span class="mh-rank is-1">1</span><span>NabeMedia</span><b>14 / 3</b></div>
+  <div class="mh-standing is-self"><span class="mh-rank is-2">2</span><span>Amiral Router</span><b>11 / 4</b></div>
+  <div class="mh-standing"><span class="mh-rank is-3">3</span><span>Bandit #8</span><b>9 / 6</b></div>
+  <div class="mh-standing"><span class="mh-rank">4</span><span>MSK</span><b>7 / 7</b></div>
+</div>
+```

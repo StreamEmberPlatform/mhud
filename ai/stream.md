@@ -1,0 +1,126 @@
+# Yayın ve izleyici
+Yayıncı ekranı parçaları: durum şeridi, istatistik kartı, seviye halkası, galibiyet/mağlubiyet, hedef çubuğu, izleyici oylaması, olay kuyruğu, liderlik, canlı sayaçlar, komut listesi, yayıncı kartı.
+
+## stream.statbar — Durum şeridi
+Yatay istatistik çipleri: ikon + büyük sayı + etiket. Ton mh-t-*; sayının yanına <small> ile /100 gibi ek.
+JS: `chip.querySelector('b').textContent = v`
+
+```html
+<div class="mh-statbar"> <div class="mh-chip-stat mh-t-accent"><i data-i="xp"></i><b>24</b><span>Seviye</span></div> <div class="mh-chip-stat mh-t-health"><i data-i="heart"></i><b>82<small>/100</small></b><span>Can</span></div> <div class="mh-chip-stat mh-t-danger"><i data-i="enemy"></i><b>14</b><span>Ekranda</span></div> <div class="mh-chip-stat mh-t-warn"><i data-i="queue"></i><b>37</b><span>Kuyrukta</span></div> <div class="mh-chip-stat"><i data-i="skull"></i><b>3</b><span>Ölüm</span></div> </div>
+```
+
+## stream.statcard — İstatistik kartı
+Oyuncu özeti: seviye halkası + ad, altında 2×2 hücre (ikon, sayı, etiket). Hücreye ton ver.
+JS: `MH.mount(root)`
+
+```html
+<div class="mh-panel mh-statcard"> <div class="mh-statcard__head"><div class="mh-levelring" data-mh-ring style="--v:.64"><b>24</b><small>SVY</small></div><div class="mh-statcard__name"><b>Amiral Router</b><span class="mh-sub">Hayatta kal · Dalga 8</span></div></div>
+<div class="mh-statcard__grid"> <div class="mh-statcard__cell mh-t-danger"><i data-i="enemy"></i><div><b>14</b><span>Ekranda</span></div></div> <div class="mh-statcard__cell mh-t-warn"><i data-i="queue"></i><div><b>37</b><span>Kuyrukta</span></div></div> <div class="mh-statcard__cell mh-t-success"><i data-i="trophy"></i><div><b>5–2</b><span>G / M</span></div></div> <div class="mh-statcard__cell"><i data-i="skull"></i><div><b>3</b><span>Ölüm</span></div></div> </div> </div>
+```
+
+## stream.hpbig — Büyük can
+Yayın kadrajı için iri can göstergesi: ikon, değer, /max ve gölgeli bar (__ghost geriden gelir).
+JS: `MH.bar(el, v)`
+
+```html
+<div class="mh-hpbig" style="--w:320px"><div class="mh-hpbig__head"><i data-i="heart"></i><b>82</b><span>/ 100</span></div><div class="mh-bar mh-t-health" data-v="82"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div></div>
+```
+
+## stream.levelring — Seviye halkası
+İçinde sayı ve küçük etiket olan halka; --v 0..1 ilerleme.
+JS: `MH.ring(el, 0.64)`
+
+```html
+<div class="mh-levelring" data-mh-ring style="--v:.64"><b>24</b><small>SVY</small></div>
+```
+
+## stream.winloss — Galibiyet / mağlubiyet
+Skor (yeşil W, kırmızı L) ve son maç geçmişi: data-history=&quot;WWLWWLW&quot; harfleri noktaya çevrilir.
+JS: `MH.mount(root)`
+
+```html
+<div class="mh-panel mh-wl"><div class="mh-wl__score"><b class="w">5</b><i>–</i><b class="l">2</b></div><div class="mh-wl__meta"><span class="mh-kicker">Son maçlar</span><div class="mh-history" data-history="WWLWWLW"></div></div></div>
+```
+
+## stream.goal — Hedef çubuğu
+Bağış/beğeni hedefi: ikon, başlık, sayaç, bar ve ödül satırı. İlerleme için bar data-v.
+JS: `MH.bar(bar, 72)`
+
+```html
+<div class="mh-panel mh-goal" style="--w:420px"> <div class="mh-goal__head"><span class="mh-goal__icon"><i data-i="heart-f"></i></span><span class="mh-goal__title">Beğeni hedefi</span><span class="mh-goal__count"><span style="color:var(--mh-text)">72.400</span><span> / 100.000</span></span></div> <div class="mh-bar" data-v="72"><i class="mh-bar__fill"></i></div> <div class="mh-goal__reward"><i data-i="gift"></i>Ödül: <b style="color:var(--mh-text)">2× para</b> (5 dk)</div> </div>
+```
+
+## stream.vote — İzleyici oylaması
+Soru + süre rozeti + seçenekler. Seçenek: mh-opt, __fill'e --v (0..1) yüzde, __cmd sohbet komutu, __label, __pct. is-leading öndeki, is-winner kazanan.
+JS: `opt.style.setProperty('--v', .4)`
+
+```html
+<div class="mh-panel mh-vote" style="--w:420px"> <div class="mh-vote__head"><div><span class="mh-kicker mh-kicker--accent">İzleyici oylaması</span><div class="mh-vote__q">Sonraki olay ne olsun?</div></div><span class="mh-badge mh-t-danger mh-badge--dot mh-badge--live mh-num">0:18</span></div>
+<div class="mh-vote__opts">
+<div class="mh-opt is-leading mh-t-danger"><i class="mh-opt__fill" style="--v:.52"></i><span class="mh-opt__cmd">!1</span><span class="mh-opt__label">Boss geliyor</span><span class="mh-opt__pct">52%</span></div>
+<div class="mh-opt mh-t-info"><i class="mh-opt__fill" style="--v:.30"></i><span class="mh-opt__cmd">!2</span><span class="mh-opt__label">Yağmur başlasın</span><span class="mh-opt__pct">30%</span></div>
+<div class="mh-opt mh-t-success"><i class="mh-opt__fill" style="--v:.18"></i><span class="mh-opt__cmd">!3</span><span class="mh-opt__label">Herkes iyileşsin</span><span class="mh-opt__pct">18%</span></div> </div>
+<div class="mh-vote__foot"><span>Toplam <b>1.284</b> oy</span><span>Sohbete <b>!1</b> – <b>!3</b> yaz</span></div> </div>
+```
+
+## stream.queue — Olay kuyruğu
+Sıradaki olaylar listesi; çalışan satır is-running, ton mh-t-*; sağda süre veya 'sırada'.
+JS: `—`
+
+```html
+<div class="mh-panel mh-queue" style="--w:340px"> <div class="mh-panel__head" style="padding:10px 14px"><span class="mh-kicker">Olay kuyruğu</span><span class="mh-count" style="margin-left:auto">3</span></div>
+<div class="mh-queue__item is-running mh-t-danger"><i data-i="skull"></i><span>Boss geliyor · NabeMedia</span><small>0:08</small></div>
+<div class="mh-queue__item mh-t-info"><i data-i="users"></i><span>5 düşman · RAPAFI</span><small>sırada</small></div>
+<div class="mh-queue__item mh-t-success"><i data-i="heart-plus"></i><span>İyileştirme · anonim</span><small>sırada</small></div> </div>
+```
+
+## stream.leader — Destekçi sıralaması
+En çok destekleyenler: başlık, satırlar (mh-rank is-1/2/3, avatar, ad, değer).
+JS: `—`
+
+```html
+<div class="mh-panel mh-leader" style="--w:300px"> <div class="mh-panel__head" style="padding:10px 14px"><i data-i="crown-f" style="color:rgb(var(--mh-gold-rgb))"></i><span class="mh-kicker">En çok destekleyenler</span></div>
+<div class="mh-leader__row"><span class="mh-rank is-1">1</span><span class="mh-avatar mh-avatar--sm mh-avatar--round">NM</span><span class="mh-leader__name">NabeMedia</span><span class="mh-leader__val"><i data-i="coin-f"></i>12.400</span></div>
+<div class="mh-leader__row"><span class="mh-rank is-2">2</span><span class="mh-avatar mh-avatar--sm mh-avatar--round">MS</span><span class="mh-leader__name">MSK</span><span class="mh-leader__val"><i data-i="coin-f"></i>8.150</span></div> </div>
+```
+
+## stream.livestats — Canlı sayaçlar
+Yayın göstergeleri: 'Canlı' rozeti + izleyici/beğeni/jeton hücreleri (ton + ikon + sayı).
+JS: `MH.count(el, 4218)`
+
+```html
+<div class="mh-panel mh-livestats"> <div class="mh-livestat"><span class="mh-onair">Canlı</span></div> <div class="mh-livestat mh-t-info"><i data-i="eye"></i><div><b>4.218</b><span class="mh-kicker">İzleyici</span></div></div> <div class="mh-livestat mh-t-danger"><i data-i="heart-f"></i><div><b>182 B</b><span class="mh-kicker">Beğeni</span></div></div> <div class="mh-livestat mh-t-gold"><i data-i="coins"></i><div><b>36.540</b><span class="mh-kicker">Jeton</span></div></div> </div>
+```
+
+## stream.commands — Komut ve hediye listesi
+İzleyici komutları: kod (code) veya hediye çipi (mh-gift-chip) + açıklama.
+JS: `—`
+
+```html
+<div class="mh-commands"> <div class="mh-command"><code>!saldırı</code> Düşman dalgası çağır</div> <div class="mh-command"><code>!can</code> Yayıncıyı iyileştir</div> <div class="mh-command"><span class="mh-gift-chip"><span style="font-size:15px">🌹</span>Gül</span> 1 düşman doğar</div> </div>
+```
+
+## stream.streamer — Yayıncı kartı
+Avatar (is-live çerçeve), ad + doğrulama, meta satırı (izleyici, takipçi).
+JS: `—`
+
+```html
+<div class="mh-panel mh-streamer"><span class="mh-avatar mh-avatar--lg mh-avatar--round is-live">S</span><div class="mh-col" style="gap:3px"><span class="mh-streamer__name">Serkan_TV <i data-i="circle-check"></i></span><div class="mh-streamer__meta"><span><i data-i="eye"></i>4,2 B</span><span><i data-i="users"></i>128 B takipçi</span></div></div></div>
+```
+
+## stream.likes — Beğeni yağmuru
+Kalpleri yukarı süzdüren efekt alanı. Kod: bir .mh-likes kutusuna .mh-like (içinde ikon) ekle; kendiliğinden yükselip söner.
+
+```js
+var box = document.createElement('div');
+box.className = 'mh-likes';
+box.style.cssText = 'position:fixed;right:60px;bottom:40px;width:120px;height:240px;z-index:40';
+document.body.appendChild(box);
+for (var i = 0; i < 8; i++) setTimeout(function () {
+  var l = document.createElement('div'); l.className = 'mh-like';
+  l.style.setProperty('--d', (2 + Math.random()).toFixed(2) + 's');
+  l.innerHTML = '<i class="mh-i" data-i="heart-f"></i>'; box.appendChild(l); MH.mount(l);
+  setTimeout(function () { l.remove(); }, 3500);
+}, i * 180);
+setTimeout(function () { box.remove(); }, 4500);
+```

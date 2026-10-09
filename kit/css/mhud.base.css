@@ -70,7 +70,7 @@ html.mh-nui, html.mh-nui body { margin: 0; width: 100%; height: 100%; overflow: 
 /* ==========================================================================
    PANEL
    Panel üzerindeki ::before / ::after temalara ayrılmıştır (köşe braketleri,
-   baklava süsleri, neon kenar). Bileşenler bunları kullanmaz.
+   baklava süsleri). Bileşenler bunları kullanmaz.
    ========================================================================== */
 .mh-panel {
   position: relative;
@@ -314,6 +314,20 @@ html.mh-nui, html.mh-nui body { margin: 0; width: 100%; height: 100%; overflow: 
 .mh-pips > i.on { background: rgb(var(--t)); box-shadow: 0 0 calc(6px * var(--mh-glow-a)) rgb(var(--t)); }
 .mh-pips--tall > i { height: 10px; }
 
+/* ---------- v2 varyantlar: dikey bar, değerli halka, kalp segmentleri ---------- */
+.mh-bar--v { --len: 80px; width: var(--h); height: var(--len); }
+.mh-bar--v .mh-bar__fill, .mh-bar--v .mh-bar__ghost, .mh-bar--v .mh-bar__gain { transform-origin: center bottom; transform: scaleY(var(--v, 0)); }
+.mh-ringval { position: relative; width: 48px; height: 48px; flex: none; display: grid; place-items: center; }
+.mh-ringval > .mh-ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mh-ringval > b { font-family: var(--mh-font-num); font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; text-shadow: var(--mh-hud-shadow); }
+.mh-ringval > .mh-i { position: relative; width: 42%; height: 42%; color: rgb(var(--tone-rgb, var(--mh-accent-rgb))); }
+.mh-pips--hearts { --t: var(--tone-rgb, var(--mh-health-rgb)); gap: 4px; }
+.mh-pips--hearts > i {
+  flex: none; width: 20px !important; height: 18px !important; min-width: 0; border-radius: 0 !important; box-shadow: none !important; /* temalar segment geometrisini ezer */
+  -webkit-mask: var(--mh-heart) center / contain no-repeat; mask: var(--mh-heart) center / contain no-repeat;
+  --mh-heart: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z'/%3E%3C/svg%3E");
+}
+
 /* ==========================================================================
    FORM KONTROLLERİ
    ========================================================================== */
@@ -490,7 +504,7 @@ textarea.mh-input { height: auto; min-height: 76px; padding: 10px 12px; resize: 
   pointer-events: none;
 }
 .mh-spinner {
-  width: 22px; height: 22px; border-radius: 50%; flex: none;
+  display: inline-block; width: 22px; height: 22px; border-radius: 50%; flex: none;
   border: 2px solid var(--mh-track); border-top-color: var(--mh-accent);
   animation: mh-spin .8s linear infinite;
 }
@@ -530,3 +544,82 @@ textarea.mh-input { height: auto; min-height: 76px; padding: 10px 12px; resize: 
 /* data-mh-ring ile eklenen halka, kapsayıcısını doldurur */
 [data-mh-ring] { position: relative; }
 [data-mh-ring] > .mh-ring { width: 100%; height: 100%; }
+
+/* ==========================================================================
+   v2 BAR STİLLERİ — hepsi .mh-bar üzerine eklenen değiştirici sınıflardır.
+   MH.bar() dolguyu scaleX ile, ayrıca bar üzerinde --v (0..1) yazar; uç ışığı
+   ve değer konumlu süslemeler --v'yi okur. Birleştirilebilirler.
+   ========================================================================== */
+.mh-bar--glass > .mh-bar__fill::before, .mh-bar--stripe > .mh-bar__fill::after, .mh-bar--shine > .mh-bar__fill::after { position: absolute; inset: 0; pointer-events: none; border-radius: inherit; }
+/* İnce çizgi: 2px, arka iz neredeyse görünmez */
+.mh-bar--line { --h: 2px; background: rgb(255 255 255 / .1); overflow: visible; }
+.mh-bar--line > .mh-bar__fill { box-shadow: 0 0 calc(8px * var(--mh-glow-a) + 2px) rgb(var(--t) / .8); }
+/* Uç ışığı: dolgunun ucunda parlak çentik */
+.mh-bar--tip { overflow: visible; }
+.mh-bar--tip::before {
+  content: ""; position: absolute; z-index: 2; top: -3px; bottom: -3px; width: 2px; left: calc(var(--v, 0) * 100% - 1px);
+  background: #fff; border-radius: 1px; box-shadow: 0 0 6px 1px rgb(var(--t)), 0 0 2px #fff;
+  transition: left var(--mh-dur-3) var(--mh-ease); pointer-events: none;
+}
+/* Eğik (paralelkenar) */
+.mh-bar--skew { transform: skewX(-20deg); border-radius: 0; }
+/* Ok uçlu */
+.mh-bar--chevron { --c: calc(var(--h) * .9); border-radius: 0; clip-path: polygon(var(--c) 0, 100% 0, calc(100% - var(--c)) 100%, 0 100%); }
+.mh-bar--arrow { --c: calc(var(--h) * .7); border-radius: 0; clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% 50%, calc(100% - var(--c)) 100%, 0 100%, var(--c) 50%); }
+/* Hap (yuvarlak, cam parlaması) */
+.mh-bar--pill { border-radius: 999px; }
+.mh-bar--glass { box-shadow: inset 0 1px 2px rgb(0 0 0 / .6), 0 0 0 1px rgb(255 255 255 / .06); }
+.mh-bar--glass > .mh-bar__fill::before { content: ""; background: linear-gradient(180deg, rgb(255 255 255 / .45), rgb(255 255 255 / .08) 45%, transparent 55%, rgb(0 0 0 / .18)); }
+/* Hareketli çizgiler (dolum, şarj, yenilenme) */
+.mh-bar--stripe > .mh-bar__fill::after { content: ""; background: repeating-linear-gradient(-45deg, rgb(255 255 255 / .2) 0 5px, transparent 5px 10px); background-size: 14px 14px; animation: mh-stripes14 .8s linear infinite; }
+@keyframes mh-stripes14 { to { background-position: 14px 0; } }
+/* Işık süpürmesi */
+.mh-bar--shine > .mh-bar__fill::after { content: ""; background: linear-gradient(100deg, transparent 30%, rgb(255 255 255 / .55) 50%, transparent 70%) no-repeat; background-size: 40% 100%; animation: mh-shine 2.4s ease-in-out infinite; }
+@keyframes mh-shine { 0% { background-position: -60% 0; } 60%, 100% { background-position: 160% 0; } }
+/* Yön: ortadan dolan, sağdan dolan */
+.mh-bar--center > .mh-bar__fill, .mh-bar--center > .mh-bar__ghost { transform-origin: center; }
+.mh-bar--rtl > .mh-bar__fill, .mh-bar--rtl > .mh-bar__ghost, .mh-bar--rtl > .mh-bar__gain { transform-origin: right center; }
+.mh-bar--rtl.mh-bar--tip::before { left: auto; right: calc(var(--v, 0) * 100% - 1px); transition-property: right; }
+/* İnce ölçek çizgileri (--ticks adet bölme) */
+.mh-bar--ticks::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: repeating-linear-gradient(90deg, transparent 0 calc(100% / var(--ticks, 10) - 1px), rgb(0 0 0 / .5) calc(100% / var(--ticks, 10) - 1px) calc(100% / var(--ticks, 10)));
+}
+/* Çerçeveli: ince ton kenarlık + iç boşluk */
+.mh-bar--frame { --h: 12px; background: rgb(0 0 0 / .45); box-shadow: inset 0 0 0 1px rgb(var(--t) / .55); border-radius: 0; }
+.mh-bar--frame > .mh-bar__fill, .mh-bar--frame > .mh-bar__ghost, .mh-bar--frame > .mh-bar__gain { inset: 3px; }
+/* Köşeli ayraç: iki uçta [ ] */
+.mh-bar--bracket { overflow: visible; margin: 0 6px; width: calc(100% - 12px); }
+.mh-bar--bracket::after { content: ""; position: absolute; inset: -4px -6px; border: 1px solid rgb(var(--t) / .7); border-top: 0; border-bottom: 0; pointer-events: none; }
+/* Dolgu renk geçişi: kritikten tama (kırmızı → ton) */
+.mh-bar.mh-bar--heat > .mh-bar__fill { background: linear-gradient(90deg, var(--mh-danger), rgb(var(--mh-warn-rgb)) 35%, rgb(var(--t)) 70%); transform: none !important; clip-path: inset(0 calc((1 - var(--v, 0)) * 100%) 0 0); transition: clip-path var(--mh-dur-3) var(--mh-ease); }
+/* Değer yazısı barın içinde */
+.mh-bar__text { position: absolute; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; font-family: var(--mh-font-num); font-size: 11px; font-weight: 700; letter-spacing: .04em; color: #fff; text-shadow: 0 1px 2px rgb(0 0 0 / .9); font-variant-numeric: tabular-nums; pointer-events: none; }
+.mh-bar--skew > .mh-bar__text { transform: skewX(20deg); }
+/* Ek katman: aşırı kalkan (__over, --o 0..1 ile) */
+.mh-bar__over { position: absolute; inset: 0; z-index: 1; transform-origin: left center; transform: scaleX(var(--o, 0)); background: repeating-linear-gradient(-45deg, rgb(255 255 255 / .85) 0 3px, rgb(var(--mh-info-rgb)) 3px 6px); opacity: .85; transition: transform var(--mh-dur-3) var(--mh-ease); }
+
+/* ---------- Şerit: ikon + bar + değer, ton kenarlı tek satır ---------- */
+.mh-strip {
+  --t: var(--tone-rgb, var(--mh-accent-rgb));
+  display: flex; align-items: center; gap: 10px; width: var(--w, 280px); height: 30px; padding: 0 12px 0 10px;
+  background: linear-gradient(90deg, rgb(var(--t) / .22), rgb(0 0 0 / .55) 45%, rgb(0 0 0 / .35));
+  border-left: 3px solid rgb(var(--t));
+}
+.mh-strip > .mh-i { width: 16px; height: 16px; flex: none; color: rgb(var(--t)); filter: drop-shadow(0 0 4px rgb(var(--t) / .6)); }
+.mh-strip > .mh-bar { flex: 1; }
+.mh-strip > b { min-width: 28px; text-align: right; font-family: var(--mh-font-num); font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.mh-strip > small { font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--mh-text-2); }
+.mh-strip--skew { transform: skewX(-14deg); border-left-width: 4px; }
+.mh-strip--skew > * { transform: skewX(14deg); }
+.mh-strip.is-low { --tone-rgb: var(--mh-danger-rgb); animation: mh-critical 1s ease-in-out infinite; }
+
+/* ---------- Plaka: üstte etiket ve büyük değer, altta çizgi bar ---------- */
+.mh-plate { --t: var(--tone-rgb, var(--mh-accent-rgb)); display: grid; grid-template-columns: auto 1fr auto; align-items: end; gap: 4px 8px; width: var(--w, 260px); }
+.mh-plate > .mh-i { width: 18px; height: 18px; color: rgb(var(--t)); align-self: center; }
+.mh-plate__label { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--mh-text-2); align-self: center; }
+.mh-plate__val { font-family: var(--mh-font-num); font-size: 26px; line-height: .9; font-weight: 700; font-variant-numeric: tabular-nums; color: #fff; text-shadow: 0 0 12px rgb(var(--t) / .5); }
+.mh-plate__val small { font-size: 12px; color: var(--mh-text-2); margin-left: 2px; text-shadow: none; }
+.mh-plate > .mh-bar { grid-column: 1 / -1; }
+.mh-plate > .mh-pips { grid-column: 1 / -1; }
+.mh-plate > .mh-pips > i { flex: 1 !important; width: auto !important; } /* temalar segment genişliğini sabitler; plakada tam genişlik */

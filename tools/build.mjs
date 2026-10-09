@@ -3,8 +3,6 @@
 //   dist/mhud.min.css    küçültülmüş
 //   dist/mhud.js         ikonlar + çekirdek + sosyal menü (tek <script>)
 //   dist/mhud.min.js     küçültülmüş
-//   dist/mhud-game.js    oyun düzenleri katmanı (games/shared/mhgame.js) + .min
-//   dist/mhud-game.css   oyun düzenleri sayfa kuralları + .min
 // Kullanım: npm run build
 import { build, transform } from 'esbuild';
 import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
@@ -42,9 +40,7 @@ async function js(files, out) {
 }
 
 await css('kit/css/mhud.css', 'mhud.css');
-await css('games/shared/mhgame.css', 'mhud-game.css');
-await js(['kit/js/mhud-icons.js', 'kit/js/mhud.js', 'kit/js/mhud-social.js'], 'mhud.js');
-await js(['games/shared/mhgame.js'], 'mhud-game.js');
+await js(['kit/js/mhud-icons.js', 'kit/js/mhud.js', 'kit/js/mhud-social.js', 'kit/js/mhud-atlas.js'], 'mhud.js');
 
 const { readdir, stat } = await import('node:fs/promises');
 for (const f of (await readdir(dist)).filter(f => /\.(css|js)$/.test(f))) {

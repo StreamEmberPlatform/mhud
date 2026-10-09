@@ -15,7 +15,7 @@
 (function (root) {
   'use strict';
 
-  var MH = { version: '1.3.0' };
+  var MH = { version: '2.0.0' };
   var doc = root.document;
 
   /* ======================================================================
@@ -109,7 +109,7 @@
   MH.autoScale = function (opts) {
     opts = opts || {};
     var base = opts.base || 1080, user = opts.scale || 1, target = $(opts.target) || doc.documentElement;
-    function apply() { target.style.zoom = (root.innerHeight / base) * user; }
+    function apply() { target.style.zoom = ((root.streamember && root.streamember.screenHeight || root.innerHeight) / base) * user; }
     apply();
     root.addEventListener('resize', apply);
     return { set: function (s) { user = s; apply(); } };
@@ -123,14 +123,16 @@
     opts = opts || {};
     var max = opts.max || 100;
     var v = clamp((value || 0) / max, 0, 1);
+    var ax = b.classList.contains('mh-bar--v') ? 'scaleY(' : 'scaleX(';
     var fill = b.querySelector('.mh-bar__fill');
     var ghost = b.querySelector('.mh-bar__ghost');
     var prev = b.__v == null ? v : b.__v;
     b.__v = v;
-    if (fill) fill.style.transform = 'scaleX(' + v + ')';
+    b.style.setProperty('--v', v);
+    if (fill) fill.style.transform = ax + v + ')';
     if (ghost) {
-      if (v >= prev) { ghost.style.transition = 'none'; ghost.style.transform = 'scaleX(' + v + ')'; ghost.offsetWidth; ghost.style.transition = ''; }
-      else ghost.style.transform = 'scaleX(' + v + ')';
+      if (v >= prev) { ghost.style.transition = 'none'; ghost.style.transform = ax + v + ')'; ghost.offsetWidth; ghost.style.transition = ''; }
+      else ghost.style.transform = ax + v + ')';
     }
     var crit = opts.critical == null ? b.getAttribute('data-critical') : opts.critical;
     if (crit != null) b.classList.toggle('is-critical', value <= Number(crit));
@@ -787,7 +789,7 @@
         (t.talking ? ' is-talking' : '') + (t.dead ? ' is-dead' : '') + (t.typing ? ' is-typing' : '') + (t.compact || opts.compact ? ' mh-tag--compact' : '');
       var bars = '';
       if (opts.bars !== false && t.health != null && !t.dead) {
-        bars = '<div class="mh-tag__bars"><div class="mh-bar mh-t-' + (t.health <= 25 ? 'danger' : 'health') + '"><i class="mh-bar__fill" style="transform:scaleX(' + clamp(t.health / 100, 0, 1) + ')"></i></div>' +
+        bars = '<div class="mh-tag__bars"><div class="mh-bar mh-t-' + (t.tone === 'enemy' || t.health <= 25 ? 'danger' : 'health') + '"><i class="mh-bar__fill" style="transform:scaleX(' + clamp(t.health / 100, 0, 1) + ')"></i></div>' +
           (t.armor ? '<div class="mh-bar mh-t-armor"><i class="mh-bar__fill" style="transform:scaleX(' + clamp(t.armor / 100, 0, 1) + ')"></i></div>' : '') + '</div>';
       }
       n.innerHTML = (t.bubble ? '<div class="mh-tag__bubble">' + esc(t.bubble) + '</div>' : '') +
@@ -1353,6 +1355,10 @@
     $$('.mh-bar[data-v]', r).forEach(function (b) { MH.bar(b, +b.getAttribute('data-v'), { max: +(b.getAttribute('data-max') || 100) }); });
     // segmentler: data-pips="4/10"
     $$('[data-pips]', r).forEach(function (p) { var a = p.getAttribute('data-pips').split('/'); MH.pips(p, +a[0], +a[1]); });
+    // pusula: data-heading="75" (isteğe bağlı data-marks='[{"bearing":120,"icon":"pin-f","tone":"accent"}]')
+    $$('.mh-compass[data-heading]', r).forEach(function (c) { var m = c.getAttribute('data-marks'); MH.compass(c, +c.getAttribute('data-heading'), m ? JSON.parse(m) : null); });
+    // hız göstergesi: data-speed, data-max, data-rpm (0-1), data-gear
+    $$('.mh-speedo[data-speed]', r).forEach(function (n) { MH.speedo(n, { speed: +n.getAttribute('data-speed'), max: +(n.getAttribute('data-max') || 240), rpm: +(n.getAttribute('data-rpm') || 0), gear: n.getAttribute('data-gear') }); });
     // sekmeler: <div class="mh-tabs" data-mh-tabs="grup"> + [data-tab-panel="grup:ad"]
     $$('[data-mh-tabs]', r).forEach(function (tabs) {
       if (tabs.__mh) return; tabs.__mh = 1;

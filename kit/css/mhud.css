@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MHud — FiveM & RedM için tema destekli NUI HUD kiti
+   MHud — Tema destekli oyun HUD ve yayın arayüz kiti
    Tek giriş dosyası. Sadece ihtiyacın olan parçaları da tek tek bağlayabilirsin;
    sıra önemlidir: yazı tipleri → tokenlar → bileşenler → temalar → vurgular.
    ========================================================================== */
@@ -20,10 +20,8 @@
 @import url("mhud.tones.css");
 
 @import url("themes/modern.css");
-@import url("themes/neon.css");
 @import url("themes/tactical.css");
 @import url("themes/frontier.css");
-@import url("themes/minimal.css");
 @import url("themes/oldwest.css");
 
 @import url("mhud.accents.css");

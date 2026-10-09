@@ -19,10 +19,11 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - run: npm run site
+      - name: AI kılavuzu güncel mi
+        run: git diff --exit-code -- AI.md ai || { echo "::error::AI.md/ai/ eski: npm run site çalıştırıp ekleyin"; exit 1; }
       - name: Sürüm tutarlılığı
         run: |
           V="$(node -p "require('./package.json').version")"
           grep -q "version: '$V'" kit/js/mhud.js || { echo "::error::kit/js/mhud.js sürümü $V değil (npm run version)"; exit 1; }
-          grep -q "version '$V'" integration/mhud/fxmanifest.lua || { echo "::error::fxmanifest.lua sürümü $V değil"; exit 1; }
       - run: npm pack --dry-run
