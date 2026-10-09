@@ -21,7 +21,8 @@ jobs:
       - run: npm ci
       - run: npm run site
       - name: AI kılavuzu güncel mi
-        run: git diff --exit-code -- AI.md ai || { echo "::error::AI.md/ai/ eski: npm run site çalıştırıp ekleyin"; exit 1; }
+        run: |
+          git diff --exit-code -- AI.md ai || { echo "::error::AI.md ve ai/ eski, npm run site calistirip ekleyin"; exit 1; }
       - name: Sürüm tutarlılığı
         run: |
           V="$(node -p "require('./package.json').version")"
