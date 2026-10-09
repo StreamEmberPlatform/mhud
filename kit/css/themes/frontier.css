@@ -221,3 +221,5 @@
 [data-mh-theme="frontier"] .mh-card { background: rgb(0 0 0 / .3); border-color: var(--mh-line-soft); }
 [data-mh-theme="frontier"] .mh-podium__block { border-radius: 0; }
 [data-mh-theme="frontier"] .mh-ticker__label { font-family: var(--mh-font-display); }
+
+[data-mh-theme="frontier"] { --mh-sb-thumb: rgb(205 170 105 / .4); --mh-sb-track: rgb(0 0 0 / .35); --mh-sb-r: 0; }

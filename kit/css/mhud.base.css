@@ -516,10 +516,18 @@ textarea.mh-input { height: auto; min-height: 76px; padding: 10px 12px; resize: 
 
 /* Kaydırma çubuğu (menüler) */
 .mh-scroll { overflow-y: auto; overscroll-behavior: contain; }
-.mh-scroll::-webkit-scrollbar { width: 6px; }
-.mh-scroll::-webkit-scrollbar-track { background: transparent; }
-.mh-scroll::-webkit-scrollbar-thumb { background: var(--mh-raise-3); border-radius: 3px; }
-.mh-scroll::-webkit-scrollbar-thumb:hover { background: var(--mh-accent-line); }
+/* Kaydırma çubuğu: .mh altındaki her kaydırılabilir alan tema renginde, ince */
+.mh, .mh * { scrollbar-width: thin; scrollbar-color: var(--mh-sb-thumb, rgb(var(--mh-text-rgb) / .28)) var(--mh-sb-track, transparent); }
+.mh ::-webkit-scrollbar { width: 8px; height: 8px; }
+.mh ::-webkit-scrollbar-track { background: var(--mh-sb-track, transparent); }
+.mh ::-webkit-scrollbar-thumb { background: var(--mh-sb-thumb, rgb(var(--mh-text-rgb) / .28)); border-radius: var(--mh-sb-r, 4px); border: 2px solid transparent; background-clip: padding-box; }
+.mh ::-webkit-scrollbar-thumb:hover { background: rgb(var(--mh-accent-rgb) / .75); background-clip: padding-box; }
+.mh ::-webkit-scrollbar-corner { background: transparent; }
+/* Biçimler: --rail görünür ray, --hidden gizli (kaydırma çalışır), --accent vurgu renginde, --x yatay */
+.mh-scroll--rail { --mh-sb-track: rgb(0 0 0 / .35); }
+.mh-scroll--accent { --mh-sb-thumb: rgb(var(--mh-accent-rgb) / .6); }
+.mh-scroll--hidden { scrollbar-width: none; } .mh-scroll--hidden::-webkit-scrollbar { display: none; }
+.mh-scroll--x { overflow-x: auto; overflow-y: hidden; }
 
 /* ---------- Giriş / çıkış animasyonları (JS sınıf ekler) ---------- */
 .mh-enter-up    { animation: mh-in-up var(--mh-dur-4) var(--mh-ease-out) both; }

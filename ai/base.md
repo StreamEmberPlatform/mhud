@@ -107,3 +107,16 @@ JS: `—`
 ```html
 <span class="mh-spinner"></span>
 ```
+
+## base.scroll — Kaydırma çubuğu
+.mh altındaki tüm kaydırma çubukları tema renginde ince çizilir; ek sınıf gerekmez. Biçim: mh-scroll--rail (görünür ray), --accent (vurgu rengi), --hidden (gizli), --x (yatay). Yükseklik ver, taşan içerik kaydırılır.
+JS: `el.classList.add('mh-scroll')`
+
+```html
+<div class="mh-flex" style="gap:14px;align-items:flex-start">
+<div class="mh-panel mh-scroll" style="width:150px;height:120px;padding:8px"><p class="mh-sub">Satır 1<br>Satır 2<br>Satır 3<br>Satır 4<br>Satır 5<br>Satır 6<br>Satır 7<br>Satır 8</p></div>
+<div class="mh-panel mh-scroll mh-scroll--rail" style="width:150px;height:120px;padding:8px"><p class="mh-sub">Ray görünür<br>Satır 2<br>Satır 3<br>Satır 4<br>Satır 5<br>Satır 6<br>Satır 7<br>Satır 8</p></div>
+<div class="mh-panel mh-scroll mh-scroll--accent" style="width:150px;height:120px;padding:8px"><p class="mh-sub">Vurgu rengi<br>Satır 2<br>Satır 3<br>Satır 4<br>Satır 5<br>Satır 6<br>Satır 7<br>Satır 8</p></div>
+<div class="mh-panel mh-scroll mh-scroll--x" style="width:150px;padding:8px"><div class="mh-sub" style="white-space:nowrap;width:420px">Yatay kaydırma: uzun bir satır soldan sağa uzanır.</div></div>
+</div>
+```

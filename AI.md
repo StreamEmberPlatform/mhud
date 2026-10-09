@@ -58,6 +58,7 @@ Menü durumu kendi değiştirmez; oyuncunun eylemi `{ action, data }` olarak `on
 - `base.table` Tablo: mh-table: sağa hizalı sütun için th/td class='r'; sayı mh-num; satır durumu is-self (sen), is-dead; sıra mh-rank is-1/2/3
 - `base.avatar` Avatar: Baş harfli yuvarlak/kare avatar: boyut --sm/--lg, --round, ton mh-t-*; is-live canlı yayın çerçevesi
 - `base.spinner` Yükleniyor: Dönen gösterge
+- `base.scroll` Kaydırma çubuğu: .mh altındaki tüm kaydırma çubukları tema renginde ince çizilir; ek sınıf gerekmez
 
 ### Savaş ve dünya → `ai/combat.md`
 - `combat.crosshair` Nişangâh: Dört biçim: artı (varsayılan), --dot, --circle, --t
@@ -65,7 +66,6 @@ Menü durumu kendi değiştirmez; oyuncunun eylemi `{ action, data }` olarak `on
 - `combat.damage-from` Hasar yönü: Ekran kenarında hasarın geldiği yönü gösteren yay: 0 önden, 90 sağdan, 180 arkadan (derece)
 - `combat.flash` Ekran parlaması: Tüm ekran flaş: ikinci argüman true ise kırmızı (hasar), değilse beyaz (patlama)
 - `combat.lockon` Hedef kilidi: Köşeli hedef çerçevesi; is-locking kilitlenirken daralır
-- `combat.nametag` İsim etiketi: Oyuncu üstü etiket: ad, numara, rozet, can/zırh barı, alt satır
 - `combat.world-prompt` Dünya istemi: Nesne üstü etkileşim: nokta + tuş + eylem; uzaktayken is-far sadece nokta
 - `combat.prompt` Tuş istemleri: Sağ alt köşe eylem listesi: tuş + açıklama; is-disabled soluk
 - `combat.key` Tuş kapağı: Klavye tuşu simgesi: boyut mh-key--sm|--lg, biçim --solid|--accent
@@ -193,6 +193,25 @@ Menü durumu kendi değiştirmez; oyuncunun eylemi `{ action, data }` olarak `on
 - `survival.loot` Ganimet düşmesi: Yere düşen eşya kartı: art alanı, nadirlik etiketi (__tier), ad, özellikler
 - `survival.skillcheck` Beceri kontrolü: Dönen ibre başarı dilimine gelince SPACE
 - `survival.qte` Tuş dizisi (QTE): Sıralı tuşlara bas; Promise true/false
+
+### İsim etiketleri → `ai/tags.md`
+- `tags.default` Standart: Ad, numara, rozet, can ve zırh barı, alt satır
+- `tags.compact` Kompakt: Küçük boy: rozet ve alt satır gizli, ad 13px, bar 56px
+- `tags.plate` Plaka: variant: plate
+- `tags.flag` Bayrak: variant: flag
+- `tags.pill` Hap: variant: pill
+- `tags.line` İnce çizgi: variant: line
+- `tags.bar-only` Yalnız bar: variant: bar
+- `tags.pointer` İşaretçili: variant: pointer
+- `tags.banner` Takım afişi: variant: banner
+- `tags.bracket` Köşeli: variant: bracket
+- `tags.role` Rol etiketli: role: üstte küçük rol yazısı (POLİS, SAĞLIK, ŞERİF…), altında ad
+- `tags.boss` Boss: variant: boss
+- `tags.npc` NPC: variant: npc
+- `tags.far` Uzaktaki: variant: far
+- `tags.bounty` Ödül etiketi: variant: bounty
+- `tags.status` Konuşuyor / yazıyor / ölü: Durum sınıfları herhangi bir biçimle birleşir: is-talking (yeşil + mikrofon), is-typing (…), is-dead (sönük, üstü çizili, kuru kafa)
+- `tags.bubble` Konuşma balonu: bubble: etiketin üstünde kısa sohbet metni (yayıncı/izleyici mesajı); 220px'e kadar kayar
 
 ### Araç ve binek → `ai/vehicle.md`
 - `vehicle.speedo` Hız kadranı: Dairesel kadran: hız yayı, son %15 kırmızı bölge, ince devir yayı, vites, lambalar

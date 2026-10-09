@@ -1,5 +1,5 @@
 # Savaş ve dünya
-Nişangâh, vuruş geri bildirimi, isim etiketi, hedef kilidi, boss ve tur skoru, nokta ele geçirme, etkileşim istemleri, diyalog. Dünya içi parçalar (etiket, istem) MH.Nametags / MH.Markers havuzlarıyla konumlanır.
+Nişangâh, vuruş geri bildirimi, hedef kilidi, boss ve tur skoru, nokta ele geçirme, etkileşim istemleri, diyalog. Dünya içi parçalar MH.Markers havuzuyla konumlanır; oyuncu etiketleri için "İsim etiketleri" ailesine bak.
 
 ## combat.crosshair — Nişangâh
 Dört biçim: artı (varsayılan), --dot, --circle, --t. Durum: is-target düşman üstünde, is-friend dost üstünde. --gap açıklığı, --c rengi ayarlar.
@@ -41,14 +41,6 @@ JS: `el.classList.add('is-locking')`
 
 ```html
 <div class="mh-lockon is-locking"><i></i><i></i><i></i><i></i></div>
-```
-
-## combat.nametag — İsim etiketi
-Oyuncu üstü etiket: ad, numara, rozet, can/zırh barı, alt satır. Durum is-friend, is-enemy, is-dead, is-talking; mh-tag--compact küçük. Çok sayıda etiket için MH.Nametags(world).update(liste).
-JS: `MH.Nametags(world).update([{ id, x, y, name, hp, armor, tone }])`
-
-```html
-<div class="mh-tag is-friend"><div class="mh-tag__line"><span class="mh-tag__name">NabeMedia</span><span class="mh-tag__id">12</span><span class="mh-badge mh-t-success">Dost</span></div><div class="mh-tag__bars"><div class="mh-bar mh-t-health" data-v="80"><i class="mh-bar__fill"></i></div><div class="mh-bar mh-t-armor" data-v="50"><i class="mh-bar__fill"></i></div></div><div class="mh-tag__sub">SVY 38 · 24 M</div></div>
 ```
 
 ## combat.world-prompt — Dünya istemi

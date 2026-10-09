@@ -226,3 +226,5 @@
 [data-mh-theme="oldwest"] .mh-marker__pin::before { border-radius: 0; background: #2b1d10; box-shadow: 0 0 0 2px rgb(214 176 92); }
 [data-mh-theme="oldwest"] .mh-marker__pin { color: #f4e9d0; }
 [data-mh-theme="oldwest"] .mh-gift__art .mh-avatar { background: var(--mh-ink); color: #efe2c2; border-color: #e6d7b4; }
+
+[data-mh-theme="oldwest"] { --mh-sb-thumb: rgb(60 38 16 / .55); --mh-sb-track: rgb(60 38 16 / .12); --mh-sb-r: 0; }

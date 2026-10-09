@@ -82,3 +82,5 @@
 [data-mh-theme="tactical"] .mh-classic__banner b { color: var(--mh-accent); }
 [data-mh-theme="tactical"] .mh-xp__level::before, [data-mh-theme="tactical"] .mh-levelup__badge::before { border-radius: 0; }
 [data-mh-theme="tactical"] .mh-marker__pin::before { border-radius: 0; }
+
+[data-mh-theme="tactical"] { --mh-sb-thumb: rgb(var(--mh-text-rgb) / .3); --mh-sb-track: rgb(0 0 0 / .3); --mh-sb-r: 0; }
