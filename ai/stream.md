@@ -1,5 +1,5 @@
 # Yayın ve izleyici
-Yayıncı ekranı parçaları: durum şeridi, istatistik kartı, seviye halkası, galibiyet/mağlubiyet, izleyici oylaması, olay kuyruğu, liderlik, canlı sayaçlar, komut listesi, yayıncı kartı.
+Yayıncı ekranı parçaları: durum şeridi, istatistik kartı, galibiyet/mağlubiyet, izleyici oylaması, olay kuyruğu, liderlik, canlı sayaçlar, komut listesi, yayıncı kartı.
 
 ## stream.statbar — Durum şeridi
 Yatay istatistik çipleri: ikon + büyük sayı + etiket. Ton mh-t-*; sayının yanına <small> ile /100 gibi ek.
@@ -16,14 +16,6 @@ JS: `MH.mount(root)`
 ```html
 <div class="mh-panel mh-statcard"> <div class="mh-statcard__head"><div class="mh-levelring" data-mh-ring style="--v:.64"><b>24</b><small>SVY</small></div><div class="mh-statcard__name"><b>Amiral Router</b><span class="mh-sub">Hayatta kal · Dalga 8</span></div></div>
 <div class="mh-statcard__grid"> <div class="mh-statcard__cell mh-t-danger"><i data-i="enemy"></i><div><b>14</b><span>Ekranda</span></div></div> <div class="mh-statcard__cell mh-t-warn"><i data-i="queue"></i><div><b>37</b><span>Kuyrukta</span></div></div> <div class="mh-statcard__cell mh-t-success"><i data-i="trophy"></i><div><b>5–2</b><span>G / M</span></div></div> <div class="mh-statcard__cell"><i data-i="skull"></i><div><b>3</b><span>Ölüm</span></div></div> </div> </div>
-```
-
-## stream.levelring — Seviye halkası
-İçinde sayı ve küçük etiket olan halka; --v 0..1 ilerleme.
-JS: `MH.ring(el, 0.64)`
-
-```html
-<div class="mh-levelring" data-mh-ring style="--v:.64"><b>24</b><small>SVY</small></div>
 ```
 
 ## stream.winloss — Galibiyet / mağlubiyet

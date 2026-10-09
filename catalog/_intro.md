@@ -3,6 +3,10 @@
 Oyun HUD'u ve yayın overlay'i için hazır arayüz kiti (saf CSS + küçük JS). **Bu dosyayı oku, kaynak kodu açma.**
 Bir bileşen lazımsa aşağıdaki aileler dizininden varyantı seç, yalnız o ailenin `ai/<aile>.md` dosyasını aç, HTML parçasını olduğu gibi kopyala.
 
+## İhtiyaç → aile (hızlı seçim)
+
+can/zırh/stamina → `vitals` · boss, dalga, hedef, XP, kanal, ele geçirme, yükleme çubukları → `bars` · oyuncu/NPC başı etiketi → `tags` · para, saat, seviye, aranma → `economy` · silah, envanter, ekip → `gear` · pusula, minimap, işaretçi → `location` · hız, yakıt, binek → `vehicle` · toast, kill feed, duyuru → `feed` · nişangâh, hasar yönü, istem, diyalog → `combat` · menü, modal, skor tablosu, ölüm/yükleme ekranı → `menu` · izleyici oylaması, canlı sayaç → `stream` · sürü, canlandırma, ganimet → `survival` · grafik, seri, etkinlik → `extras` · kâğıt/afiş/telgraf → `print` · düğme, alan, tablo, kaydırma çubuğu → `base`. Her ailenin dosyasını yukarıdaki dizindeki tam adresten aç.
+
 ## Kurulum
 
 ```html

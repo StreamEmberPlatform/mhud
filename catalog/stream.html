@@ -1,4 +1,4 @@
-<!-- family: Yayın ve izleyici | Yayıncı ekranı parçaları: durum şeridi, istatistik kartı, seviye halkası, galibiyet/mağlubiyet, izleyici oylaması, olay kuyruğu, liderlik, canlı sayaçlar, komut listesi, yayıncı kartı. -->
+<!-- family: Yayın ve izleyici | Yayıncı ekranı parçaları: durum şeridi, istatistik kartı, galibiyet/mağlubiyet, izleyici oylaması, olay kuyruğu, liderlik, canlı sayaçlar, komut listesi, yayıncı kartı. -->
 
 <section data-id="statbar" data-title="Durum şeridi" data-use="Yatay istatistik çipleri: ikon + büyük sayı + etiket. Ton mh-t-*; sayının yanına <small> ile /100 gibi ek." data-js="chip.querySelector('b').textContent = v">
 <div class="mh-statbar"> <div class="mh-chip-stat mh-t-accent"><i data-i="xp"></i><b>24</b><span>Seviye</span></div> <div class="mh-chip-stat mh-t-health"><i data-i="heart"></i><b>82<small>/100</small></b><span>Can</span></div> <div class="mh-chip-stat mh-t-danger"><i data-i="enemy"></i><b>14</b><span>Ekranda</span></div> <div class="mh-chip-stat mh-t-warn"><i data-i="queue"></i><b>37</b><span>Kuyrukta</span></div> <div class="mh-chip-stat"><i data-i="skull"></i><b>3</b><span>Ölüm</span></div> </div>
@@ -7,10 +7,6 @@
 <section data-id="statcard" data-title="İstatistik kartı" data-use="Oyuncu özeti: seviye halkası + ad, altında 2×2 hücre (ikon, sayı, etiket). Hücreye ton ver." data-js="MH.mount(root)">
 <div class="mh-panel mh-statcard"> <div class="mh-statcard__head"><div class="mh-levelring" data-mh-ring style="--v:.64"><b>24</b><small>SVY</small></div><div class="mh-statcard__name"><b>Amiral Router</b><span class="mh-sub">Hayatta kal · Dalga 8</span></div></div>
 <div class="mh-statcard__grid"> <div class="mh-statcard__cell mh-t-danger"><i data-i="enemy"></i><div><b>14</b><span>Ekranda</span></div></div> <div class="mh-statcard__cell mh-t-warn"><i data-i="queue"></i><div><b>37</b><span>Kuyrukta</span></div></div> <div class="mh-statcard__cell mh-t-success"><i data-i="trophy"></i><div><b>5–2</b><span>G / M</span></div></div> <div class="mh-statcard__cell"><i data-i="skull"></i><div><b>3</b><span>Ölüm</span></div></div> </div> </div>
-</section>
-
-<section data-id="levelring" data-title="Seviye halkası" data-use="İçinde sayı ve küçük etiket olan halka; --v 0..1 ilerleme." data-js="MH.ring(el, 0.64)">
-<div class="mh-levelring" data-mh-ring style="--v:.64"><b>24</b><small>SVY</small></div>
 </section>
 
 <section data-id="winloss" data-title="Galibiyet / mağlubiyet" data-use="Skor (yeşil W, kırmızı L) ve son maç geçmişi: data-history=&quot;WWLWWLW&quot; harfleri noktaya çevrilir." data-js="MH.mount(root)">

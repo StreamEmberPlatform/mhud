@@ -29,7 +29,7 @@ for (const file of (await readdir(path.join(root, 'catalog'))).filter(f => f.end
     const a = Object.fromEntries([...m[1].matchAll(/([a-z-]+)="([^"]*)"/g)].map(x => [x[1], x[2]]));
     if (!a['data-id'] || !a['data-title'] || !a['data-use']) throw new Error(`${file}: data-id/title/use eksik: ${m[1].slice(0, 60)}`);
     // data-run: parça HTML değil, galeride "Çalıştır" düğmesiyle koşan JS çağrısıdır
-    const it = { id: `${fam.id}.${a['data-id']}`, title: a['data-title'], use: a['data-use'], js: a['data-js'] || '', run: 'data-run' in a, wide: 'data-wide' in a, html: m[2].trim() };
+    const it = { id: `${fam.id}.${a['data-id']}`, title: a['data-title'], use: a['data-use'], js: a['data-js'] || '', run: 'data-run' in a, wide: 'data-wide' in a, box: a['data-box'], html: m[2].trim() };
     if (ids.has(it.id)) throw new Error(`yinelenen kimlik: ${it.id}`);
     ids.add(it.id);
     if (!it.run) for (const c of it.html.matchAll(/class="([^"]*)"/g)) for (const k of c[1].split(/\s+/)) {
@@ -46,7 +46,8 @@ await mkdir(path.join(root, 'ai'), { recursive: true });
 const itemMd = it => `## ${it.id} — ${it.title}\n${it.use}\n${it.js ? `JS: \`${it.js}\`\n` : ''}\n\`\`\`${it.run ? 'js' : 'html'}\n${it.html}\n\`\`\`\n`;
 for (const f of families) await writeFile(path.join(root, 'ai', `${f.id}.md`), `# ${f.title}\n${f.desc}\n\n${f.items.map(itemMd).join('\n')}`);
 const intro = (await readFile(path.join(root, 'catalog', '_intro.md'), 'utf8')).replaceAll('{{version}}', version);
-const index = families.map(f => `### ${f.title} → \`ai/${f.id}.md\`\n${f.items.map(i => `- \`${i.id}\` ${i.title}: ${i.use.split('. ')[0].replace(/\.$/, '')}`).join('\n')}\n`).join('\n');
+const base = `https://cdn.jsdelivr.net/npm/@streamemberplatform/mhud@${version}/ai/`;
+const index = families.map(f => `### ${f.title} → ${base}${f.id}.md\n${f.items.map(i => `- \`${i.id}\` ${i.title}: ${i.use.split('. ')[0].replace(/\.$/, '')}`).join('\n')}\n`).join('\n');
 await writeFile(path.join(root, 'AI.md'), `${intro}\n## Bileşen aileleri\n\n${index}`);
 
 // ---- galeri
@@ -113,9 +114,10 @@ if(go)go.onclick=function(){
 var s;try{s=localStorage.getItem('mhud-demo:theme')}catch(e){} setTheme(['modern','tactical','frontier','oldwest'].indexOf(s)>=0?s:'modern');
 </script></body></html>`;
 
+const box = i => { if (!i.box) return i.html; const [w, h, k, iw, ih] = i.box.split(',').map(Number); return `<div style="position:relative;width:${w}px;height:${h}px;overflow:hidden"><div style="position:absolute;left:0;top:0;width:${iw}px;height:${ih}px;transform:scale(${k});transform-origin:0 0">${i.html}</div></div>`; };
 const bar = `<div class="g-bar">${THEMES.map(t => `<button data-theme="${t}">${t}</button>`).join('')}<button id="go">Değerleri değiştir</button></div>`;
 for (const f of families) {
-  const cards = f.items.map(i => `<div class="g-card${i.wide ? ' g-wide' : ''}"><h3>${i.title}<code>${i.id}</code></h3><p>${esc(i.use)}</p><div class="g-stage">${i.run ? '<button class="g-run">Çalıştır</button>' : i.html}</div><details${i.run ? ' open' : ''}><summary>${i.run ? 'JS' : 'HTML'}${i.js ? ' · ' + esc(i.js) : ''}</summary><pre>${esc(i.html)}</pre></details></div>`).join('');
+  const cards = f.items.map(i => `<div class="g-card${i.wide ? ' g-wide' : ''}"><h3>${i.title}<code>${i.id}</code></h3><p>${esc(i.use)}</p><div class="g-stage">${i.run ? '<button class="g-run">Çalıştır</button>' : box(i)}</div><details${i.run ? ' open' : ''}><summary>${i.run ? 'JS' : 'HTML'}${i.js ? ' · ' + esc(i.js) : ''}</summary><pre>${esc(i.html)}</pre></details></div>`).join('');
   await writeFile(path.join(site, `${f.id}.html`), page(f.title, f.id, `${bar}<main><h1>${f.title}</h1><p class="d">${esc(f.desc)}</p><div class="g-grid">${cards}</div></main>`));
 }
 await writeFile(path.join(site, 'index.html'), page('Galeri', '', `<main><h1>MHud ${version}</h1><p class="d">Bileşen aileleri. Yapay zeka için kılavuz: <a href="https://cdn.jsdelivr.net/npm/@streamemberplatform/mhud@${version}/AI.md" style="color:#f5b83d">AI.md</a></p><div class="g-fam">${families.map(f => `<a href="${f.id}.html"><b>${f.title}</b> <span>· ${f.items.length} varyant — ${esc(f.desc)}</span></a>`).join('')}</div></main>`));

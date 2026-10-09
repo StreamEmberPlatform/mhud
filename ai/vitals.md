@@ -198,7 +198,7 @@ JS: `MH.bar(bar, v)`
 </div>
 ```
 
-## vitals.plate — Plaka
+## vitals.plate — Büyük sayılı plaka
 Büyük sayı + küçük etiket üstte, altta çizgi bar. Profesyonel/espor görünümü. Sayı yanına small ile /max.
 JS: `MH.bar(bar, 87); valEl.firstChild.textContent = 87`
 

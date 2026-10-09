@@ -69,21 +69,6 @@ JS: `MH.mount(root)`
 <div class="mh-setting"><div class="mh-setting__text"><b>HUD ölçeği</b><span>Tüm arayüzü büyütür veya küçültür</span></div><div class="mh-setting__control"><input type="range" class="mh-slider" min="70" max="130" value="100" data-out="#o1" data-unit="%"><b id="o1">100%</b></div></div>
 ```
 
-## menu.inventory — Envanter ızgarası
---cols ile sütun sayısı. Hücre: ikon, tuş numarası (__key), adet (__count); is-active seçili, nadirlik is-rare/is-epic/is-legendary.
-JS: `el.style.setProperty('--cols', 7)`
-
-```html
-<div class="mh-inv" style="--cols:6">
-<div class="mh-cell is-active"><span class="mh-cell__key">1</span><i data-i="rifle"></i><span class="mh-cell__count">1</span></div>
-<div class="mh-cell is-rare"><span class="mh-cell__key">2</span><i data-i="pistol"></i><span class="mh-cell__count">1</span></div>
-<div class="mh-cell"><span class="mh-cell__key">3</span><i data-i="knife"></i></div>
-<div class="mh-cell is-epic"><span class="mh-cell__key">4</span><i data-i="grenade"></i><span class="mh-cell__count">4</span></div>
-<div class="mh-cell"><i data-i="first-aid"></i><span class="mh-cell__count">3</span></div>
-<div class="mh-cell is-legendary"><i data-i="diamond"></i><span class="mh-cell__count">2</span></div>
-</div>
-```
-
 ## menu.standings — Sıralama listesi
 Köşe sıralaması: mh-rank (is-1/2/3 madalya renkleri), ad, değer. Kendi satırın is-self.
 JS: `el.querySelector('.is-self')`
@@ -146,6 +131,6 @@ Tam ekran: arka plan (__art), başlık/alt metin/rozetler (__main), altta ipucu 
 JS: `el.querySelector('.mh-bar').dataset.v = 50; MH.mount(root)`
 
 ```html
-<div style="position:relative;width:960px;height:540px;overflow:hidden"><div style="position:absolute;left:0;top:0;width:1920px;height:1080px;transform:scale(.5);transform-origin:0 0"><div class="mh-loading"> <div class="mh-loading__art"></div> <div class="mh-loading__main"><span class="mh-kicker mh-kicker--accent" style="letter-spacing:.3em">Stream Ember sunar</span><div class="mh-title">Event Fabric</div><div class="mh-flex mh-gap-2"><span class="mh-badge mh-badge--pill mh-badge--dot mh-t-success">32 / 64 oyuncu</span><span class="mh-badge mh-badge--pill">Ping 18 ms</span></div></div>
-<div class="mh-loading__foot"><div class="mh-loading__tip"><span class="mh-kicker">İpucu</span><p>F1 ile etkileşim menüsünü açabilirsin.</p></div> <div class="mh-loading__progress"><div class="mh-loading__status"><span>Haritalar yükleniyor</span><b>62%</b></div><div class="mh-bar mh-bar--stripe mh-t-accent" data-v="62"><i class="mh-bar__fill"></i></div></div></div> </div></div></div>
+<div class="mh-loading"> <div class="mh-loading__art"></div> <div class="mh-loading__main"><span class="mh-kicker mh-kicker--accent" style="letter-spacing:.3em">Stream Ember sunar</span><div class="mh-title">Event Fabric</div><div class="mh-flex mh-gap-2"><span class="mh-badge mh-badge--pill mh-badge--dot mh-t-success">32 / 64 oyuncu</span><span class="mh-badge mh-badge--pill">Ping 18 ms</span></div></div>
+<div class="mh-loading__foot"><div class="mh-loading__tip"><span class="mh-kicker">İpucu</span><p>F1 ile etkileşim menüsünü açabilirsin.</p></div> <div class="mh-loading__progress"><div class="mh-loading__status"><span>Haritalar yükleniyor</span><b>62%</b></div><div class="mh-bar mh-bar--stripe mh-t-accent" data-v="62"><i class="mh-bar__fill"></i></div></div></div> </div></div>
 ```
