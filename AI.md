@@ -44,6 +44,26 @@ Menü durumu kendi değiştirmez; oyuncunun eylemi `{ action, data }` olarak `on
 
 ## Bileşen aileleri
 
+### Barlar → `ai/bars.md`
+- `bars.boss` Boss barı: Ekran üstü büyük bar: ad, aşama rozeti, iz (ghost), aşama çentikleri, ikinci kalkan barı
+- `bars.wave` Dalga paneli: Hayatta kalma modu: dalga numarası, kalan düşman barı, sonraki dalga süresi
+- `bars.goal` Hedef çubuğu: Bağış/beğeni hedefi: ikon, başlık, sayaç, bar ve ödül satırı
+- `bars.challenge` Meydan okuma: Hedefli görev: başlık + sayaç, kilometre taşlı bar (mh-milestones içinde bar + konumlu i; on dolu), ödül sırası
+- `bars.revive` Canlandırma: Düşen takım arkadaşını kaldırma ilerlemesi: başlık, bar, ipucu
+- `bars.boss-slim` Boss barı (ince): Tek satırlık boss: ad solda, aşama sağda, altında çentikli ince bar
+- `bars.boss-skew` Boss barı (eğik): Aksiyon oyunu boss'u: eğik kalın bar içinde ad ve yüzde (__text)
+- `bars.boss-duo` Çift boss: İki boss karşılıklı: biri soldan, biri sağdan (mh-bar--rtl) dolar; ortada VS
+- `bars.elite` Elit hedef barı: Küçük elit düşman için ad + ince kalkan barı; ekran kenarında çoklu sıralanır
+- `bars.stagger` Sersemletme / denge: Boss'u sersemletmek için dolan bar: dolunca hasar penceresi
+- `bars.xp-bar` Deneyim çubuğu: İki ucunda seviye numarası olan ince XP çubuğu; altta kalan XP
+- `bars.cast` Kanal / yeniden doldurma: Etiket + süre + bar: büyü kanalı, yeniden doldurma, eşya kullanma
+- `bars.capture` Ele geçirme ilerlemesi: Bölge ele geçirirken: bar ortadan iki yöne (mh-bar--center) takıma göre renk değiştirir
+- `bars.tug` İpi çeken iki taraf: İki takım/oyuncunun payı tek barda: iki parça, orantı --a/--b (flex)
+- `bars.threat` Tehdit / aranma ölçeri: Sızma ve kaçış modunda tespit edilme: yeşilden kırmızıya geçişli bar (mh-bar--heat), ucu parlak, üstte durum yazısı
+- `bars.battery` Enerji / pil: Cihaz şarjı, jetpack, ekipman: cam hap bar + yüzde; düşünce is-critical yanıp söner
+- `bars.steps` Adım ilerlemesi: Görev adımları ya da şarjör: mh-pips tall; dolu parçalar tonlu
+- `bars.download` Yükleme / indirme: Dosya, harita, güncelleme yüklerken: çapraz çizgili bar + durum + yüzde
+
 ### Temel parçalar → `ai/base.md`
 - `base.panel` Panel: Temel kutu
 - `base.button` Düğme: Varyantlar: --primary (ana), varsayılan, --ghost (hafif), --tone + mh-t-* (renkli)
@@ -70,10 +90,8 @@ Menü durumu kendi değiştirmez; oyuncunun eylemi `{ action, data }` olarak `on
 - `combat.prompt` Tuş istemleri: Sağ alt köşe eylem listesi: tuş + açıklama; is-disabled soluk
 - `combat.key` Tuş kapağı: Klavye tuşu simgesi: boyut mh-key--sm|--lg, biçim --solid|--accent
 - `combat.hold` Basılı tut halkası: Tuşa basılı tutunca dolan halka (kilit açma, kurtarma)
-- `combat.boss` Boss barı: Ekran üstü büyük bar: ad, aşama rozeti, iz (ghost), aşama çentikleri, ikinci kalkan barı
 - `combat.enemies` Düşman sayacı: Ekranda ve kuyrukta kaç düşman var + doluluk barı; sınıra yaklaşınca is-swarm kırmızı parlar
 - `combat.versus` Takım skoru: İki takımın skoru, hayatta kalan noktaları (off = ölü) ve ortada tur/süre
-- `combat.wave` Dalga paneli: Hayatta kalma modu: dalga numarası, kalan düşman barı, sonraki dalga süresi
 - `combat.points` Ele geçirme noktaları: A/B/C kontrol noktaları: halka doluluğu (--v), takım rengi, is-contested çatışmalı
 - `combat.dialog` Diyalog: Konuşan avatarı, söz satırı ve numaralı seçenekler
 
@@ -98,7 +116,6 @@ Menü durumu kendi değiştirmez; oyuncunun eylemi `{ action, data }` olarak `on
 - `extras.columns` Dikey sütunlar: Zaman serisi sütunları: yükseklik --h; her sütun scaleY 0..1 + alt etiket
 - `extras.delta` Değişim oku: Yüzde değişim: is-up yeşil ▲, is-down kırmızı ▼
 - `extras.streak` Seri sayacı: Seri paneli: ikon, sayı, etiket, azalan süre çizgisi (__decay)
-- `extras.challenge` Meydan okuma: Hedefli görev: başlık + sayaç, kilometre taşlı bar (mh-milestones içinde bar + konumlu i; on dolu), ödül sırası
 - `extras.achieve` Başarı satırı: Küçük başarı kartı: ikon, ad, ilerleme yazısı, ton'lu bar
 - `extras.event` Etkinlik satırı: Takvim etkinliği: tarih kutusu, ad + canlı rozet, meta (saat, kişi, ödül), katıl düğmesi
 - `extras.match` Maç geçmişi satırı: Maç özeti: sonuç rozeti (G yeşil / M kırmızı mh-rank), mod + harita + saat, Ö/A, MVP rozeti
@@ -153,7 +170,7 @@ Menü durumu kendi değiştirmez; oyuncunun eylemi `{ action, data }` olarak `on
 - `menu.scoreboard` Skor tablosu: Takım skor tablosu: başlık + istatistikler, takım başlığı (mh-teamhead + mh-t-team1..5), mh-table, ping çubuğu, kendi satırın is-self
 - `menu.podium` Podyum: İlk üç: slot sırası 2-1-3, her slotta oyuncu (avatar + ad + alt satır) ve numaralı blok
 - `menu.dead` Ölüm ekranı: Büyük 'Öldün' başlığı, öldüren kartı (avatar, silah, mesafe, istatistikler) ve altta yeniden doğma halkası (data-mh-ring, --v 0..1) ile tuş ipuçları
-- `menu.results` Maç sonucu: Maç bitişi: üstte başlık (Zafer/Yenilgi) ve alt satır, altında podyum
+- `menu.results` Maç sonucu: Maç bitişi: üstte başlık (Zafer/Yenilgi) ve alt satır; podyum ayrı varyant
 - `menu.loading` Yükleme ekranı: Tam ekran: arka plan (__art), başlık/alt metin/rozetler (__main), altta ipucu ve ilerleme (__foot)
 
 ### Basılı nesneler → `ai/print.md`
@@ -168,10 +185,8 @@ Menü durumu kendi değiştirmez; oyuncunun eylemi `{ action, data }` olarak `on
 ### Yayın ve izleyici → `ai/stream.md`
 - `stream.statbar` Durum şeridi: Yatay istatistik çipleri: ikon + büyük sayı + etiket
 - `stream.statcard` İstatistik kartı: Oyuncu özeti: seviye halkası + ad, altında 2×2 hücre (ikon, sayı, etiket)
-- `stream.hpbig` Büyük can: Yayın kadrajı için iri can göstergesi: ikon, değer, /max ve gölgeli bar (__ghost geriden gelir)
 - `stream.levelring` Seviye halkası: İçinde sayı ve küçük etiket olan halka; --v 0..1 ilerleme
 - `stream.winloss` Galibiyet / mağlubiyet: Skor (yeşil W, kırmızı L) ve son maç geçmişi: data-history=&quot;WWLWWLW&quot; harfleri noktaya çevrilir
-- `stream.goal` Hedef çubuğu: Bağış/beğeni hedefi: ikon, başlık, sayaç, bar ve ödül satırı
 - `stream.vote` İzleyici oylaması: Soru + süre rozeti + seçenekler
 - `stream.queue` Olay kuyruğu: Sıradaki olaylar listesi; çalışan satır is-running, ton mh-t-*; sağda süre veya 'sırada'
 - `stream.leader` Destekçi sıralaması: En çok destekleyenler: başlık, satırlar (mh-rank is-1/2/3, avatar, ad, değer)
@@ -185,7 +200,6 @@ Menü durumu kendi değiştirmez; oyuncunun eylemi `{ action, data }` olarak `on
 - `survival.infected` Özel düşman bildirimi: Özel düşman uyarısı: ikon, tür adı, ipucu
 - `survival.loadout` Silah yuvaları: Hızlı yuva şeridi: tuş numarası, silah çizimi (data-weapon) veya ikon, alt sayaç
 - `survival.rescue` Kurtarma sayacı: Kurtarma/tahliye geri sayımı: ikon + etiket + süre
-- `survival.revive` Canlandırma: Düşen takım arkadaşını kaldırma ilerlemesi: başlık, bar, ipucu
 - `survival.survivors` Takım yaşam kartları: Takım arkadaşları: avatar, ad, can sayısı, --hp (0..1) bar, --temp ikinci katman, eşya ikonları (is-empty kullanılmış)
 - `survival.zone` Daralan alan: Küçülen alan sayacı: halka + etiket + süre
 - `survival.daycount` Gün sayacı: Hayatta kalma gün sayacı: üst etiket + büyük sayı

@@ -1,4 +1,4 @@
-<!-- family: Savaş ve dünya | Nişangâh, vuruş geri bildirimi, hedef kilidi, boss ve tur skoru, nokta ele geçirme, etkileşim istemleri, diyalog. Dünya içi parçalar MH.Markers havuzuyla konumlanır; oyuncu etiketleri için "İsim etiketleri" ailesine bak. -->
+<!-- family: Savaş ve dünya | Nişangâh, vuruş geri bildirimi, hedef kilidi, tur skoru, nokta ele geçirme, etkileşim istemleri, diyalog. Dünya içi parçalar MH.Markers havuzuyla konumlanır; oyuncu etiketleri için "İsim etiketleri" ailesine bak. -->
 
 <section data-id="crosshair" data-title="Nişangâh" data-use="Dört biçim: artı (varsayılan), --dot, --circle, --t. Durum: is-target düşman üstünde, is-friend dost üstünde. --gap açıklığı, --c rengi ayarlar." data-js="el.classList.toggle('is-target')">
 <div class="mh-flex" style="gap:18px">
@@ -44,17 +44,6 @@ MH.flash(null, true);
 <div class="mh-hold" data-mh-ring><span class="mh-key mh-key--lg">E</span></div>
 </section>
 
-<section data-id="boss" data-wide="1" data-title="Boss barı" data-use="Ekran üstü büyük bar: ad, aşama rozeti, iz (ghost), aşama çentikleri, ikinci kalkan barı. --w genişlik." data-js="MH.bar(el.querySelector('.mh-bar'), 64)">
-<div class="mh-boss" style="--w:520px">
-  <div class="mh-boss__head">
-    <div class="mh-col" style="gap:4px"><span class="mh-kicker mh-kicker--accent">Bölüm sonu</span><span class="mh-boss__name">Çete lideri — Vargas</span></div>
-    <span class="mh-boss__phase"><span>Aşama 2 / 3</span><span class="mh-badge mh-t-danger mh-badge--dot mh-badge--live">Öfkeli</span></span>
-  </div>
-  <div class="mh-bar" data-v="64" style="position:relative"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i><span class="mh-boss__marks"><i style="left:33.3%"></i><i style="left:66.6%"></i></span></div>
-  <div class="mh-bar mh-boss__shield" data-v="30"><i class="mh-bar__fill"></i></div>
-</div>
-</section>
-
 <section data-id="enemies" data-title="Düşman sayacı" data-use="Ekranda ve kuyrukta kaç düşman var + doluluk barı; sınıra yaklaşınca is-swarm kırmızı parlar." data-js="MH.enemies(el, { onScreen: 14, queued: 37, max: 20 })">
 <div class="mh-panel mh-enemy">
   <div class="mh-enemy__part is-on"><i data-i="enemy"></i><div><b data-k="on">14</b><span>Ekranda</span></div></div>
@@ -68,14 +57,6 @@ MH.flash(null, true);
   <div class="mh-versus__team mh-t-team1"><div class="mh-versus__name"><b>Mavi takım</b><div class="mh-versus__alive"><i></i><i></i><i></i><i></i><i class="off"></i></div></div><span class="mh-versus__score">3</span></div>
   <div class="mh-versus__mid"><span class="mh-kicker">Tur 7 · İlk 5</span><div class="mh-timer"><span class="mh-timer__value">01:24</span></div></div>
   <div class="mh-versus__team mh-t-team2 is-right"><div class="mh-versus__name"><b>Kırmızı takım</b><div class="mh-versus__alive"><i></i><i></i><i></i><i class="off"></i><i class="off"></i></div></div><span class="mh-versus__score">2</span></div>
-</div>
-</section>
-
-<section data-id="wave" data-title="Dalga paneli" data-use="Hayatta kalma modu: dalga numarası, kalan düşman barı, sonraki dalga süresi." data-js="MH.bar(el.querySelector('.mh-bar'), 62)">
-<div class="mh-wave">
-  <div class="mh-wave__title"><span class="mh-kicker mh-kicker--accent">Hayatta kal</span><span class="mh-wave__num">Dalga 8</span></div>
-  <div class="mh-bar mh-t-danger" data-v="62"><i class="mh-bar__fill"></i></div>
-  <div class="mh-wave__meta"><span>Kalan düşman <b class="mh-num">14</b></span><span>Sonraki dalga 0:32</span></div>
 </div>
 </section>
 

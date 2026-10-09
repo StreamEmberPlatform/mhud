@@ -631,3 +631,10 @@ textarea.mh-input { height: auto; min-height: 76px; padding: 10px 12px; resize: 
 .mh-plate > .mh-bar { grid-column: 1 / -1; }
 .mh-plate > .mh-pips { grid-column: 1 / -1; }
 .mh-plate > .mh-pips > i { flex: 1 !important; width: auto !important; } /* temalar segment genişliğini sabitler; plakada tam genişlik */
+
+/* ---------- Barlar ailesi yardımcıları ---------- */
+.mh-cast { display: flex; flex-direction: column; gap: 6px; width: var(--w, 300px); }
+.mh-cast__head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 13px; font-weight: 600; }
+.mh-cast__head small { font-family: var(--mh-font-num); font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--mh-text-2); }
+.mh-tug { display: flex; gap: 2px; height: 10px; width: 100%; }
+.mh-tug > i { flex: var(--a, 1) 1 0; min-width: 4px; background: rgb(var(--tone-rgb, var(--mh-accent-rgb))); box-shadow: 0 0 calc(8px * var(--mh-glow-a)) rgb(var(--tone-rgb) / .6); transition: flex-grow var(--mh-dur-3) var(--mh-ease); }

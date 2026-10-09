@@ -41,7 +41,7 @@ Onay/uyarı kutusu. Tehlike için mh-t-danger. Kod: MH.confirm({ title, text, da
 JS: `MH.confirm({ title:'Sil?', text:'Geri alınamaz', danger:true }).then(ok=>…)`
 
 ```html
-<div class="mh-panel mh-modal mh-t-danger" style="animation:none"> <div class="mh-modal__body"><div class="mh-modal__icon"><i data-i="alert"></i></div><div class="mh-title">Eşyayı yok et?</div><div class="mh-sub">Bu işlem geri alınamaz.</div></div>
+<div class="mh-panel mh-modal mh-t-danger" style="animation:none"> <div class="mh-modal__head"><div class="mh-modal__icon"><i data-i="alert"></i></div><div class="mh-modal__titles"><div class="mh-title">Eşyayı yok et?</div><div class="mh-sub">Bu işlem geri alınamaz.</div></div></div>
 <div class="mh-modal__actions"><button class="mh-btn mh-btn--ghost"><span class="mh-key mh-key--sm">ESC</span>Vazgeç</button><button class="mh-btn mh-btn--tone mh-t-danger"><span class="mh-key mh-key--sm">ENTER</span>Yok et</button></div> </div>
 ```
 
@@ -134,7 +134,7 @@ JS: `MH.ring(el, v)`
 ```
 
 ## menu.results — Maç sonucu
-Maç bitişi: üstte başlık (Zafer/Yenilgi) ve alt satır, altında podyum.
+Maç bitişi: üstte başlık (Zafer/Yenilgi) ve alt satır; podyum ayrı varyant.
 JS: `—`
 
 ```html
@@ -146,6 +146,6 @@ Tam ekran: arka plan (__art), başlık/alt metin/rozetler (__main), altta ipucu 
 JS: `el.querySelector('.mh-bar').dataset.v = 50; MH.mount(root)`
 
 ```html
-<div class="mh-loading" style="position:relative;min-height:240px"> <div class="mh-loading__art"></div> <div class="mh-loading__main"><span class="mh-kicker mh-kicker--accent" style="letter-spacing:.3em">Stream Ember sunar</span><div class="mh-title">Event Fabric</div><div class="mh-flex mh-gap-2"><span class="mh-badge mh-badge--pill mh-badge--dot mh-t-success">32 / 64 oyuncu</span><span class="mh-badge mh-badge--pill">Ping 18 ms</span></div></div>
-<div class="mh-loading__foot"><div class="mh-loading__tip"><span class="mh-kicker">İpucu</span><p>F1 ile etkileşim menüsünü açabilirsin.</p></div> <div class="mh-loading__progress"><div class="mh-loading__status"><span>Haritalar yükleniyor</span><b>62%</b></div><div class="mh-bar mh-t-accent" data-v="62"><i class="mh-bar__fill"></i></div></div></div> </div>
+<div style="position:relative;width:960px;height:540px;overflow:hidden"><div style="position:absolute;left:0;top:0;width:1920px;height:1080px;transform:scale(.5);transform-origin:0 0"><div class="mh-loading"> <div class="mh-loading__art"></div> <div class="mh-loading__main"><span class="mh-kicker mh-kicker--accent" style="letter-spacing:.3em">Stream Ember sunar</span><div class="mh-title">Event Fabric</div><div class="mh-flex mh-gap-2"><span class="mh-badge mh-badge--pill mh-badge--dot mh-t-success">32 / 64 oyuncu</span><span class="mh-badge mh-badge--pill">Ping 18 ms</span></div></div>
+<div class="mh-loading__foot"><div class="mh-loading__tip"><span class="mh-kicker">İpucu</span><p>F1 ile etkileşim menüsünü açabilirsin.</p></div> <div class="mh-loading__progress"><div class="mh-loading__status"><span>Haritalar yükleniyor</span><b>62%</b></div><div class="mh-bar mh-bar--stripe mh-t-accent" data-v="62"><i class="mh-bar__fill"></i></div></div></div> </div></div></div>
 ```

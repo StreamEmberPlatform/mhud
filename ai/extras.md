@@ -58,16 +58,6 @@ JS: `MH.streak(el, 5)`
 <div class="mh-panel mh-streak"><i data-i="streak"></i><span class="mh-streak__count">5</span><span class="mh-streak__label"><b>Öldürme serisi</b><span class="mh-sub">+%25 para</span></span><i class="mh-streak__decay"></i></div>
 ```
 
-## extras.challenge — Meydan okuma
-Hedefli görev: başlık + sayaç, kilometre taşlı bar (mh-milestones içinde bar + konumlu i; on dolu), ödül sırası.
-JS: `MH.bar(bar, v)`
-
-```html
-<div class="mh-panel mh-challenge" style="--w:420px"> <div class="mh-challenge__head"><i data-i="target"></i><b>100 öldürme</b><span class="mh-challenge__count">64<span> / 100</span></span></div>
-<div class="mh-milestones"><div class="mh-bar mh-t-accent" data-v="64"><i class="mh-bar__fill"></i></div><i class="on" style="left:25%"></i><i class="on" style="left:50%"></i><i style="left:75%"></i><i style="left:100%"></i></div>
-<div class="mh-challenge__rewards"><span>25 · $500</span><span>50 · Zırh</span><span>75 · Boss</span><span>100 · 🏆</span></div> </div>
-```
-
 ## extras.achieve — Başarı satırı
 Küçük başarı kartı: ikon, ad, ilerleme yazısı, ton'lu bar.
 JS: `—`

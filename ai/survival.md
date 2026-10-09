@@ -33,14 +33,6 @@ JS: `el.querySelector('b').textContent = '01:30'`
 <div class="mh-panel mh-rescue"><span class="mh-rescue__icon"><i data-i="heli"></i></span><div><span class="mh-kicker">Kurtarma</span><b>01:30</b></div></div>
 ```
 
-## survival.revive — Canlandırma
-Düşen takım arkadaşını kaldırma ilerlemesi: başlık, bar, ipucu.
-JS: `MH.bar(bar, v)`
-
-```html
-<div class="mh-revive"><b>MSK ayağa kaldırılıyor</b><div class="mh-bar mh-t-health" data-v="62"><i class="mh-bar__fill"></i></div><small>E basılı tut</small></div>
-```
-
 ## survival.survivors — Takım yaşam kartları
 Takım arkadaşları: avatar, ad, can sayısı, --hp (0..1) bar, --temp ikinci katman, eşya ikonları (is-empty kullanılmış). Kendi kartın is-self, düşük can is-low.
 JS: `card.style.setProperty('--hp', .5)`

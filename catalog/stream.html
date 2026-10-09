@@ -1,4 +1,4 @@
-<!-- family: Yayın ve izleyici | Yayıncı ekranı parçaları: durum şeridi, istatistik kartı, seviye halkası, galibiyet/mağlubiyet, hedef çubuğu, izleyici oylaması, olay kuyruğu, liderlik, canlı sayaçlar, komut listesi, yayıncı kartı. -->
+<!-- family: Yayın ve izleyici | Yayıncı ekranı parçaları: durum şeridi, istatistik kartı, seviye halkası, galibiyet/mağlubiyet, izleyici oylaması, olay kuyruğu, liderlik, canlı sayaçlar, komut listesi, yayıncı kartı. -->
 
 <section data-id="statbar" data-title="Durum şeridi" data-use="Yatay istatistik çipleri: ikon + büyük sayı + etiket. Ton mh-t-*; sayının yanına <small> ile /100 gibi ek." data-js="chip.querySelector('b').textContent = v">
 <div class="mh-statbar"> <div class="mh-chip-stat mh-t-accent"><i data-i="xp"></i><b>24</b><span>Seviye</span></div> <div class="mh-chip-stat mh-t-health"><i data-i="heart"></i><b>82<small>/100</small></b><span>Can</span></div> <div class="mh-chip-stat mh-t-danger"><i data-i="enemy"></i><b>14</b><span>Ekranda</span></div> <div class="mh-chip-stat mh-t-warn"><i data-i="queue"></i><b>37</b><span>Kuyrukta</span></div> <div class="mh-chip-stat"><i data-i="skull"></i><b>3</b><span>Ölüm</span></div> </div>
@@ -9,20 +9,12 @@
 <div class="mh-statcard__grid"> <div class="mh-statcard__cell mh-t-danger"><i data-i="enemy"></i><div><b>14</b><span>Ekranda</span></div></div> <div class="mh-statcard__cell mh-t-warn"><i data-i="queue"></i><div><b>37</b><span>Kuyrukta</span></div></div> <div class="mh-statcard__cell mh-t-success"><i data-i="trophy"></i><div><b>5–2</b><span>G / M</span></div></div> <div class="mh-statcard__cell"><i data-i="skull"></i><div><b>3</b><span>Ölüm</span></div></div> </div> </div>
 </section>
 
-<section data-id="hpbig" data-title="Büyük can" data-use="Yayın kadrajı için iri can göstergesi: ikon, değer, /max ve gölgeli bar (__ghost geriden gelir)." data-js="MH.bar(el, v)">
-<div class="mh-hpbig" style="--w:320px"><div class="mh-hpbig__head"><i data-i="heart"></i><b>82</b><span>/ 100</span></div><div class="mh-bar mh-t-health" data-v="82"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div></div>
-</section>
-
 <section data-id="levelring" data-title="Seviye halkası" data-use="İçinde sayı ve küçük etiket olan halka; --v 0..1 ilerleme." data-js="MH.ring(el, 0.64)">
 <div class="mh-levelring" data-mh-ring style="--v:.64"><b>24</b><small>SVY</small></div>
 </section>
 
 <section data-id="winloss" data-title="Galibiyet / mağlubiyet" data-use="Skor (yeşil W, kırmızı L) ve son maç geçmişi: data-history=&quot;WWLWWLW&quot; harfleri noktaya çevrilir." data-js="MH.mount(root)">
 <div class="mh-panel mh-wl"><div class="mh-wl__score"><b class="w">5</b><i>–</i><b class="l">2</b></div><div class="mh-wl__meta"><span class="mh-kicker">Son maçlar</span><div class="mh-history" data-history="WWLWWLW"></div></div></div>
-</section>
-
-<section data-id="goal" data-wide="1" data-title="Hedef çubuğu" data-use="Bağış/beğeni hedefi: ikon, başlık, sayaç, bar ve ödül satırı. İlerleme için bar data-v." data-js="MH.bar(bar, 72)">
-<div class="mh-panel mh-goal" style="--w:420px"> <div class="mh-goal__head"><span class="mh-goal__icon"><i data-i="heart-f"></i></span><span class="mh-goal__title">Beğeni hedefi</span><span class="mh-goal__count"><span style="color:var(--mh-text)">72.400</span><span> / 100.000</span></span></div> <div class="mh-bar" data-v="72"><i class="mh-bar__fill"></i></div> <div class="mh-goal__reward"><i data-i="gift"></i>Ödül: <b style="color:var(--mh-text)">2× para</b> (5 dk)</div> </div>
 </section>
 
 <section data-id="vote" data-wide="1" data-title="İzleyici oylaması" data-use="Soru + süre rozeti + seçenekler. Seçenek: mh-opt, __fill'e --v (0..1) yüzde, __cmd sohbet komutu, __label, __pct. is-leading öndeki, is-winner kazanan." data-js="opt.style.setProperty('--v', .4)">

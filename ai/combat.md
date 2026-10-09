@@ -1,5 +1,5 @@
 # Savaş ve dünya
-Nişangâh, vuruş geri bildirimi, hedef kilidi, boss ve tur skoru, nokta ele geçirme, etkileşim istemleri, diyalog. Dünya içi parçalar MH.Markers havuzuyla konumlanır; oyuncu etiketleri için "İsim etiketleri" ailesine bak.
+Nişangâh, vuruş geri bildirimi, hedef kilidi, tur skoru, nokta ele geçirme, etkileşim istemleri, diyalog. Dünya içi parçalar MH.Markers havuzuyla konumlanır; oyuncu etiketleri için "İsim etiketleri" ailesine bak.
 
 ## combat.crosshair — Nişangâh
 Dört biçim: artı (varsayılan), --dot, --circle, --t. Durum: is-target düşman üstünde, is-friend dost üstünde. --gap açıklığı, --c rengi ayarlar.
@@ -77,21 +77,6 @@ JS: `var h = MH.hold(el, { duration: 1500, onDone() {} }); h.start()`
 <div class="mh-hold" data-mh-ring><span class="mh-key mh-key--lg">E</span></div>
 ```
 
-## combat.boss — Boss barı
-Ekran üstü büyük bar: ad, aşama rozeti, iz (ghost), aşama çentikleri, ikinci kalkan barı. --w genişlik.
-JS: `MH.bar(el.querySelector('.mh-bar'), 64)`
-
-```html
-<div class="mh-boss" style="--w:520px">
-  <div class="mh-boss__head">
-    <div class="mh-col" style="gap:4px"><span class="mh-kicker mh-kicker--accent">Bölüm sonu</span><span class="mh-boss__name">Çete lideri — Vargas</span></div>
-    <span class="mh-boss__phase"><span>Aşama 2 / 3</span><span class="mh-badge mh-t-danger mh-badge--dot mh-badge--live">Öfkeli</span></span>
-  </div>
-  <div class="mh-bar" data-v="64" style="position:relative"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i><span class="mh-boss__marks"><i style="left:33.3%"></i><i style="left:66.6%"></i></span></div>
-  <div class="mh-bar mh-boss__shield" data-v="30"><i class="mh-bar__fill"></i></div>
-</div>
-```
-
 ## combat.enemies — Düşman sayacı
 Ekranda ve kuyrukta kaç düşman var + doluluk barı; sınıra yaklaşınca is-swarm kırmızı parlar.
 JS: `MH.enemies(el, { onScreen: 14, queued: 37, max: 20 })`
@@ -113,18 +98,6 @@ JS: `MH.timer(el.querySelector('.mh-timer'), 84, { urgent: 10 })`
   <div class="mh-versus__team mh-t-team1"><div class="mh-versus__name"><b>Mavi takım</b><div class="mh-versus__alive"><i></i><i></i><i></i><i></i><i class="off"></i></div></div><span class="mh-versus__score">3</span></div>
   <div class="mh-versus__mid"><span class="mh-kicker">Tur 7 · İlk 5</span><div class="mh-timer"><span class="mh-timer__value">01:24</span></div></div>
   <div class="mh-versus__team mh-t-team2 is-right"><div class="mh-versus__name"><b>Kırmızı takım</b><div class="mh-versus__alive"><i></i><i></i><i></i><i class="off"></i><i class="off"></i></div></div><span class="mh-versus__score">2</span></div>
-</div>
-```
-
-## combat.wave — Dalga paneli
-Hayatta kalma modu: dalga numarası, kalan düşman barı, sonraki dalga süresi.
-JS: `MH.bar(el.querySelector('.mh-bar'), 62)`
-
-```html
-<div class="mh-wave">
-  <div class="mh-wave__title"><span class="mh-kicker mh-kicker--accent">Hayatta kal</span><span class="mh-wave__num">Dalga 8</span></div>
-  <div class="mh-bar mh-t-danger" data-v="62"><i class="mh-bar__fill"></i></div>
-  <div class="mh-wave__meta"><span>Kalan düşman <b class="mh-num">14</b></span><span>Sonraki dalga 0:32</span></div>
 </div>
 ```
 

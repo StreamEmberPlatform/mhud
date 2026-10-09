@@ -1,5 +1,5 @@
 # Yayın ve izleyici
-Yayıncı ekranı parçaları: durum şeridi, istatistik kartı, seviye halkası, galibiyet/mağlubiyet, hedef çubuğu, izleyici oylaması, olay kuyruğu, liderlik, canlı sayaçlar, komut listesi, yayıncı kartı.
+Yayıncı ekranı parçaları: durum şeridi, istatistik kartı, seviye halkası, galibiyet/mağlubiyet, izleyici oylaması, olay kuyruğu, liderlik, canlı sayaçlar, komut listesi, yayıncı kartı.
 
 ## stream.statbar — Durum şeridi
 Yatay istatistik çipleri: ikon + büyük sayı + etiket. Ton mh-t-*; sayının yanına <small> ile /100 gibi ek.
@@ -18,14 +18,6 @@ JS: `MH.mount(root)`
 <div class="mh-statcard__grid"> <div class="mh-statcard__cell mh-t-danger"><i data-i="enemy"></i><div><b>14</b><span>Ekranda</span></div></div> <div class="mh-statcard__cell mh-t-warn"><i data-i="queue"></i><div><b>37</b><span>Kuyrukta</span></div></div> <div class="mh-statcard__cell mh-t-success"><i data-i="trophy"></i><div><b>5–2</b><span>G / M</span></div></div> <div class="mh-statcard__cell"><i data-i="skull"></i><div><b>3</b><span>Ölüm</span></div></div> </div> </div>
 ```
 
-## stream.hpbig — Büyük can
-Yayın kadrajı için iri can göstergesi: ikon, değer, /max ve gölgeli bar (__ghost geriden gelir).
-JS: `MH.bar(el, v)`
-
-```html
-<div class="mh-hpbig" style="--w:320px"><div class="mh-hpbig__head"><i data-i="heart"></i><b>82</b><span>/ 100</span></div><div class="mh-bar mh-t-health" data-v="82"><i class="mh-bar__ghost"></i><i class="mh-bar__fill"></i></div></div>
-```
-
 ## stream.levelring — Seviye halkası
 İçinde sayı ve küçük etiket olan halka; --v 0..1 ilerleme.
 JS: `MH.ring(el, 0.64)`
@@ -40,14 +32,6 @@ JS: `MH.mount(root)`
 
 ```html
 <div class="mh-panel mh-wl"><div class="mh-wl__score"><b class="w">5</b><i>–</i><b class="l">2</b></div><div class="mh-wl__meta"><span class="mh-kicker">Son maçlar</span><div class="mh-history" data-history="WWLWWLW"></div></div></div>
-```
-
-## stream.goal — Hedef çubuğu
-Bağış/beğeni hedefi: ikon, başlık, sayaç, bar ve ödül satırı. İlerleme için bar data-v.
-JS: `MH.bar(bar, 72)`
-
-```html
-<div class="mh-panel mh-goal" style="--w:420px"> <div class="mh-goal__head"><span class="mh-goal__icon"><i data-i="heart-f"></i></span><span class="mh-goal__title">Beğeni hedefi</span><span class="mh-goal__count"><span style="color:var(--mh-text)">72.400</span><span> / 100.000</span></span></div> <div class="mh-bar" data-v="72"><i class="mh-bar__fill"></i></div> <div class="mh-goal__reward"><i data-i="gift"></i>Ödül: <b style="color:var(--mh-text)">2× para</b> (5 dk)</div> </div>
 ```
 
 ## stream.vote — İzleyici oylaması
