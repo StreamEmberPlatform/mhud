@@ -36,7 +36,7 @@ Bileşenler ailelere ayrılır; her varyantın HTML'i ve güncelleme çağrısı
 | [Basılı nesneler](ai/print.md) | 7 | Kağıt/tabela hissi veren dünya nesneleri (frontier ve oldwest temalarında en iyi görünür): arananlar afişi, telgraf, gazete, defter, bilet, tabela, damga |
 | [Yayın ve izleyici](ai/stream.md) | 13 | Yayıncı ekranı parçaları: durum şeridi, istatistik kartı, seviye halkası, galibiyet/mağlubiyet, hedef çubuğu, izleyici oylaması, olay kuyruğu, liderlik, canlı sayaçlar, komut listesi, yayıncı kartı |
 | [Hayatta kalma ve mod](ai/survival.md) | 12 | Dalga/sürü uyarısı, özel düşman, silah yuvaları, kurtarma sayacı, canlandırma, takım yaşam kartları, alan daralması, gün sayacı, izleyici modu |
-| [İsim etiketleri](ai/tags.md) | 17 | Oyuncu/NPC başında görünen etiketler |
+| [İsim etiketleri](ai/tags.md) | 31 | Oyuncu/NPC başında görünen etiketler |
 | [Araç ve binek](ai/vehicle.md) | 6 | Hız kadranı, kompakt hız, yakıt/motor ölçerleri, gösterge lambaları, halka ölçer ve at (binek) paneli |
 | [Yaşam göstergeleri](ai/vitals.md) | 30 | Can, zırh, stamina, dayanıklılık gibi 0-100 arası değerler |
 

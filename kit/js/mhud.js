@@ -782,12 +782,13 @@
   /* İsim etiketleri — list öğesi:
      { id, x, y, scale, alpha, name, sid, tone:'friend'|'enemy'|'team1', badge:{text,tone}, health, armor,
        sub, talking, dead, typing, icon, bubble, compact,
-       variant:'plate|flag|pill|line|bar|pointer|banner|bracket|boss|npc|far|bounty', role, avatar } */
+       variant:'plate|flag|pill|line|bar|pointer|banner|bracket|boss|npc|far|bounty|viewer|hp|glow|frontier|vip', role, avatar,
+       level, clan, down, afk, leader } */
   MH.Nametags = function (world, opts) {
     opts = opts || {};
     return Pool(world, function () { return el('div', 'mh-tag'); }, function (n, t) {
       n.className = 'mh-tag' + (t.tone ? (/^team/.test(t.tone) ? ' mh-t-' + t.tone : ' is-' + t.tone) : '') +
-        (t.talking ? ' is-talking' : '') + (t.dead ? ' is-dead' : '') + (t.typing ? ' is-typing' : '') + (t.compact || opts.compact ? ' mh-tag--compact' : '') + (t.variant || opts.variant ? ' mh-tag--' + (t.variant || opts.variant) : '');
+        (t.talking ? ' is-talking' : '') + (t.down ? ' is-down' : '') + (t.afk ? ' is-afk' : '') + (t.leader ? ' is-leader' : '') + (t.dead ? ' is-dead' : '') + (t.typing ? ' is-typing' : '') + (t.compact || opts.compact ? ' mh-tag--compact' : '') + (t.variant || opts.variant ? ' mh-tag--' + (t.variant || opts.variant) : '');
       var bars = '';
       if (opts.bars !== false && t.health != null && !t.dead) {
         bars = '<div class="mh-tag__bars"><div class="mh-bar mh-t-' + (t.tone === 'enemy' || t.health <= 25 ? 'danger' : 'health') + '"><i class="mh-bar__fill" style="transform:scaleX(' + clamp(t.health / 100, 0, 1) + ')"></i></div>' +
@@ -795,7 +796,7 @@
       }
       n.innerHTML = (t.bubble ? '<div class="mh-tag__bubble">' + esc(t.bubble) + '</div>' : '') +
         (t.role ? '<div class="mh-tag__role">' + esc(t.role) + '</div>' : '') + '<div class="mh-tag__line">' + (t.avatar ? '<span class="mh-avatar mh-avatar--round">' + esc(t.avatar) + '</span>' : '') + (t.dead ? icon('skull') : t.icon ? icon(t.icon) : '') + '<span class="mh-tag__voice">' + icon('mic') + '</span>' +
-        '<span class="mh-tag__name">' + esc(t.name) + '</span>' + (t.sid != null ? '<span class="mh-tag__id">' + esc(t.sid) + '</span>' : '') +
+        (t.level != null ? '<span class="mh-tag__lvl">' + esc(t.level) + '</span>' : '') + (t.clan ? '<span class="mh-tag__clan">[' + esc(t.clan) + ']</span>' : '') + '<span class="mh-tag__name">' + esc(t.name) + '</span>' + (t.sid != null ? '<span class="mh-tag__id">' + esc(t.sid) + '</span>' : '') +
         (t.badge && opts.badges !== false ? '<span class="mh-badge mh-t-' + (t.badge.tone || 'neutral') + '">' + esc(t.badge.text) + '</span>' : '') + '</div>' +
         bars + (t.sub && opts.sub !== false ? '<div class="mh-tag__sub">' + esc(t.sub) + '</div>' : '');
     });

@@ -195,22 +195,36 @@ Menü durumu kendi değiştirmez; oyuncunun eylemi `{ action, data }` olarak `on
 - `survival.qte` Tuş dizisi (QTE): Sıralı tuşlara bas; Promise true/false
 
 ### İsim etiketleri → `ai/tags.md`
-- `tags.default` Standart: Ad, numara, rozet, can ve zırh barı, alt satır
-- `tags.compact` Kompakt: Küçük boy: rozet ve alt satır gizli, ad 13px, bar 56px
+- `tags.default` Standart: Ad, oyuncu numarası, rozet, can ve zırh barı, alt satır
+- `tags.relations` İlişki renkleri: Aynı etiket, renk ilişkiyi söyler: is-friend, is-enemy, nötr (sınıfsız), takım mh-t-team1..5; ayrıca mh-t-gold (VIP), mh-t-info (polis) gibi tonlar
+- `tags.compact` Kompakt: mh-tag--compact: rozet ve alt satır gizli, ad 13px, bar 56px
+- `tags.hp-number` Can sayısı: variant: hp
+- `tags.shield-pips` Kalkan segmentleri: Can barının altına mh-pips (data-pips=&quot;dolu/toplam&quot;): zırh plakası ya da kalkan katmanı
+- `tags.level-clan` Seviye ve klan: level: adın önünde tonlu seviye kutusu; clan: [KLAN] öneki
 - `tags.plate` Plaka: variant: plate
 - `tags.flag` Bayrak: variant: flag
 - `tags.pill` Hap: variant: pill
+- `tags.card` Kart: variant: card
 - `tags.line` İnce çizgi: variant: line
-- `tags.bar-only` Yalnız bar: variant: bar
-- `tags.pointer` İşaretçili: variant: pointer
+- `tags.glow` Parlak çerçeve: variant: glow
 - `tags.banner` Takım afişi: variant: banner
 - `tags.bracket` Köşeli: variant: bracket
-- `tags.role` Rol etiketli: role: üstte küçük rol yazısı (POLİS, SAĞLIK, ŞERİF…), altında ad
+- `tags.bar-only` Yalnız bar: variant: bar
+- `tags.pointer` İşaretçili: variant: pointer
+- `tags.squad` Takım numarası: Bölük/ekip sırası: adın önünde numara kutusu (mh-tag__num)
+- `tags.roles` Rol etiketli: role: üstte küçük rol yazısı (POLİS, SAĞLIK, ŞERİF…)
+- `tags.wanted` Aranma seviyesi: Ad altında aranma yıldızları (mh-wanted, i.on dolu)
+- `tags.race` Yarış sırası: variant: race
+- `tags.vip` Korunacak hedef: variant: vip
 - `tags.boss` Boss: variant: boss
 - `tags.npc` NPC: variant: npc
-- `tags.far` Uzaktaki: variant: far
+- `tags.viewer` Canlı yayın izleyicisi: variant: viewer
+- `tags.frontier-sign` Western levha: variant: frontier
 - `tags.bounty` Ödül etiketi: variant: bounty
-- `tags.status` Konuşuyor / yazıyor / ölü: Durum sınıfları herhangi bir biçimle birleşir: is-talking (yeşil + mikrofon), is-typing (…), is-dead (sönük, üstü çizili, kuru kafa)
+- `tags.far` Uzaktaki: variant: far
+- `tags.group` Kalabalık özeti: Üst üste binen grubu tek etikette say: ad + mh-tag__more (+3)
+- `tags.states` Durumlar: Herhangi bir biçime eklenir: is-talking (yeşil + mikrofon), is-typing (…), is-leader (taç), is-afk (sönük), is-target (altı çizili), is-dead (üstü çizili)
+- `tags.downed` Yere düştü: is-down: kırmızı, yanıp sönen ad; bar kalan kanama süresi, alt satır kaldırma ipucu
 - `tags.bubble` Konuşma balonu: bubble: etiketin üstünde kısa sohbet metni (yayıncı/izleyici mesajı); 220px'e kadar kayar
 
 ### Araç ve binek → `ai/vehicle.md`

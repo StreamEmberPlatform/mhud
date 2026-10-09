@@ -89,6 +89,53 @@
 .mh-tag--bounty .mh-tag__sub { font-weight: 800; letter-spacing: .1em; }
 .mh-tag--bounty .mh-tag__bars { display: none; }
 
+/* ---------- Etiket ekleri: klan, seviye, sıra/numara, can sayısı, kalkan segmentleri ---------- */
+.mh-tag__clan { font-family: var(--mh-font-num); font-size: 12px; font-weight: 700; color: rgb(var(--tone-rgb) / .75); }
+.mh-tag__lvl { min-width: 20px; height: 18px; padding: 0 4px; display: inline-grid; place-items: center; font-family: var(--mh-font-num); font-size: 11px; font-weight: 800; color: #0b0d10; background: rgb(var(--tone-rgb)); border-radius: 3px; text-shadow: none; }
+.mh-tag__num { width: 18px; height: 18px; display: inline-grid; place-items: center; font-family: var(--mh-font-num); font-size: 11px; font-weight: 800; color: rgb(var(--tone-rgb)); border: 1.5px solid rgb(var(--tone-rgb)); border-radius: 3px; }
+.mh-tag__hp { font-family: var(--mh-font-num); font-size: 12px; font-weight: 700; color: var(--mh-text); }
+.mh-tag .mh-pips { width: 84px; gap: 2px; }
+.mh-tag .mh-pips > i { height: 3px; }
+.mh-tag .mh-wanted .mh-i { width: 12px; height: 12px; }
+/* Durumlar */
+.mh-tag.is-down .mh-tag__name { color: var(--mh-danger); }
+.mh-tag.is-down { animation: mh-critical 1s ease-in-out infinite; }
+.mh-tag.is-afk { opacity: .5; } .mh-tag.is-afk .mh-tag__name::after { content: " · AFK"; font-size: 11px; color: var(--mh-text-3); }
+.mh-tag.is-leader .mh-tag__name::before { content: "♛ "; color: rgb(var(--mh-gold-rgb)); }
+.mh-tag.is-target .mh-tag__name { text-decoration: underline 2px rgb(var(--mh-danger-rgb)); text-underline-offset: 3px; }
+/* İzleyici (canlı yayın): avatar halkası + seviye */
+.mh-tag--viewer { flex-direction: row; gap: 7px; padding: 3px 10px 3px 3px; background: rgb(0 0 0 / .6); border-radius: 999px; }
+.mh-tag--viewer .mh-tag__line { gap: 6px; }
+.mh-tag--viewer .mh-avatar { box-shadow: 0 0 0 2px rgb(var(--tone-rgb)); }
+.mh-tag--viewer .mh-tag__bars { display: none; }
+.mh-tag--viewer .mh-tag__sub { font-size: 10px; }
+/* Kart: avatar solda, iki satır sağda (yakın plan, lobi) */
+.mh-tag--card { flex-direction: row; align-items: center; gap: 8px; padding: 6px 10px 6px 6px; background: var(--mh-surface-solid); border: 1px solid var(--mh-line); border-left: 3px solid rgb(var(--tone-rgb)); border-radius: var(--mh-r-2); text-shadow: none; }
+.mh-tag--card > .mh-avatar { width: 34px; height: 34px; }
+.mh-tag--card .mh-tag__body { display: flex; flex-direction: column; gap: 3px; }
+.mh-tag--card .mh-tag__bars { width: 110px; }
+/* Sayı: ad + büyük can sayısı, bar yok */
+.mh-tag--hp .mh-tag__bars { display: none; }
+.mh-tag--hp .mh-tag__hp { font-size: 16px; color: rgb(var(--tone-rgb)); }
+/* Yarış: sıra kutusu + ad */
+.mh-tag--race { flex-direction: row; gap: 0; padding: 0; background: rgb(0 0 0 / .65); text-shadow: none; }
+.mh-tag--race .mh-tag__pos { padding: 2px 7px; font-family: var(--mh-font-display); font-size: 16px; font-weight: 800; color: #0b0d10; background: rgb(var(--tone-rgb)); }
+.mh-tag--race .mh-tag__line { padding: 0 9px; }
+.mh-tag--race .mh-tag__bars, .mh-tag--race .mh-tag__sub { display: none; }
+/* Korunacak hedef (VIP / eskort) */
+.mh-tag--vip { gap: 4px; }
+.mh-tag--vip .mh-tag__name { font-size: 17px; color: rgb(var(--mh-gold-rgb)); }
+.mh-tag--vip::before { content: "KORU"; padding: 1px 8px; font-size: 9px; font-weight: 800; letter-spacing: .2em; color: #0b0d10; background: rgb(var(--mh-gold-rgb)); border-radius: 2px; text-shadow: none; }
+/* Western levha: oyma tahta hissi (frontier) */
+.mh-tag--frontier { padding: 3px 12px; background: linear-gradient(180deg, rgb(70 48 26 / .92), rgb(40 26 14 / .92)); border: 1px solid rgb(205 170 105 / .55); box-shadow: inset 0 0 0 2px rgb(0 0 0 / .35); text-shadow: 0 1px 0 #000; }
+.mh-tag--frontier .mh-tag__name { font-family: var(--mh-font-display); letter-spacing: .06em; color: rgb(241 230 207); }
+.mh-tag--frontier .mh-tag__sub { color: rgb(205 170 105); }
+/* Neon çerçeve (arena / e-spor) */
+.mh-tag--glow { padding: 3px 12px; border: 1px solid rgb(var(--tone-rgb)); border-radius: 3px; background: rgb(var(--tone-rgb) / .1); box-shadow: 0 0 calc(12px * var(--mh-glow-a) + 4px) rgb(var(--tone-rgb) / .55), inset 0 0 8px rgb(var(--tone-rgb) / .3); }
+.mh-tag--glow .mh-tag__name { color: #fff; text-shadow: 0 0 8px rgb(var(--tone-rgb)); }
+/* Yığın: kalabalık bir grubu tek etikette say */
+.mh-tag__more { font-family: var(--mh-font-num); font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: rgb(var(--tone-rgb) / .25); color: rgb(var(--tone-rgb)); }
+
 /* Yayıncı / izleyici ikonu üzerindeki konuşma balonu */
 .mh-tag__bubble {
   max-width: 220px; padding: 5px 9px; margin-bottom: 2px;
