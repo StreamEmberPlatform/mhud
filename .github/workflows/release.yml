@@ -1,5 +1,5 @@
 # v* etiketi itildiğinde: derle, npm'e yayınla.
-#   git tag v2.0.0 && git push origin v2.0.0
+#   git tag v2.0.1 && git push origin v2.0.1
 # Yayın kimliği (ikisinden biri):
 #  1) Trusted Publishing (önerilen, token yok): npmjs.com > paket > Settings > Trusted Publisher >
 #     GitHub Actions: StreamEmberPlatform / mhud / release.yml  → NPM_TOKEN secret'ını silebilirsin.

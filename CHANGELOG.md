@@ -1,6 +1,6 @@
 # Değişiklik günlüğü
 
-Sürümler [SemVer](https://semver.org/lang/tr/) izler. CDN'de her zaman tam sürüm kullanın (`@2.0.0`).
+Sürümler [SemVer](https://semver.org/lang/tr/) izler. CDN'de her zaman tam sürüm kullanın (`@2.0.1`).
 
 ## 2.0.1 — 2026-10-09
 (2.0.0 etiketi itildi ama npm yayını tamamlanmadı; bu sürüm onun yerine geçer.)
