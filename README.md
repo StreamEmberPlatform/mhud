@@ -25,8 +25,8 @@ Bileşenler ailelere ayrılır; her varyantın HTML'i ve güncelleme çağrısı
 
 | Aile | Varyant | İçerik |
 |---|---|---|
-| [Temel parçalar](ai/base.md) | 13 | Her yerde kullanılan yapı taşları: panel, düğme, rozet, çip, tuş ipucu, form alanları, sekme, tablo, avatar |
-| [Savaş ve dünya](ai/combat.md) | 16 | Nişangâh, vuruş geri bildirimi, isim etiketi, hedef kilidi, boss ve tur skoru, nokta ele geçirme, etkileşim istemleri, diyalog |
+| [Temel parçalar](ai/base.md) | 14 | Her yerde kullanılan yapı taşları: panel, düğme, rozet, çip, tuş ipucu, form alanları, sekme, tablo, avatar |
+| [Savaş ve dünya](ai/combat.md) | 15 | Nişangâh, vuruş geri bildirimi, hedef kilidi, boss ve tur skoru, nokta ele geçirme, etkileşim istemleri, diyalog |
 | [Ekonomi ve durum](ai/economy.md) | 12 | Para, aranma/ödül, saat ve hava, seviye ve XP, etki simgeleri, seri, sıralama |
 | [Grafik ve ilerleme](ai/extras.md) | 11 | Küçük grafikler, ilerleme çizgisi, seri, meydan okuma, etkinlik/maç satırı, başarı, hediye haritası |
 | [Bildirim ve akış](ai/feed.md) | 12 | Ekrana kısa süre düşen JS bileşenleri: toast, ölüm akışı, hediye, duyuru, görev şeridi, seviye atlama, başarım, eşya alma, geri sayım, altyazı, ilerleme |
@@ -36,6 +36,7 @@ Bileşenler ailelere ayrılır; her varyantın HTML'i ve güncelleme çağrısı
 | [Basılı nesneler](ai/print.md) | 7 | Kağıt/tabela hissi veren dünya nesneleri (frontier ve oldwest temalarında en iyi görünür): arananlar afişi, telgraf, gazete, defter, bilet, tabela, damga |
 | [Yayın ve izleyici](ai/stream.md) | 13 | Yayıncı ekranı parçaları: durum şeridi, istatistik kartı, seviye halkası, galibiyet/mağlubiyet, hedef çubuğu, izleyici oylaması, olay kuyruğu, liderlik, canlı sayaçlar, komut listesi, yayıncı kartı |
 | [Hayatta kalma ve mod](ai/survival.md) | 12 | Dalga/sürü uyarısı, özel düşman, silah yuvaları, kurtarma sayacı, canlandırma, takım yaşam kartları, alan daralması, gün sayacı, izleyici modu |
+| [İsim etiketleri](ai/tags.md) | 17 | Oyuncu/NPC başında görünen etiketler |
 | [Araç ve binek](ai/vehicle.md) | 6 | Hız kadranı, kompakt hız, yakıt/motor ölçerleri, gösterge lambaları, halka ölçer ve at (binek) paneli |
 | [Yaşam göstergeleri](ai/vitals.md) | 30 | Can, zırh, stamina, dayanıklılık gibi 0-100 arası değerler |
 
